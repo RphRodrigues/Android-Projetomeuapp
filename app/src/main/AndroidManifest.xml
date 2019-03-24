@@ -5,7 +5,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/meu_icone"
-        android:label="teste"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -16,10 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".CadastrarServicoActivity"
             android:label="@string/cadastrar_servico" />
+        <activity
+            android:name=".ServicoAberto"
+            android:label="@string/servico_aberto" />
+        <activity
+            android:name=".ServicoFechado"
+            android:label="@string/servico_fechado" />
+        <activity
+            android:name=".AssumirOS"
+            android:label="@string/assumir_os" />
     </application>
 
 </manifest>
