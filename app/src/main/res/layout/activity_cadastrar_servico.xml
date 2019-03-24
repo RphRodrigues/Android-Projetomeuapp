@@ -156,5 +156,11 @@
                 android:inputType="textMultiLine" />
         </android.support.design.widget.TextInputLayout>
 
+        <Button
+            android:id="@+id/btnCriarOSId"
+            android:layout_marginTop="15sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cadastrar_servico"/>
     </LinearLayout>
 </ScrollView>
