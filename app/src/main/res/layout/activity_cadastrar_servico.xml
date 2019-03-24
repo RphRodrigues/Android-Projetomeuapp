@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,24 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingTop="10dp"
         android:paddingLeft="15sp"
         android:paddingRight="15sp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15sp"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/cadastrar_servico"
-                android:textSize="18sp" />
-        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -69,7 +53,6 @@
             android:layout_marginLeft="5sp"
             android:layout_marginTop="50sp"
             android:text="@string/endereco_servico" />
-
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -139,8 +122,8 @@
                 android:id="@+id/estadoIdLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/cidadeIdLayout"
-                android:layout_toEndOf="@+id/cidadeIdLayout">
+                android:layout_toEndOf="@+id/cidadeIdLayout"
+                android:layout_toRightOf="@+id/cidadeIdLayout">
 
                 <EditText
                     android:id="@+id/edtEstadoId"
@@ -159,7 +142,6 @@
             android:layout_marginLeft="5sp"
             android:layout_marginTop="50sp"
             android:text="@string/informacoes_do_servico" />
-
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
