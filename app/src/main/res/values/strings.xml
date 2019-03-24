@@ -4,4 +4,17 @@
     <string name="assumir_os">Assumir OS</string>
     <string name="servico_aberto">Serviços em Aberto</string>
     <string name="servico_fechado">Serviços Fechados</string>
+    <string name="nome_cliente">Nome do cliente</string>
+    <string name="codigo_cliente">Código cliente</string>
+    <string name="cpf_cnpj">Cpf/Cnpj do cliente</string>
+    <string name="dados_do_cliente">Dados do cliente</string>
+    <string name="informacoes_do_servico">Informações do serviço</string>
+    <string name="descricao_do_servico">Descrição do serviço</string>
+    <string name="endereco_servico">Endereço do serviço</string>
+    <string name="endereco">Endereço</string>
+    <string name="rua">Rua</string>
+    <string name="cep">Cep</string>
+    <string name="cidade">Cidade</string>
+    <string name="numero">Nº</string>
+    <string name="estado">Estado</string>
 </resources>

@@ -1,13 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CadastrarServicoActivity">
 
-    <TextView
-        android:id="@+id/txtCadastrarServicoId"
-        android:layout_width="wrap_content"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayoutId"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/cadastrar_servico"/>
-</RelativeLayout>
+        android:orientation="vertical"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15sp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/cadastrar_servico"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5sp"
+            android:layout_marginLeft="5sp"
+            android:layout_marginTop="5sp"
+            android:text="@string/dados_do_cliente" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/nomeClienteIdLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp">
+
+            <EditText
+                android:id="@+id/edtNomeClienteId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/nome_cliente"
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edtCpfCnpjId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/cpf_cnpj"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5sp"
+            android:layout_marginLeft="5sp"
+            android:layout_marginTop="50sp"
+            android:text="@string/endereco_servico" />
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp">
+
+            <EditText
+                android:id="@+id/edtRuaId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/rua"
+                android:inputType="textMultiLine" />
+        </android.support.design.widget.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/cepIdLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edtCepId"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/cep"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/numeroIdLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/cepIdLayout"
+                android:layout_toRightOf="@id/cepIdLayout">
+
+                <EditText
+                    android:id="@+id/edtNumeroId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/numero"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/cidadeIdLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edtCidadeId"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/cidade"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/estadoIdLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/cidadeIdLayout"
+                android:layout_toEndOf="@+id/cidadeIdLayout">
+
+                <EditText
+                    android:id="@+id/edtEstadoId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/estado"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5sp"
+            android:layout_marginLeft="5sp"
+            android:layout_marginTop="50sp"
+            android:text="@string/informacoes_do_servico" />
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp">
+
+            <EditText
+                android:id="@+id/informacoesServicosId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/descricao_do_servico"
+                android:inputType="textMultiLine" />
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+</ScrollView>
