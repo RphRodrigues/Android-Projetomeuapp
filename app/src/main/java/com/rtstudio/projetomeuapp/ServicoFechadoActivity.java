@@ -3,11 +3,11 @@ package com.rtstudio.projetomeuapp;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class AssumirOS extends AppCompatActivity {
+public class ServicoFechadoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assumir_os);
+        setContentView(R.layout.activity_servico_fechado);
     }
 }

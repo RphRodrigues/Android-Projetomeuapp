@@ -33,21 +33,21 @@ public class MainActivity extends AppCompatActivity {
         servicoAberto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ServicoAberto.class));
+                startActivity(new Intent(MainActivity.this, ServicoAbertoActivity.class));
             }
         });
 
         servicoFechado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ServicoFechado.class));
+                startActivity(new Intent(MainActivity.this, ServicoFechadoActivity.class));
             }
         });
 
         assumirOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AssumirOS.class));
+                startActivity(new Intent(MainActivity.this, AssumirOSActivity.class));
             }
         });
     }

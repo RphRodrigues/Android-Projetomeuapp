@@ -20,13 +20,13 @@
             android:name=".CadastrarServicoActivity"
             android:label="@string/cadastrar_servico" />
         <activity
-            android:name=".ServicoAberto"
+            android:name=".ServicoAbertoActivity"
             android:label="@string/servico_aberto" />
         <activity
-            android:name=".ServicoFechado"
+            android:name=".ServicoFechadoActivity"
             android:label="@string/servico_fechado" />
         <activity
-            android:name=".AssumirOS"
+            android:name=".AssumirOSActivity"
             android:label="@string/assumir_os" />
     </application>
 
