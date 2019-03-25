@@ -149,7 +149,7 @@
             android:layout_marginTop="20sp">
 
             <EditText
-                android:id="@+id/informacoesServicosId"
+                android:id="@+id/edtDescricaoServicosId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/descricao_do_servico"

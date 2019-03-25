@@ -3,12 +3,12 @@ package com.rtstudio.projetomeuapp.classes;
 public class OrdemServico {
     private int ordemServicoId;
     private Cliente cliente;
-    private String informacaoServico;
+    private String descricaoServico;
     private Endereco endereco;
 
-    public OrdemServico(Cliente cliente, Endereco endereco, String informacaoServico) {
+    public OrdemServico(Cliente cliente, Endereco endereco, String descricaoServico) {
         this.cliente = cliente;
-        this.informacaoServico = informacaoServico;
+        this.descricaoServico = descricaoServico;
         this.endereco = endereco;
     }
 
@@ -24,12 +24,12 @@ public class OrdemServico {
         this.cliente = cliente;
     }
 
-    public String getInformacaoServico() {
-        return informacaoServico;
+    public String getDescricaoServico() {
+        return descricaoServico;
     }
 
-    public void setInformacaoServico(String informacaoServico) {
-        this.informacaoServico = informacaoServico;
+    public void setDescricaoServico(String descricaoServico) {
+        this.descricaoServico = descricaoServico;
     }
 
     public Endereco getEndereco() {

@@ -17,4 +17,9 @@
     <string name="cidade">Cidade</string>
     <string name="numero">Nº</string>
     <string name="estado">Estado</string>
+    <string name="insira_nome_cliente">Insira o nome do cliente</string>
+    <string name="insira_cpf_cliente">Insira o cpf do cliente</string>
+    <string name="preencha_endereco">Preencha o endereço completo</string>
+    <string name="preencha_descricao_servico">Preencha a descricao do serviço</string>
+    <string name="os_gerada_sucesso">Ordem de serviço gerada com sucesso</string>
 </resources>
