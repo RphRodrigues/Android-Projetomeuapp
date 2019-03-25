@@ -22,4 +22,6 @@
     <string name="preencha_endereco">Preencha o endereço completo</string>
     <string name="preencha_descricao_servico">Preencha a descricao do serviço</string>
     <string name="os_gerada_sucesso">Ordem de serviço gerada com sucesso</string>
+    <string name="complemento">Complemento</string>
+    <string name="bairro">Bairro</string>
 </resources>
