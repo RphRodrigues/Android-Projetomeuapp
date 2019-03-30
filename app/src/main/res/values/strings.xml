@@ -24,4 +24,9 @@
     <string name="os_gerada_sucesso">Ordem de serviço gerada com sucesso</string>
     <string name="complemento">Complemento</string>
     <string name="bairro">Bairro</string>
+    <string-array name="lista_servico">
+        <item>Instalação</item>
+        <item>Reparo</item>
+        <item>Desistalação</item>
+    </string-array>
 </resources>

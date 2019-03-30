@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:id="@+id/linearLayoutId"
@@ -178,10 +179,18 @@
             android:layout_marginTop="25sp"
             android:text="@string/informacoes_do_servico" />
 
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/lista_servico"
+            android:layout_marginTop="15sp"
+            android:background="#f2f2f2">
+        </Spinner>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20sp">
+            android:layout_marginTop="5sp">
 
             <EditText
                 android:id="@+id/edtDescricaoServicosId"
