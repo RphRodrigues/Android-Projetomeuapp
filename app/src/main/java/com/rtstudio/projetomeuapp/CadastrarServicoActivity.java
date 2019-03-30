@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.rtstudio.projetomeuapp.classes.Cliente;
@@ -23,73 +27,47 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private EditText nomeCliente;
     private EditText rua;
     private EditText cep;
+    private EditText complemento;
+    private EditText bairro;
     private EditText numero;
     private EditText cidade;
     private EditText estado;
     private EditText descricaoServico;
     private Button btnCriarOS;
+    private Spinner tipoServico;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_servico);
 
-        nomeCliente = findViewById(R.id.edtNomeClienteId);
-        rua = findViewById(R.id.edtRuaId);
-        cep = findViewById(R.id.edtCepId);
-        numero = findViewById(R.id.edtNumeroId);
-        cidade = findViewById(R.id.edtCidadeId);
-        estado = findViewById(R.id.edtEstadoId);
-        descricaoServico = findViewById(R.id.edtDescricaoServicosId);
-        btnCriarOS = findViewById(R.id.btnCriarOSId);
+        nomeCliente = findViewById(R.id.cadastrar_edtNomeClienteId);
+        rua = findViewById(R.id.cadastrar_edtRuaId);
+        cep = findViewById(R.id.cadastrar_edtCepId);
+        numero = findViewById(R.id.cadastrar_edtNumeroId);
+        cidade = findViewById(R.id.cadastrar_edtCidadeId);
+        estado = findViewById(R.id.cadastrar_edtEstadoId);
+        complemento = findViewById(R.id.cadastrar_edtComplementoId);
+        bairro = findViewById(R.id.cadastrar_edtBairroId);
+        tipoServico = findViewById(R.id.cadastrar_spinnerId);
+        descricaoServico = findViewById(R.id.cadastrar_edtDescricaoServicosId);
+        btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
 
         btnCriarOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Validação para testar se o usuário inseriu os dados do cliente
-                if (nomeCliente.getText().toString().isEmpty()) {
-                    Toast.makeText(CadastrarServicoActivity.this,
-                            getString(R.string.insira_nome_cliente),
-                            Toast.LENGTH_SHORT).show();
+                if (!validacao()) {
                     return;
                 }
 
                 //Gerar o código do cliente a partir do nome e do cpf
-                String cod = nomeCliente.getText().toString().substring(0, 3);
+                String codCliente = nomeCliente.getText().toString().substring(0, 3);
 
                 //Cria o cliente
                 cliente = new Cliente(
                         nomeCliente.getText().toString(),
-                        cod
+                        codCliente
                 );
-
-                //Validação para testar se o usuário inseriu o endereço do serviço
-                if (rua.getText().toString().isEmpty()) {
-                    Toast.makeText(CadastrarServicoActivity.this,
-                            getString(R.string.preencha_endereco),
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (cep.getText().toString().isEmpty()) {
-                    Toast.makeText(CadastrarServicoActivity.this,
-                            getString(R.string.preencha_endereco),
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (numero.getText().toString().isEmpty()) {
-                    Toast.makeText(CadastrarServicoActivity.this,
-                            getString(R.string.preencha_endereco),
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (cidade.getText().toString().isEmpty()) {
-                    Toast.makeText(CadastrarServicoActivity.this,
-                            getString(R.string.preencha_endereco),
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (estado.getText().toString().isEmpty()) {
-                    Toast.makeText(CadastrarServicoActivity.this,
-                            getString(R.string.preencha_endereco),
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 //Cria o endereço do serviço
                 endereco = new Endereco(
@@ -100,19 +78,12 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                         estado.getText().toString()
                 );
 
-                //Validação para testar se o usuário inseriu a descrição do serviço
-                if (descricaoServico.getText().toString().isEmpty()) {
-                    Toast.makeText(CadastrarServicoActivity.this,
-                            getString(R.string.preencha_descricao_servico),
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 //Cria a ordem de serviço
                 ordemServico = new OrdemServico(
                         cliente,
                         endereco,
-                        descricaoServico.getText().toString()
+                        descricaoServico.getText().toString(),
+                        tipoServico.getSelectedItem().toString()
                 );
 
                 new AlertDialog.Builder(CadastrarServicoActivity.this)
@@ -131,5 +102,80 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                         .show();
             }
         });
+    }
+
+    private Boolean validacao() {
+        //Validação para testar se o usuário inseriu os dados do cliente
+        if (nomeCliente.getText().toString().isEmpty()) {
+            Toast.makeText(CadastrarServicoActivity.this,
+                    getString(R.string.insira_nome_cliente),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        //Validação para testar se o usuário inseriu o endereço do serviço
+        if (rua.getText().toString().isEmpty()) {
+            Toast.makeText(CadastrarServicoActivity.this,
+                    getString(R.string.preencha_endereco),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (bairro.getText().toString().isEmpty()) {
+            Toast.makeText(CadastrarServicoActivity.this,
+                    getString(R.string.preencha_endereco),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (cep.getText().toString().isEmpty()) {
+            Toast.makeText(CadastrarServicoActivity.this,
+                    getString(R.string.preencha_endereco),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (numero.getText().toString().isEmpty()) {
+            Toast.makeText(CadastrarServicoActivity.this,
+                    getString(R.string.preencha_endereco),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (cidade.getText().toString().isEmpty()) {
+            Toast.makeText(CadastrarServicoActivity.this,
+                    getString(R.string.preencha_endereco),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (estado.getText().toString().isEmpty()) {
+            Toast.makeText(CadastrarServicoActivity.this,
+                    getString(R.string.preencha_endereco),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        //Validação para testar se o usuário inseriu a descrição do serviço
+        if (descricaoServico.getText().toString().isEmpty()) {
+            Toast.makeText(CadastrarServicoActivity.this,
+                    getString(R.string.preencha_descricao_servico),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.itemLimpar) {
+            nomeCliente.setText("");
+            rua.setText("");
+            complemento.setText("");
+            bairro.setText("");
+            cep.setText("");
+            numero.setText("");
+            cidade.setText("");
+            estado.setText("");
+            descricaoServico.setText("");
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }
