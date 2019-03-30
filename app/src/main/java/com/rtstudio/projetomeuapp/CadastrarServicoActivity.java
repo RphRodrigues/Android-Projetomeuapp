@@ -21,7 +21,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private OrdemServico ordemServico = null;
 
     private EditText nomeCliente;
-    private EditText cpfCliente;
     private EditText rua;
     private EditText cep;
     private EditText numero;
@@ -36,7 +35,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cadastrar_servico);
 
         nomeCliente = findViewById(R.id.edtNomeClienteId);
-        cpfCliente = findViewById(R.id.edtCpfCnpjId);
         rua = findViewById(R.id.edtRuaId);
         cep = findViewById(R.id.edtCepId);
         numero = findViewById(R.id.edtNumeroId);
@@ -54,21 +52,14 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                             getString(R.string.insira_nome_cliente),
                             Toast.LENGTH_SHORT).show();
                     return;
-                } else if (cpfCliente.getText().toString().isEmpty()) {
-                    Toast.makeText(CadastrarServicoActivity.this,
-                            getString(R.string.insira_cpf_cliente),
-                            Toast.LENGTH_SHORT).show();
-                    return;
                 }
 
                 //Gerar o código do cliente a partir do nome e do cpf
                 String cod = nomeCliente.getText().toString().substring(0, 3);
-                cod = cod.concat(cpfCliente.getText().toString().substring(0, 3));
 
                 //Cria o cliente
                 cliente = new Cliente(
                         nomeCliente.getText().toString(),
-                        cpfCliente.getText().toString(),
                         cod
                 );
 

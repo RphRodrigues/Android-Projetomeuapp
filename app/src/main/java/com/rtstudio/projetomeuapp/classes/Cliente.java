@@ -3,12 +3,10 @@ package com.rtstudio.projetomeuapp.classes;
 public class Cliente {
     private int clienteId;
     private String nome;
-    private String cpf;
     private String codigoCliente;
 
-    public Cliente(String nome, String cpf, String codigoCliente) {
+    public Cliente(String nome, String codigoCliente) {
         this.nome = nome;
-        this.cpf = cpf;
         this.codigoCliente = codigoCliente;
     }
 
@@ -22,14 +20,6 @@ public class Cliente {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
     }
 
     public String getCodigoCliente() {
