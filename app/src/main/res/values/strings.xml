@@ -29,4 +29,13 @@
         <item>Reparo</item>
         <item>Desistalação</item>
     </string-array>
+    <string-array name="estados">
+        <item>AC</item>
+        <item>AL</item>
+        <item>AP</item>
+        <item>AM</item>
+        <item>BA</item>
+        <item>CE</item>
+        <item>DF</item>
+    </string-array>
 </resources>
