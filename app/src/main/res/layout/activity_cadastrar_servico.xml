@@ -28,11 +28,11 @@
             android:layout_marginTop="20sp">
 
             <EditText
-                android:id="@+id/edtNomeClienteId"
+                android:id="@+id/cadastrar_edtNomeClienteId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/nome_cliente"
-                android:inputType="text" />
+                android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
         <!--<android.support.design.widget.TextInputLayout-->
@@ -61,7 +61,7 @@
             android:layout_marginTop="20sp">
 
             <EditText
-                android:id="@+id/edtRuaId"
+                android:id="@+id/cadastrar_edtRuaId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/rua"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edtComplementoId"
+                    android:id="@+id/cadastrar_edtComplementoId"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/complemento"
@@ -93,7 +93,7 @@
                 android:layout_toRightOf="@id/complementoIdLayout">
 
                 <EditText
-                    android:id="@+id/edtBairroId"
+                    android:id="@+id/cadastrar_edtBairroId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/bairro"
@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edtCepId"
+                    android:id="@+id/cadastrar_edtCepId"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/cep"
@@ -128,7 +128,7 @@
                 android:layout_toRightOf="@id/cepIdLayout">
 
                 <EditText
-                    android:id="@+id/edtNumeroId"
+                    android:id="@+id/cadastrar_edtNumeroId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/numero"
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edtCidadeId"
+                    android:id="@+id/cadastrar_edtCidadeId"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/cidade"
@@ -162,7 +162,7 @@
                 android:layout_toRightOf="@+id/cidadeIdLayout">
 
                 <EditText
-                    android:id="@+id/edtEstadoId"
+                    android:id="@+id/cadastrar_edtEstadoId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/estado"
@@ -180,6 +180,7 @@
             android:text="@string/informacoes_do_servico" />
 
         <Spinner
+            android:id="@+id/cadastrar_spinnerId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/lista_servico"
@@ -193,7 +194,7 @@
             android:layout_marginTop="5sp">
 
             <EditText
-                android:id="@+id/edtDescricaoServicosId"
+                android:id="@+id/cadastrar_edtDescricaoServicosId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/descricao_do_servico"
@@ -201,7 +202,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/btnCriarOSId"
+            android:id="@+id/cadastrar_btnCriarOSId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15sp"
