@@ -16,7 +16,7 @@
         android:layout_marginRight="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtServicosAbertos"
-        app:srcCompat="@drawable/assumir_os" />
+        android:src="@drawable/assumir_os" />
 
     <TextView
         android:id="@+id/txtAssumirOS"
@@ -49,7 +49,7 @@
         android:layout_marginTop="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCadastrarServicoId"
-        app:srcCompat="@drawable/post_it_fechado" />
+        android:src="@drawable/post_it_fechado" />
 
     <TextView
         android:id="@+id/txtServicosAbertos"
@@ -71,7 +71,7 @@
         android:layout_marginRight="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/post_it_aberto" />
+        android:src="@drawable/post_it_aberto" />
 
     <ImageView
         android:id="@+id/cadastrarServicoId"
@@ -82,7 +82,7 @@
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/cadastrar_servico" />
+        android:src="@drawable/cadastrar_servico" />
 
     <TextView
         android:id="@+id/txtCadastrarServicoId"
