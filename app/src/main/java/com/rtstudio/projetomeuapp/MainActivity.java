@@ -3,6 +3,7 @@ package com.rtstudio.projetomeuapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -12,6 +13,7 @@ public class MainActivity extends Activity {
     private ImageView servicoAberto;
     private ImageView servicoFechado;
     private ImageView assumirOS;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,7 @@ public class MainActivity extends Activity {
         servicoAberto = findViewById(R.id.servicosAbertosId);
         servicoFechado = findViewById(R.id.servicosFechadosId);
         assumirOS = findViewById(R.id.assumirOsId);
+        fab = findViewById(R.id.floatingButtonId);
 
         cadastrarServico.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +51,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, AssumirOSActivity.class));
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), CadastrarServicoActivity.class));
             }
         });
     }
