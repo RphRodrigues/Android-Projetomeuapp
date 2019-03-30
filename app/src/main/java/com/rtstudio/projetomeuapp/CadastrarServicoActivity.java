@@ -1,8 +1,12 @@
 package com.rtstudio.projetomeuapp;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -13,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
@@ -31,9 +36,9 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private EditText bairro;
     private EditText numero;
     private EditText cidade;
-    private EditText estado;
     private EditText descricaoServico;
     private Button btnCriarOS;
+    private Spinner estado;
     private Spinner tipoServico;
 
     @Override
@@ -46,12 +51,13 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         cep = findViewById(R.id.cadastrar_edtCepId);
         numero = findViewById(R.id.cadastrar_edtNumeroId);
         cidade = findViewById(R.id.cadastrar_edtCidadeId);
-        estado = findViewById(R.id.cadastrar_edtEstadoId);
+        estado = findViewById(R.id.cadastrar_spinnerEstados);
         complemento = findViewById(R.id.cadastrar_edtComplementoId);
         bairro = findViewById(R.id.cadastrar_edtBairroId);
         tipoServico = findViewById(R.id.cadastrar_spinnerId);
         descricaoServico = findViewById(R.id.cadastrar_edtDescricaoServicosId);
         btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
+
 
         btnCriarOS.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +81,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                         rua.getText().toString(),
                         numero.getText().toString(),
                         cidade.getText().toString(),
-                        estado.getText().toString()
+                        estado.getSelectedItem().toString()
                 );
 
                 //Cria a ordem de serviço
@@ -92,10 +98,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                startActivity(
-                                        new Intent(CadastrarServicoActivity.this,
-                                                MainActivity.class)
-                                );
+                                finish();
                             }
                         })
                         .create()
@@ -139,12 +142,12 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                     getString(R.string.preencha_endereco),
                     Toast.LENGTH_SHORT).show();
             return false;
-        } else if (estado.getText().toString().isEmpty()) {
+        }/* else if (estado.getText().toString().isEmpty()) {
             Toast.makeText(CadastrarServicoActivity.this,
                     getString(R.string.preencha_endereco),
                     Toast.LENGTH_SHORT).show();
             return false;
-        }
+        }*/
 
         //Validação para testar se o usuário inseriu a descrição do serviço
         if (descricaoServico.getText().toString().isEmpty()) {
@@ -158,7 +161,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.itemLimpar) {
+        if (item.getItemId() == R.id.menu_itemLimpar) {
             nomeCliente.setText("");
             rua.setText("");
             complemento.setText("");
@@ -166,8 +169,12 @@ public class CadastrarServicoActivity extends AppCompatActivity {
             cep.setText("");
             numero.setText("");
             cidade.setText("");
-            estado.setText("");
+//            estado.setText("");
             descricaoServico.setText("");
+        } else if (item.getItemId() == R.id.menu_itemAjuda) {
+            String siteAjuda = "http://www.sinapseinformatica.com.br/";
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteAjuda));
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
