@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Projeto meu app</string>
+    <string name="app_name">Projeto Raphael</string>
     <string name="cadastrar_servico">Cadastrar Serviço</string>
     <string name="assumir_os">Assumir OS</string>
     <string name="servico_aberto">Serviços em Aberto</string>
@@ -29,7 +29,7 @@
         <item>Reparo</item>
         <item>Desistalação</item>
     </string-array>
-    <string-array name="estados" >
+    <string-array name="estados">
         <item>AC</item>
         <item>AL</item>
         <item>AP</item>

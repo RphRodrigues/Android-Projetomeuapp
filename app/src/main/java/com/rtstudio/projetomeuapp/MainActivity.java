@@ -1,13 +1,13 @@
 package com.rtstudio.projetomeuapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private ImageView cadastrarServico;
     private ImageView servicoAberto;
