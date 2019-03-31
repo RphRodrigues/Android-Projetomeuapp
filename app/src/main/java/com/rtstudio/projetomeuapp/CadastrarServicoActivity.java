@@ -1,12 +1,9 @@
 package com.rtstudio.projetomeuapp;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -45,6 +42,8 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_servico);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         nomeCliente = findViewById(R.id.cadastrar_edtNomeClienteId);
         rua = findViewById(R.id.cadastrar_edtRuaId);
@@ -161,7 +160,11 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_itemLimpar) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        } else if (id == R.id.menu_itemLimpar) {
             nomeCliente.setText("");
             rua.setText("");
             complemento.setText("");
@@ -171,7 +174,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
             cidade.setText("");
 //            estado.setText("");
             descricaoServico.setText("");
-        } else if (item.getItemId() == R.id.menu_itemAjuda) {
+        } else if (id == R.id.menu_itemAjuda) {
             String siteAjuda = "http://www.sinapseinformatica.com.br/";
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteAjuda));
             startActivity(intent);
