@@ -3,18 +3,18 @@ package com.rtstudio.projetomeuapp.classes;
 /**
  * Created by Raphael Rodrigues on 31/03/2019
  */
-public class Card {
+public class modeloOS {
     private int numOS;
     private String tipoServico;
     private String nomeCliente;
 
-    public Card(int numOS, String tipoServico, String nomeCliente) {
+    public modeloOS(int numOS, String tipoServico, String nomeCliente) {
         this.numOS = numOS;
         this.tipoServico = tipoServico;
         this.nomeCliente = nomeCliente;
     }
 
-    public Card(int numOS, String tipoServico) {
+    public modeloOS(int numOS, String tipoServico) {
         this.numOS = numOS;
         this.tipoServico = tipoServico;
     }
