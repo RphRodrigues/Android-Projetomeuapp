@@ -17,7 +17,7 @@ import java.util.List;
 
 public class TelaInicialActivity extends AppCompatActivity {
 
-//    private FloatingActionButton fab;
+    private FloatingActionButton fab;
     private RecyclerView recyclerView;
     private OrdemServicoAdapter adapter;
     private List<modeloOS> modeloOSList;
@@ -28,7 +28,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
 
-//        fab = findViewById(R.id.telaInicial_fabId);
+        fab = findViewById(R.id.telaInicial_fabId);
 
         modeloOSList = new ArrayList<>();
 
@@ -50,11 +50,11 @@ public class TelaInicialActivity extends AppCompatActivity {
         adapter = new OrdemServicoAdapter(this, modeloOSList);
         recyclerView.setAdapter(adapter);
 
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(TelaInicialActivity.this, CadastrarServicoActivity.class));
-//            }
-//        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(TelaInicialActivity.this, CadastrarServicoActivity.class));
+            }
+        });
     }
 }
