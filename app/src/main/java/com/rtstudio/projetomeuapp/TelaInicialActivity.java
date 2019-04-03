@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
+import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.modeloOS;
 
 import java.util.ArrayList;
@@ -49,21 +50,18 @@ public class TelaInicialActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1) {
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
 
-//            Bundle bundle = data.getBundleExtra("BUNDLE");
+            Bundle bundle = data.getBundleExtra("BUNDLE");
+            if (bundle != null) {
+                OrdemServico ordemServico = bundle.getParcelable("ORDEM_SERVICO");
 
-//            if (bundle != null) {
-            int numOS = data.getIntExtra("num", -1);
-            String tipoServico = data.getStringExtra("tipo");
-            String nomeCliente = data.getStringExtra("nome");
+                modeloOSList.add(new modeloOS(ordemServico.getOrdemServicoId(), ordemServico.getTipo(), ordemServico.getCliente().getNome()));
 
-            modeloOSList.add(new modeloOS(numOS, tipoServico, nomeCliente));
+                adapter = new OrdemServicoAdapter(this, modeloOSList);
 
-            adapter = new OrdemServicoAdapter(this, modeloOSList);
-
-            recyclerView.setAdapter(adapter);
-//            }
+                recyclerView.setAdapter(adapter);
+            }
         }
     }
 }

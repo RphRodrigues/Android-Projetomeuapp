@@ -90,14 +90,11 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                         tipoServico.getSelectedItem().toString()
                 );
 
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("ORDEM_SERVICO", ordemServico);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("ORDEM_SERVICO", ordemServico);
 
                 Intent intent = new Intent();
-                intent.putExtra("num", ordemServico.getOrdemServicoId());
-                intent.putExtra("tipo", ordemServico.getTipo());
-                intent.putExtra("nome", ordemServico.getCliente().getNome());
-//                intent.putExtra("bundle", bundle);
+                intent.putExtra("BUNDLE", bundle);
                 setResult(RESULT_OK, intent);
 
                 new AlertDialog.Builder(CadastrarServicoActivity.this)
@@ -150,12 +147,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                     getString(R.string.preencha_endereco),
                     Toast.LENGTH_SHORT).show();
             return false;
-        }/* else if (estado.getText().toString().isEmpty()) {
-            Toast.makeText(CadastrarServicoActivity.this,
-                    getString(R.string.preencha_endereco),
-                    Toast.LENGTH_SHORT).show();
-            return false;
-        }*/
+        }
 
         //Validação para testar se o usuário inseriu a descrição do serviço
         if (descricaoServico.getText().toString().isEmpty()) {
@@ -181,7 +173,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
             cep.setText("");
             numero.setText("");
             cidade.setText("");
-//            estado.setText("");
             descricaoServico.setText("");
         } else if (id == R.id.menu_itemAjuda) {
             String siteAjuda = "http://www.sinapseinformatica.com.br/";

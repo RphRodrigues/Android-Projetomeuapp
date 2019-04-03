@@ -1,6 +1,11 @@
 package com.rtstudio.projetomeuapp.classes;
 
-public class Endereco {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Endereco implements Parcelable {
     private String estado;
     private String cidade;
     private String rua;
@@ -14,6 +19,40 @@ public class Endereco {
         this.numero = numero;
         this.cep = cep;
     }
+
+    protected Endereco(Parcel in) {
+        estado = in.readString();
+        cidade = in.readString();
+        rua = in.readString();
+        numero = in.readString();
+        cep = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(estado);
+        dest.writeString(cidade);
+        dest.writeString(rua);
+        dest.writeString(numero);
+        dest.writeString(cep);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Endereco> CREATOR = new Creator<Endereco>() {
+        @Override
+        public Endereco createFromParcel(Parcel in) {
+            return new Endereco(in);
+        }
+
+        @Override
+        public Endereco[] newArray(int size) {
+            return new Endereco[size];
+        }
+    };
 
     public String getCep() {
         return cep;
