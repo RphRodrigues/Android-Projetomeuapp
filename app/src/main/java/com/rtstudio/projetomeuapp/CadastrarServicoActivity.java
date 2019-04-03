@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
@@ -61,9 +60,9 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         btnCriarOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validacao()) {
-                    return;
-                }
+//                if (!validacao()) {
+//                    return;
+//                }
 
                 //Gerar o código do cliente a partir do nome e do cpf
                 String codCliente = nomeCliente.getText().toString().substring(0, 3);
@@ -90,6 +89,16 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                         descricaoServico.getText().toString(),
                         tipoServico.getSelectedItem().toString()
                 );
+
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("ORDEM_SERVICO", ordemServico);
+
+                Intent intent = new Intent();
+                intent.putExtra("num", ordemServico.getOrdemServicoId());
+                intent.putExtra("tipo", ordemServico.getTipo());
+                intent.putExtra("nome", ordemServico.getCliente().getNome());
+//                intent.putExtra("bundle", bundle);
+                setResult(RESULT_OK, intent);
 
                 new AlertDialog.Builder(CadastrarServicoActivity.this)
                         .setTitle("Aviso")

@@ -2,6 +2,7 @@ package com.rtstudio.projetomeuapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.modeloOS;
 
 import java.util.ArrayList;
@@ -36,25 +36,34 @@ public class TelaInicialActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        modeloOSList.add(new modeloOS(12345, "Instalação in ternet", "Raphael Rodrigues"));
-        modeloOSList.add(new modeloOS(14698, "Reparo", "Thainan"));
-        modeloOSList.add(new modeloOS(12345, "Instalação in ternet", "Raphael Rodrigues"));
-        modeloOSList.add(new modeloOS(4569, "Manutenção"));
-        modeloOSList.add(new modeloOS(12345, "Instalação in ternet", "Raphael Rodrigues"));
-        modeloOSList.add(new modeloOS(14698, "Reparo", "Thainan"));
-        modeloOSList.add(new modeloOS(12345, "Instalação in ternet", "Raphael Rodrigues"));
-        modeloOSList.add(new modeloOS(4569, "Manutenção"));
-        modeloOSList.add(new modeloOS(14698, "Reparo", "Thainan"));
-        modeloOSList.add(new modeloOS(14698, "Reparo", "Thainan"));
-
-        adapter = new OrdemServicoAdapter(this, modeloOSList);
-        recyclerView.setAdapter(adapter);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TelaInicialActivity.this, CadastrarServicoActivity.class));
+                Intent intent = new Intent(TelaInicialActivity.this, CadastrarServicoActivity.class);
+                startActivityForResult(intent, 1);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+
+//            Bundle bundle = data.getBundleExtra("BUNDLE");
+
+//            if (bundle != null) {
+            int numOS = data.getIntExtra("num", -1);
+            String tipoServico = data.getStringExtra("tipo");
+            String nomeCliente = data.getStringExtra("nome");
+
+            modeloOSList.add(new modeloOS(numOS, tipoServico, nomeCliente));
+
+            adapter = new OrdemServicoAdapter(this, modeloOSList);
+
+            recyclerView.setAdapter(adapter);
+//            }
+        }
     }
 }

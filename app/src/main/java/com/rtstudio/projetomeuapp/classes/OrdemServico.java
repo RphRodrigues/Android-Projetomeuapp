@@ -1,8 +1,9 @@
 package com.rtstudio.projetomeuapp.classes;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class OrdemServico {
+public class OrdemServico implements Serializable {
     private int ordemServicoId;
     private Cliente cliente;
     private Endereco endereco;
@@ -18,7 +19,7 @@ public class OrdemServico {
     }
 
     private int gerarId() {
-        return new Random().nextInt(1000) + 100;
+        return new Random().nextInt(10000) + 100;
     }
 
     public int getOrdemServicoId() {
