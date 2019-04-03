@@ -102,7 +102,7 @@
                     android:layout_height="40dp"
                     android:layout_marginRight="15dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@android:color/darker_gray"
+                    android:background="#eee"
                     android:padding="5dp"
                     android:src="@drawable/ic_local_see_24dp" />
 
@@ -112,7 +112,7 @@
                     android:layout_height="45dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@android:color/darker_gray"
+                    android:background="#eee"
                     android:src="@drawable/ic_map_24dp" />
             </LinearLayout>
         </RelativeLayout>
