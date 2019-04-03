@@ -10,16 +10,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.rtstudio.projetomeuapp.R;
-import com.rtstudio.projetomeuapp.classes.modeloOS;
+import com.rtstudio.projetomeuapp.classes.OrdemServico;
 
 import java.util.List;
 
 public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapter.MyViewHolder> {
 
     private Context mContext;
-    private List<modeloOS> ordemServicoList;
+    private List<OrdemServico> ordemServicoList;
 
-    public OrdemServicoAdapter(Context context, List<modeloOS> list) {
+    public OrdemServicoAdapter(Context context, List<OrdemServico> list) {
         this.ordemServicoList = list;
         this.mContext = context;
     }
@@ -42,13 +42,13 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
         Log.v("LOG", "onBindViewHolder");
 
-        modeloOS ordemServico = ordemServicoList.get(position);
+        OrdemServico ordemServico = ordemServicoList.get(position);
 
-        holder.numOS.setText(String.valueOf(ordemServico.getNumOS()));
+        holder.numOS.setText(String.valueOf(ordemServico.getOrdemServicoId()));
 
-        holder.tipoServico.setText(ordemServico.getTipoServico());
+        holder.tipoServico.setText(ordemServico.getTipo());
 
-        holder.nomeCliente.setText(ordemServico.getNomeCliente());
+        holder.nomeCliente.setText(ordemServico.getCliente().getNome());
     }
 
     @Override

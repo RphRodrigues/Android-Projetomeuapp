@@ -11,7 +11,6 @@ import android.view.View;
 
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
-import com.rtstudio.projetomeuapp.classes.modeloOS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,17 +20,16 @@ public class TelaInicialActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
     private OrdemServicoAdapter adapter;
-    private List<modeloOS> modeloOSList;
+    private List<OrdemServico> ordemServicoList;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
 
         fab = findViewById(R.id.telaInicial_fabId);
 
-        modeloOSList = new ArrayList<>();
+        ordemServicoList = new ArrayList<>();
 
         recyclerView = findViewById(R.id.myRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -56,9 +54,9 @@ public class TelaInicialActivity extends AppCompatActivity {
             if (bundle != null) {
                 OrdemServico ordemServico = bundle.getParcelable("ORDEM_SERVICO");
 
-                modeloOSList.add(new modeloOS(ordemServico.getOrdemServicoId(), ordemServico.getTipo(), ordemServico.getCliente().getNome()));
+                ordemServicoList.add(ordemServico);
 
-                adapter = new OrdemServicoAdapter(this, modeloOSList);
+                adapter = new OrdemServicoAdapter(this, ordemServicoList);
 
                 recyclerView.setAdapter(adapter);
             }
