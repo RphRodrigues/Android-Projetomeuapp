@@ -56,7 +56,7 @@ public class OrdemServico implements Parcelable {
 
     // Soteia número entre 1.000 e 9.999 para o id da ordem de serviço
     private int gerarId() {
-        return new Random().nextInt(10000) + 1000;
+        return new Random().nextInt(9000) + 1000;
     }
 
     public int getOrdemServicoId() {

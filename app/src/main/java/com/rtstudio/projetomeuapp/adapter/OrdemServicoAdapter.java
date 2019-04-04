@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
@@ -48,7 +49,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
         holder.tipoServico.setText(ordemServico.getTipo());
 
-        holder.nomeCliente.setText(ordemServico.getCliente().getNome());
+        holder.bairro.setText(ordemServico.getEndereco().getBairro());
     }
 
     @Override
@@ -60,14 +61,14 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView numOS;
         TextView tipoServico;
-        TextView nomeCliente;
+        TextView bairro;
 
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             numOS = itemView.findViewById(R.id.card_tvNumOs);
             tipoServico = itemView.findViewById(R.id.card_tvTipoServico);
-            nomeCliente = itemView.findViewById(R.id.card_tvNomeCliente);
+            bairro = itemView.findViewById(R.id.card_tvBairro);
         }
     }
 }

@@ -7,7 +7,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
@@ -21,11 +24,13 @@ public class TelaInicialActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private OrdemServicoAdapter adapter;
     private List<OrdemServico> ordemServicoList;
-
+    private RelativeLayout relativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
+
+        relativeLayout = findViewById(R.id.telaInicial_imgBg);
 
         fab = findViewById(R.id.telaInicial_fabId);
 
@@ -59,6 +64,8 @@ public class TelaInicialActivity extends AppCompatActivity {
                 adapter = new OrdemServicoAdapter(this, ordemServicoList);
 
                 recyclerView.setAdapter(adapter);
+
+                relativeLayout.setVisibility(View.INVISIBLE);
             }
         }
     }
