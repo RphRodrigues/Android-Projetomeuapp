@@ -79,7 +79,9 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                         rua.getText().toString(),
                         numero.getText().toString(),
                         cidade.getText().toString(),
-                        estado.getSelectedItem().toString()
+                        estado.getSelectedItem().toString(),
+                        bairro.getText().toString(),
+                        complemento.getText().toString()
                 );
 
                 //Cria a ordem de serviço
