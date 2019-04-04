@@ -3,38 +3,58 @@ package com.rtstudio.projetomeuapp.classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
 
 public class Endereco implements Parcelable {
+    private int enderecoId;
     private String estado;
     private String cidade;
     private String rua;
     private String numero;
     private String cep;
+    private String bairro;
+    private String complemento;
 
-    public Endereco(String cep, String rua, String numero, String cidade, String estado) {
+    public Endereco(String cep, String rua, String numero, String cidade, String estado, String bairro) {
         this.estado = estado;
         this.cidade = cidade;
         this.rua = rua;
         this.numero = numero;
         this.cep = cep;
+        this.bairro = bairro;
     }
 
+    public Endereco(String cep, String rua, String numero, String cidade, String estado, String bairro, String complemento) {
+        this.estado = estado;
+        this.cidade = cidade;
+        this.rua = rua;
+        this.numero = numero;
+        this.cep = cep;
+        this.bairro = bairro;
+        this.complemento = complemento;
+    }
+
+
     protected Endereco(Parcel in) {
+        enderecoId = in.readInt();
         estado = in.readString();
         cidade = in.readString();
         rua = in.readString();
         numero = in.readString();
         cep = in.readString();
+        bairro = in.readString();
+        complemento = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(enderecoId);
         dest.writeString(estado);
         dest.writeString(cidade);
         dest.writeString(rua);
         dest.writeString(numero);
         dest.writeString(cep);
+        dest.writeString(bairro);
+        dest.writeString(complemento);
     }
 
     @Override
@@ -53,6 +73,14 @@ public class Endereco implements Parcelable {
             return new Endereco[size];
         }
     };
+
+    public int getEnderecoId() {
+        return enderecoId;
+    }
+
+    public void setEnderecoId(int enderecoId) {
+        this.enderecoId = enderecoId;
+    }
 
     public String getCep() {
         return cep;
@@ -92,5 +120,21 @@ public class Endereco implements Parcelable {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
     }
 }
