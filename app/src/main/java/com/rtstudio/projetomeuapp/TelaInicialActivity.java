@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
@@ -24,19 +24,20 @@ public class TelaInicialActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private OrdemServicoAdapter adapter;
     private List<OrdemServico> ordemServicoList;
-    private RelativeLayout relativeLayout;
+    private ImageView imgBackground;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
 
-        relativeLayout = findViewById(R.id.telaInicial_imgBg);
+        imgBackground = findViewById(R.id.telaInicial_imgBg);
 
         fab = findViewById(R.id.telaInicial_fabId);
 
         ordemServicoList = new ArrayList<>();
 
-        recyclerView = findViewById(R.id.myRecyclerView);
+        recyclerView = findViewById(R.id.telaInicial_RecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -65,7 +66,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
                 recyclerView.setAdapter(adapter);
 
-                relativeLayout.setVisibility(View.INVISIBLE);
+                imgBackground.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -75,13 +76,13 @@ public class TelaInicialActivity extends AppCompatActivity {
         new AlertDialog.Builder(TelaInicialActivity.this)
                 .setTitle("Sair")
                 .setMessage("Deseja realmente sair do app?")
+                .setNegativeButton("Cancelar", null)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
                 })
-                .setNegativeButton("Cancelar", null)
                 .create()
                 .show();
     }
