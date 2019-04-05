@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="meuTema" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:statusBarColor">@android:color/darker_gray</item>
+    </style>
+</resources>
