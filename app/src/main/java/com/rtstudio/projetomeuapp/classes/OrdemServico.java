@@ -12,8 +12,12 @@ public class OrdemServico implements Parcelable {
     private String tipo;
     private String descricaoServico;
 
-    public OrdemServico(Cliente cliente, Endereco endereco, String descricaoServico, String tipo) {
+    //Bloco de inicialização que inicializa o id da ordem de serviço
+    {
         this.ordemServicoId = gerarId();
+    }
+
+    public OrdemServico(Cliente cliente, Endereco endereco, String descricaoServico, String tipo) {
         this.cliente = cliente;
         this.descricaoServico = descricaoServico;
         this.endereco = endereco;
