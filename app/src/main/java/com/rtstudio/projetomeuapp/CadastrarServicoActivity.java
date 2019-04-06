@@ -56,6 +56,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         descricaoServico = findViewById(R.id.cadastrar_edtDescricaoServicosId);
         btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
 
+//        tipoServico.setSelection(18);
 
         btnCriarOS.setOnClickListener(new View.OnClickListener() {
             @Override
