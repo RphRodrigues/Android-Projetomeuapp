@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,13 +44,33 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
         Log.v("LOG", "onBindViewHolder");
 
-        OrdemServico ordemServico = ordemServicoList.get(position);
+        final OrdemServico ordemServico = ordemServicoList.get(position);
 
         holder.numOS.setText(String.valueOf(ordemServico.getOrdemServicoId()));
 
         holder.tipoServico.setText(ordemServico.getTipo());
 
         holder.bairro.setText(ordemServico.getEndereco().getBairro());
+
+        holder.imageMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String end = ordemServico.getEndereco().getRua() + " " +
+                        ordemServico.getEndereco().getNumero() + " " +
+                        ordemServico.getEndereco().getBairro() + " " +
+                        ordemServico.getEndereco().getCidade() + " " +
+                        ordemServico.getEndereco().getEstado();
+
+                Toast.makeText(mContext, end, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        holder.imageCam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "oi", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -62,6 +83,8 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         TextView numOS;
         TextView tipoServico;
         TextView bairro;
+        ImageButton imageMap;
+        ImageButton imageCam;
 
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +92,8 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
             numOS = itemView.findViewById(R.id.card_tvNumOs);
             tipoServico = itemView.findViewById(R.id.card_tvTipoServico);
             bairro = itemView.findViewById(R.id.card_tvBairro);
+            imageMap = itemView.findViewById(R.id.card_ibMap);
+            imageCam = itemView.findViewById(R.id.card_ibCamera);
         }
     }
 }

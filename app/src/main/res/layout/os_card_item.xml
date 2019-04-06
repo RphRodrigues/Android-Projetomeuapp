@@ -96,8 +96,8 @@
                 android:gravity="right|bottom"
                 tools:ignore="RtlHardcoded">
 
-                <ImageView
-                    android:id="@+id/card_ivCamera"
+                <ImageButton
+                    android:id="@+id/card_ibCamera"
                     android:layout_width="45dp"
                     android:layout_height="40dp"
                     android:layout_marginRight="15dp"
@@ -106,8 +106,8 @@
                     android:padding="5dp"
                     android:src="@drawable/ic_local_see_24dp" />
 
-                <ImageView
-                    android:id="@+id/card_ivMap"
+                <ImageButton
+                    android:id="@+id/card_ibMap"
                     android:layout_width="60dp"
                     android:layout_height="45dp"
                     android:layout_marginRight="10dp"
