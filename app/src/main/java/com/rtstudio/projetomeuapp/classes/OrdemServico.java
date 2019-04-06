@@ -3,9 +3,10 @@ package com.rtstudio.projetomeuapp.classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class OrdemServico implements Parcelable {
+public class OrdemServico implements Parcelable, Serializable {
     private int ordemServicoId;
     private Cliente cliente;
     private Endereco endereco;

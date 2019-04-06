@@ -3,7 +3,9 @@ package com.rtstudio.projetomeuapp.classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Cliente implements Parcelable {
+import java.io.Serializable;
+
+public class Cliente implements Parcelable, Serializable {
     private int clienteId;
     private String nome;
     private String codigoCliente;

@@ -3,8 +3,10 @@ package com.rtstudio.projetomeuapp.classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 
-public class Endereco implements Parcelable {
+
+public class Endereco implements Parcelable, Serializable {
     private int enderecoId;
     private String estado;
     private String cidade;
