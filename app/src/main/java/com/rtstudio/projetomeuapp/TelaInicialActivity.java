@@ -2,6 +2,7 @@ package com.rtstudio.projetomeuapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -85,5 +89,23 @@ public class TelaInicialActivity extends AppCompatActivity {
                 })
                 .create()
                 .show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_principal, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_itemAjuda) {
+            String siteAjuda = "http://www.sinapseinformatica.com.br/";
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteAjuda));
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
