@@ -1,6 +1,9 @@
 package com.rtstudio.projetomeuapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -62,6 +65,9 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                         ordemServico.getEndereco().getEstado();
 
                 Toast.makeText(mContext, end, Toast.LENGTH_SHORT).show();
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=80 Rua Maria Carvalho, Padre Miguel, Rio de Janeiro");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mContext.startActivity(mapIntent);
             }
         });
 
@@ -71,6 +77,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                 Toast.makeText(mContext, "oi", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     @Override
