@@ -1,7 +1,6 @@
 package com.rtstudio.projetomeuapp;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,20 +20,16 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
+import com.rtstudio.projetomeuapp.classes.DAO.ArquivoDAO;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 
-import java.io.EOFException;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TelaInicialActivity extends AppCompatActivity {
 
+    File file;
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
     private OrdemServicoAdapter adapter;
@@ -46,6 +41,8 @@ public class TelaInicialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
 
+        file = new File(getBaseContext().getFilesDir(), "TCC.txt");
+
         imgBackground = findViewById(R.id.telaInicial_imgBg);
 
         fab = findViewById(R.id.telaInicial_fabId);
@@ -56,7 +53,11 @@ public class TelaInicialActivity extends AppCompatActivity {
 
         if (ordemServicoList == null) {
             try {
-                ordemServicoList = lerAquivo();
+
+                ordemServicoList = new ArrayList<>();
+
+                //Recupera as O.S salvas em arquivo
+                ordemServicoList = new ArquivoDAO().lerArquivo(file);
 
                 adapter = new OrdemServicoAdapter(this, ordemServicoList);
 
@@ -64,12 +65,10 @@ public class TelaInicialActivity extends AppCompatActivity {
 
                 imgBackground.setVisibility(View.INVISIBLE);
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-        ordemServicoList = new ArrayList<>();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +94,9 @@ public class TelaInicialActivity extends AppCompatActivity {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 }
-                gravarArquivo(ordemServico);
+
+                //Grava a lista de O.S. em arquivo .txt
+                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
 
                 adapter = new OrdemServicoAdapter(this, ordemServicoList);
 
@@ -138,42 +139,5 @@ public class TelaInicialActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void gravarArquivo(OrdemServico ordemServico) {
-
-        File file = new File(getBaseContext().getFilesDir(), "meuArquivo.txt");
-        try {
-            ObjectOutputStream obj = new ObjectOutputStream(new FileOutputStream(file));
-            obj.writeObject(ordemServico);
-            obj.flush();
-            obj.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public List<OrdemServico> lerAquivo() throws IOException {
-
-        FileInputStream arquivo = null;
-        ObjectInputStream obj = null;
-        List<OrdemServico> list = null;
-        try {
-            arquivo = new FileInputStream(new File(getBaseContext().getFilesDir(), "meuArquivo.txt"));
-            obj = new ObjectInputStream(arquivo);
-
-            list = new ArrayList<>();
-
-
-            while (true) {
-                list.add((OrdemServico) obj.readObject());
-            }
-
-        } catch (EOFException e) {
-            e.printStackTrace();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return list;
     }
 }
