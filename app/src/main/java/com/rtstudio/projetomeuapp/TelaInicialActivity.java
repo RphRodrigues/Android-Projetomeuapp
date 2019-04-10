@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -51,24 +52,6 @@ public class TelaInicialActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        if (ordemServicoList == null) {
-            try {
-
-                ordemServicoList = new ArrayList<>();
-
-                //Recupera as O.S salvas em arquivo
-                ordemServicoList = new ArquivoDAO().lerArquivo(file);
-
-                adapter = new OrdemServicoAdapter(this, ordemServicoList);
-
-                recyclerView.setAdapter(adapter);
-
-                imgBackground.setVisibility(View.INVISIBLE);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +71,6 @@ public class TelaInicialActivity extends AppCompatActivity {
             Bundle bundle = data.getBundleExtra("BUNDLE");
             if (bundle != null) {
                 OrdemServico ordemServico = bundle.getParcelable("ORDEM_SERVICO");
-
                 ordemServicoList.add(ordemServico);
 
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -104,6 +86,32 @@ public class TelaInicialActivity extends AppCompatActivity {
 
                 imgBackground.setVisibility(View.INVISIBLE);
             }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (ordemServicoList == null) {
+            try {
+
+                ordemServicoList = new ArrayList<>();
+
+                //Recupera as O.S salvas em arquivo
+                ordemServicoList = new ArquivoDAO().lerArquivo(file);
+
+                adapter = new OrdemServicoAdapter(this, ordemServicoList);
+
+                recyclerView.setAdapter(adapter);
+
+                imgBackground.setVisibility(View.INVISIBLE);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.v("Raphael", "onResume else");
         }
     }
 
