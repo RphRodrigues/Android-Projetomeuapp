@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,7 +37,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private Button btnCriarOS;
     private Spinner estado;
     private Spinner tipoServico;
-
+    int position;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +57,12 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         descricaoServico = findViewById(R.id.cadastrar_edtDescricaoServicosId);
         btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
 
-//        tipoServico.setSelection(18);
+        //Inicializa o spinner de estados com RJ
+        estado.setSelection(18);
+
+        if (getIntent().getExtras() != null) {
+            editarOS();
+        }
 
         btnCriarOS.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,11 +101,12 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("ORDEM_SERVICO", ordemServico);
+                bundle.putInt("POSITION", position);
 
                 Intent intent = new Intent();
                 intent.putExtra("BUNDLE", bundle);
                 setResult(RESULT_OK, intent);
-
+                Log.v("Raphael", "salvando " + ordemServico.getEndereco().getRua());
                 new AlertDialog.Builder(CadastrarServicoActivity.this)
                         .setTitle("Aviso")
                         .setMessage(getString(R.string.os_gerada_sucesso))
@@ -113,6 +120,81 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                         .show();
             }
         });
+    }
+
+    private void editarOS() {
+        Bundle b = getIntent().getBundleExtra("BUNDLE");
+        OrdemServico os = b.getParcelable("ORDEM_SERVICO");
+        position = b.getInt("POSITION");
+        if (os != null) {
+            nomeCliente.setText(os.getCliente().getNome());
+            rua.setText(os.getEndereco().getRua());
+            complemento.setText(os.getEndereco().getComplemento());
+            bairro.setText(os.getEndereco().getBairro());
+            cep.setText(os.getEndereco().getCep());
+            numero.setText(os.getEndereco().getNumero());
+            cidade.setText(os.getEndereco().getCidade());
+
+            String[] arrayEstados = {
+                    "AC", "AL", "AP", "AM", "BA",
+                    "CE", "DF", "ES", "GO", "MA",
+                    "MT", "MS", "MG", "PA", "PB",
+                    "PR", "PE", "PI", "RJ", "RN",
+                    "RS", "RO", "RR", "SC", "SP",
+                    "SE", "TO",
+            };
+
+            int i = 0;
+            for (String s : arrayEstados) {
+                if (s.equals(os.getEndereco().getEstado())) {
+                    estado.setSelection(i);
+                }
+                i++;
+            }
+
+            String[] arrayTipoServico = {"Instalação", "Reparo", "Desistalação"};
+
+            i = 0;
+            for (String s : arrayTipoServico) {
+                if (s.equals(os.getTipo())) {
+                    tipoServico.setSelection(i);
+                }
+                i++;
+            }
+            descricaoServico.setText(os.getDescricaoServico());
+
+            btnCriarOS.setText("Salvar");
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        } else if (id == R.id.menu_itemLimpar) {
+            nomeCliente.setText("");
+            rua.setText("");
+            complemento.setText("");
+            bairro.setText("");
+            cep.setText("");
+            numero.setText("");
+            cidade.setText("");
+            descricaoServico.setText("");
+        } else if (id == R.id.menu_itemAjuda) {
+            String siteAjuda = "http://www.sinapseinformatica.com.br/";
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteAjuda));
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     private Boolean validacao() {
@@ -160,35 +242,5 @@ public class CadastrarServicoActivity extends AppCompatActivity {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == android.R.id.home) {
-            finish();
-        } else if (id == R.id.menu_itemLimpar) {
-            nomeCliente.setText("");
-            rua.setText("");
-            complemento.setText("");
-            bairro.setText("");
-            cep.setText("");
-            numero.setText("");
-            cidade.setText("");
-            descricaoServico.setText("");
-        } else if (id == R.id.menu_itemAjuda) {
-            String siteAjuda = "http://www.sinapseinformatica.com.br/";
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteAjuda));
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 }
