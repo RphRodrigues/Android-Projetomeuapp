@@ -58,15 +58,14 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         holder.imageMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String end = ordemServico.getEndereco().getRua() + " " +
-                        ordemServico.getEndereco().getNumero() + " " +
-                        ordemServico.getEndereco().getBairro() + " " +
-                        ordemServico.getEndereco().getCidade() + " " +
-                        ordemServico.getEndereco().getEstado();
+                Uri mapUri = Uri.parse("geo:0,0?q=" + ordemServico.getEndereco().getNumero().trim() + " " +
+                        ordemServico.getEndereco().getRua().trim() + "," + " " +
+                        ordemServico.getEndereco().getBairro().trim() + "," + " " +
+                        ordemServico.getEndereco().getCidade().trim() + "," + " " +
+                        ordemServico.getEndereco().getEstado()
+                );
 
-                Toast.makeText(mContext, end, Toast.LENGTH_SHORT).show();
-                Uri gmmIntentUri = Uri.parse("geo:0,0?q=80 Rua Maria Carvalho, Padre Miguel, Rio de Janeiro");
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapUri);
                 mContext.startActivity(mapIntent);
             }
         });
@@ -74,7 +73,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         holder.imageCam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "oi", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Camera", Toast.LENGTH_SHORT).show();
             }
         });
 
