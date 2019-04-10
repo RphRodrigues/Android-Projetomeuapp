@@ -56,14 +56,4 @@ public class ArquivoDAO implements InterfaceDAO {
         }
         return ordens;
     }
-
-    @Override
-    public void salvarBD() {
-
-    }
-
-    @Override
-    public void lerBD() {
-
-    }
 }
