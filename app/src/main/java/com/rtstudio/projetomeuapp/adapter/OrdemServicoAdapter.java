@@ -3,7 +3,7 @@ package com.rtstudio.projetomeuapp.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.provider.Settings;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,9 +14,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rtstudio.projetomeuapp.CadastrarServicoActivity;
 import com.rtstudio.projetomeuapp.R;
+import com.rtstudio.projetomeuapp.classes.DAO.ArquivoDAO;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 
+import java.io.File;
 import java.util.List;
 
 public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapter.MyViewHolder> {
@@ -43,7 +46,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
         Log.v("LOG", "onBindViewHolder");
 
@@ -77,6 +80,33 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
             }
         });
 
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("ORDEM_SERVICO", ordemServico);
+                bundle.putInt("POSITION", position);
+
+                Intent intent = new Intent(mContext, CadastrarServicoActivity.class);
+                intent.putExtra("BUNDLE", bundle);
+
+                mContext.startActivity(intent);
+
+                ordemServicoList.set(position, ordemServico);
+
+                notifyItemChanged(position);
+            }
+        });
+
+        holder.view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ordemServicoList.remove(position);
+                new ArquivoDAO().salvarArquivo(ordemServicoList, new File(mContext.getFilesDir(), "TCC.txt"));
+                notifyItemRemoved(position);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -86,11 +116,12 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView numOS;
-        TextView tipoServico;
-        TextView bairro;
-        ImageButton imageMap;
-        ImageButton imageCam;
+        private TextView numOS;
+        private TextView tipoServico;
+        private TextView bairro;
+        private ImageButton imageMap;
+        private ImageButton imageCam;
+        private View view;
 
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -100,6 +131,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
             bairro = itemView.findViewById(R.id.card_tvBairro);
             imageMap = itemView.findViewById(R.id.card_ibMap);
             imageCam = itemView.findViewById(R.id.card_ibCamera);
+            view = itemView;
         }
     }
 }
