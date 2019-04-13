@@ -66,10 +66,11 @@ public class TelaInicialActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+        Bundle bundle;
+        if (data != null) {
+            bundle = data.getBundleExtra("BUNDLE");
+            if (requestCode == 1 && resultCode == RESULT_OK && bundle != null) {
 
-            Bundle bundle = data.getBundleExtra("BUNDLE");
-            if (bundle != null) {
                 OrdemServico ordemServico = bundle.getParcelable("ORDEM_SERVICO");
                 ordemServicoList.add(ordemServico);
 
@@ -80,7 +81,22 @@ public class TelaInicialActivity extends AppCompatActivity {
                 //Grava a lista de O.S. em arquivo .txt
                 new ArquivoDAO().salvarArquivo(ordemServicoList, file);
 
-                adapter = new OrdemServicoAdapter(this, ordemServicoList);
+                adapter = new OrdemServicoAdapter(TelaInicialActivity.this, ordemServicoList);
+
+                recyclerView.setAdapter(adapter);
+
+                imgBackground.setVisibility(View.INVISIBLE);
+
+            } else if (requestCode == 2 && bundle != null) {
+                OrdemServico os = bundle.getParcelable("ORDEM_SERVICO");
+                int pos = bundle.getInt("POSITION");
+
+                ordemServicoList.set(pos, os);
+
+                //Grava a lista de O.S. em arquivo .txt
+                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
+
+                adapter = new OrdemServicoAdapter(TelaInicialActivity.this, ordemServicoList);
 
                 recyclerView.setAdapter(adapter);
 

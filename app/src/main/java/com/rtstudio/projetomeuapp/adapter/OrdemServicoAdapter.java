@@ -1,10 +1,16 @@
 package com.rtstudio.projetomeuapp.adapter;
 
-import android.content.Context;
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,12 +30,12 @@ import java.util.List;
 
 public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapter.MyViewHolder> {
 
-    private Context mContext;
+    private Activity activity;
     private List<OrdemServico> ordemServicoList;
 
-    public OrdemServicoAdapter(Context context, List<OrdemServico> list) {
+    public OrdemServicoAdapter(Activity activity, List<OrdemServico> list) {
         this.ordemServicoList = list;
-        this.mContext = context;
+        this.activity = activity;
     }
 
     @NonNull
@@ -38,7 +44,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
         Log.v("LOG", "onCreateViewHolder");
 
-        LayoutInflater LayoutInflater = android.view.LayoutInflater.from(mContext);
+        LayoutInflater LayoutInflater = android.view.LayoutInflater.from(activity.getApplicationContext());
 
         View view = LayoutInflater.inflate(R.layout.os_card_item, null);
 
@@ -69,14 +75,20 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                 );
 
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapUri);
-                mContext.startActivity(mapIntent);
+                activity.startActivity(mapIntent);
             }
         });
 
         holder.imageCam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Camera", Toast.LENGTH_SHORT).show();
+                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, 1);
+                }
+                Intent camIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                activity.startActivity(camIntent);
+
+                Toast.makeText(activity, "Camera", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -87,23 +99,32 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                 bundle.putParcelable("ORDEM_SERVICO", ordemServico);
                 bundle.putInt("POSITION", position);
 
-                Intent intent = new Intent(mContext, CadastrarServicoActivity.class);
+                Intent intent = new Intent(activity, CadastrarServicoActivity.class);
                 intent.putExtra("BUNDLE", bundle);
 
-                mContext.startActivity(intent);
-
-                ordemServicoList.set(position, ordemServico);
-
-                notifyItemChanged(position);
+                activity.startActivityForResult(intent, 2);
             }
         });
 
         holder.view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                ordemServicoList.remove(position);
-                new ArquivoDAO().salvarArquivo(ordemServicoList, new File(mContext.getFilesDir(), "TCC.txt"));
-                notifyItemRemoved(position);
+
+                new AlertDialog.Builder(activity)
+                        .setTitle("Aviso")
+                        .setMessage("Deseja realmente excluir a OS número de " + ordemServicoList.get(position).getOrdemServicoId())
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ordemServicoList.remove(position);
+                                new ArquivoDAO().salvarArquivo(ordemServicoList, new File(activity.getFilesDir(), "TCC.txt"));
+                                notifyItemRemoved(position);
+                            }
+                        })
+                        .setNegativeButton("Cancelar", null)
+                        .create()
+                        .show();
+
                 return false;
             }
         });

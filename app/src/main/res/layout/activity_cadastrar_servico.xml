@@ -186,6 +186,13 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
+            android:id="@+id/cadastrar_btnLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15sp"
+            android:text="@string/localizar" />
+
+        <Button
             android:id="@+id/cadastrar_btnCriarOSId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

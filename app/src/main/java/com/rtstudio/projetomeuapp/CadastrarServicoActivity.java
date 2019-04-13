@@ -1,9 +1,20 @@
 package com.rtstudio.projetomeuapp;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,16 +27,25 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class CadastrarServicoActivity extends AppCompatActivity {
 
+    int position;
+    File file;
     private Cliente cliente = null;
     private Endereco endereco = null;
     private OrdemServico ordemServico = null;
-
     private EditText nomeCliente;
     private EditText rua;
     private EditText cep;
@@ -35,9 +55,11 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private EditText cidade;
     private EditText descricaoServico;
     private Button btnCriarOS;
+    private Button btnLocalizar;
     private Spinner estado;
     private Spinner tipoServico;
-    int position;
+    private List<OrdemServico> osList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +78,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         tipoServico = findViewById(R.id.cadastrar_spinnerId);
         descricaoServico = findViewById(R.id.cadastrar_edtDescricaoServicosId);
         btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
+        btnLocalizar = findViewById(R.id.cadastrar_btnLocation);
 
         //Inicializa o spinner de estados com RJ
         estado.setSelection(18);
@@ -106,7 +129,9 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("BUNDLE", bundle);
                 setResult(RESULT_OK, intent);
+
                 Log.v("Raphael", "salvando " + ordemServico.getEndereco().getRua());
+
                 new AlertDialog.Builder(CadastrarServicoActivity.this)
                         .setTitle("Aviso")
                         .setMessage(getString(R.string.os_gerada_sucesso))
@@ -118,8 +143,126 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                         })
                         .create()
                         .show();
+
+                btnLocalizar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (ActivityCompat.checkSelfPermission(
+                                CadastrarServicoActivity.this,
+                                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                            ActivityCompat.requestPermissions(
+                                    CadastrarServicoActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                                            Manifest.permission.ACCESS_COARSE_LOCATION},
+                                    101
+                            );
+                            return;
+                        }
+
+                        getLocalozacaoGPS();
+                    }
+                });
             }
         });
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private void getLocalozacaoGPS() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 100, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                geoReferenciamento(location);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        });
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private void getLocalizacao() {
+
+        FusedLocationProviderClient flpc = LocationServices.getFusedLocationProviderClient(getApplicationContext());
+
+        flpc.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                geoReferenciamento(location);
+            }
+        });
+    }
+
+    private void geoReferenciamento(Location location) {
+        Geocoder geo = new Geocoder(getApplicationContext(), Locale.getDefault());
+
+        try {
+            List<Address> enderecos = geo.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+
+            if ((enderecos != null) && (enderecos.size() > 0)) {
+                Address address = enderecos.get(0);
+
+                //Rua
+                rua.setText(address.getThoroughfare());
+
+                //Número
+                if (address.getFeatureName().contains("-")) {
+                    numero.setTag(address.getFeatureName().substring(0, address.getFeatureName().indexOf("-")));
+                } else {
+                    numero.setText(address.getFeatureName());
+                }
+
+                //Bairro
+                bairro.setText(address.getSubLocality());
+
+                //Cidade
+                cidade.setText(address.getSubAdminArea());
+
+                //Cep
+                cep.setText(address.getPostalCode());
+
+                //Pais
+                address.getCountryName();
+
+                //Código do pais
+                address.getCountryCode();
+
+                //Cultura
+                address.getLocale();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 101) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                getLocalizacao();
+            }
+        }
+
     }
 
     private void editarOS() {
@@ -135,32 +278,32 @@ public class CadastrarServicoActivity extends AppCompatActivity {
             numero.setText(os.getEndereco().getNumero());
             cidade.setText(os.getEndereco().getCidade());
 
-            String[] arrayEstados = {
-                    "AC", "AL", "AP", "AM", "BA",
-                    "CE", "DF", "ES", "GO", "MA",
-                    "MT", "MS", "MG", "PA", "PB",
-                    "PR", "PE", "PI", "RJ", "RN",
-                    "RS", "RO", "RR", "SC", "SP",
-                    "SE", "TO",
-            };
-
-            int i = 0;
-            for (String s : arrayEstados) {
-                if (s.equals(os.getEndereco().getEstado())) {
-                    estado.setSelection(i);
-                }
-                i++;
-            }
-
-            String[] arrayTipoServico = {"Instalação", "Reparo", "Desistalação"};
-
-            i = 0;
-            for (String s : arrayTipoServico) {
-                if (s.equals(os.getTipo())) {
-                    tipoServico.setSelection(i);
-                }
-                i++;
-            }
+//            String[] arrayEstados = {
+//                    "AC", "AL", "AP", "AM", "BA",
+//                    "CE", "DF", "ES", "GO", "MA",
+//                    "MT", "MS", "MG", "PA", "PB",
+//                    "PR", "PE", "PI", "RJ", "RN",
+//                    "RS", "RO", "RR", "SC", "SP",
+//                    "SE", "TO",
+//            };
+//
+//            int i = 0;
+//            for (String s : arrayEstados) {
+//                if (s.equals(os.getEndereco().getEstado())) {
+//                    estado.setSelection(i);
+//                }
+//                i++;
+//            }
+//
+//            String[] arrayTipoServico = {"Instalação", "Reparo", "Desistalação"};
+//
+//            i = 0;
+//            for (String s : arrayTipoServico) {
+//                if (s.equals(os.getTipo())) {
+//                    tipoServico.setSelection(i);
+//                }
+//                i++;
+//            }
             descricaoServico.setText(os.getDescricaoServico());
 
             btnCriarOS.setText("Salvar");

@@ -25,6 +25,7 @@
     <string name="complemento">Complemento</string>
     <string name="bairro">Bairro</string>
     <string name="ordem_de_servico">Ordem de Serviço</string>
+    <string name="localizar">Localizar</string>
     <string-array name="lista_servico">
         <item>Instalação</item>
         <item>Reparo</item>
