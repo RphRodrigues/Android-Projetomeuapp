@@ -112,7 +112,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
                 new AlertDialog.Builder(activity)
                         .setTitle("Aviso")
-                        .setMessage("Deseja realmente excluir a OS número de " + ordemServicoList.get(position).getOrdemServicoId())
+                        .setMessage("Deseja realmente excluir a OS número " + ordemServicoList.get(position).getOrdemServicoId())
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
