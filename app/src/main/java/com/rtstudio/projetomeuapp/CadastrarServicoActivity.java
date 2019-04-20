@@ -144,36 +144,39 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                         .create()
                         .show();
 
-                btnLocalizar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (ActivityCompat.checkSelfPermission(
-                                CadastrarServicoActivity.this,
-                                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            }
+        });
 
-                            ActivityCompat.requestPermissions(
-                                    CadastrarServicoActivity.this,
-                                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_COARSE_LOCATION},
-                                    101
-                            );
-                            return;
-                        }
+        btnLocalizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(
+                        CadastrarServicoActivity.this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                        (ActivityCompat.checkSelfPermission(CadastrarServicoActivity.this,
+                                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
 
-                        getLocalozacaoGPS();
-                    }
-                });
+                    ActivityCompat.requestPermissions(
+                            CadastrarServicoActivity.this,
+                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    Manifest.permission.ACCESS_FINE_LOCATION},
+                            101
+                    );
+                    return;
+                }
+
+                getLocalizacao();
             }
         });
     }
 
-
     @SuppressLint("MissingPermission")
-    private void getLocalozacaoGPS() {
+    private void getLocalizacaoGPS() {
+        Log.v("GPS", "getLocalizacaoGPS");
+
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 100, new LocationListener() {
+        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 geoReferenciamento(location);
@@ -193,12 +196,13 @@ public class CadastrarServicoActivity extends AppCompatActivity {
             public void onProviderDisabled(String provider) {
 
             }
-        });
+        }, null);
     }
 
 
     @SuppressLint("MissingPermission")
     private void getLocalizacao() {
+        Log.v("GPS", "getLocalizacao");
 
         FusedLocationProviderClient flpc = LocationServices.getFusedLocationProviderClient(getApplicationContext());
 
@@ -211,8 +215,9 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     }
 
     private void geoReferenciamento(Location location) {
-        Geocoder geo = new Geocoder(getApplicationContext(), Locale.getDefault());
+        Log.v("GPS", "geoReferenciamento");
 
+        Geocoder geo = new Geocoder(getApplicationContext(), Locale.getDefault());
         try {
             List<Address> enderecos = geo.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
 
@@ -238,6 +243,9 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 //Cep
                 cep.setText(address.getPostalCode());
 
+                //Estado
+                address.getAdminArea();
+
                 //Pais
                 address.getCountryName();
 
@@ -260,6 +268,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         if (requestCode == 101) {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 getLocalizacao();
+                Log.v("GPS", "onRequestPermissionsResult");
             }
         }
 
