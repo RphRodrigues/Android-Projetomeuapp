@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -96,9 +98,8 @@ public class TelaInicialActivity extends AppCompatActivity {
 
         Bundle bundle;
         if (data != null) {
-            bundle = data.getBundleExtra("BUNDLE");
+            bundle = data.getExtras();
             if (requestCode == 1 && resultCode == RESULT_OK && bundle != null) {
-
                 OrdemServico ordemServico = bundle.getParcelable("ORDEM_SERVICO");
                 ordemServicoList.add(ordemServico);
 
@@ -121,6 +122,13 @@ public class TelaInicialActivity extends AppCompatActivity {
                 new ArquivoDAO().salvarArquivo(ordemServicoList, file);
 
                 atualizaRecyclerView(ordemServicoList);
+
+            } else if (requestCode == 3 && bundle != null) {
+                Bitmap img = (Bitmap) bundle.get("data");
+
+                ImageView imageView = findViewById(R.id.cadastrar_ivBitmap);
+//                imageView.setImageBitmap(img);
+                Log.v("LOG", "camera ok");
             }
         }
     }
