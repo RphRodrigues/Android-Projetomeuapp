@@ -10,6 +10,9 @@ public class Cliente implements Parcelable, Serializable {
     private String nome;
     private String codigoCliente;
 
+    public Cliente() {
+    }
+
     public Cliente(String nome, String codigoCliente) {
         this.nome = nome;
         this.codigoCliente = codigoCliente;

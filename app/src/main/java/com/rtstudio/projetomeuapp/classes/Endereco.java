@@ -16,6 +16,9 @@ public class Endereco implements Parcelable, Serializable {
     private String bairro;
     private String complemento;
 
+    public Endereco() {
+    }
+
     public Endereco(String cep, String rua, String numero, String cidade, String estado, String bairro) {
         this.estado = estado;
         this.cidade = cidade;
