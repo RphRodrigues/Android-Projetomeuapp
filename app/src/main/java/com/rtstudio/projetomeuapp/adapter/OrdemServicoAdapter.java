@@ -37,6 +37,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
     private Activity activity;
     private List<OrdemServico> ordemServicoList;
+    private File fileFoto;
 
     public OrdemServicoAdapter(Activity activity, List<OrdemServico> list) {
         this.ordemServicoList = list;
@@ -94,26 +95,35 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                     ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, 1);
                 }
 
+                fileFoto = new File(activity.getCacheDir(), "minhaFoto" + position + ".jpg");
+
+                Uri uri = FileProvider.getUriForFile(activity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
+
                 Intent camIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                if (camIntent.resolveActivity(activity.getPackageManager()) != null) {
-                    File fotoF = null;
-                    try {
-                        fotoF = createImageFile();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (fotoF != null) {
+                camIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);   //usando para foto original
+
+                activity.startActivityForResult(camIntent, 3);
+
+//                    if (camIntent.resolveActivity(activity.getPackageManager()) != null) {
+//                        File fotoF = null;
+//                        try {
+//                            fotoF = createImageFile();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                        if (fotoF != null) {
 //                        Uri fotoURI = FileProvider.getUriForFile(activity.getBaseContext(), "com.rtstudio.projetomeuapp", fotoF);
 //
 //                        camIntent.putExtra(MediaStore.EXTRA_OUTPUT, fotoURI);
-                        activity.startActivityForResult(camIntent, 3);
-                    }
-
-                }
+//                            activity.startActivityForResult(camIntent, 3);
+//                        }
+//
+//                    }
 
                 Toast.makeText(activity, "Camera", Toast.LENGTH_SHORT).show();
             }
+
         });
 
         holder.view.setOnClickListener(new View.OnClickListener() {
@@ -155,11 +165,16 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     }
 
 
+    public File getFileFoto() {
+        return fileFoto;
+    }
+
     private File createImageFile() throws IOException {
         String currentPhotoPath;
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
+        //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,   /* prefix */
@@ -176,7 +191,6 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     public int getItemCount() {
         return ordemServicoList.size();
     }
-
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView numOS;

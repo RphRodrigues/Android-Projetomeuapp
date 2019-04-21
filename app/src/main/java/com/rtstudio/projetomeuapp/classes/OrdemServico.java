@@ -12,6 +12,7 @@ public class OrdemServico implements Parcelable, Serializable {
     private Endereco endereco;
     private String tipo;
     private String descricaoServico;
+    private String file;
 
     //Bloco de inicialização que inicializa o id da ordem de serviço
     {
@@ -31,6 +32,7 @@ public class OrdemServico implements Parcelable, Serializable {
         endereco = in.readParcelable(Endereco.class.getClassLoader());
         tipo = in.readString();
         descricaoServico = in.readString();
+        file = in.readString();
     }
 
     @Override
@@ -40,6 +42,7 @@ public class OrdemServico implements Parcelable, Serializable {
         dest.writeParcelable(endereco, flags);
         dest.writeString(tipo);
         dest.writeString(descricaoServico);
+        dest.writeString(file);
     }
 
     @Override
@@ -98,5 +101,13 @@ public class OrdemServico implements Parcelable, Serializable {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
+
+    public String getFile() {
+        return file;
     }
 }
