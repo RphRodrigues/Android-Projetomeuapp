@@ -2,14 +2,15 @@ package com.rtstudio.projetomeuapp.DAO;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.connection.Connection;
 
-public class  ClienteDAO {
-    static final String TABELA_CLIENTE = "TABELA_CLIENTE";
-    final String CAMPOS = "ID, NOME, COD_CLIENTE";
+public class ClienteDAO {
+    private static final String TABELA_CLIENTE = "TABELA_CLIENTE";
+    private static final String CAMPOS = "ID, NOME, COD_CLIENTE";
 
     private Context context;
 
@@ -23,20 +24,37 @@ public class  ClienteDAO {
         create.append("(");
         create.append("     ID              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,");
         create.append("     NOME            TEXT,");
-        create.append("     COD_CLIENTE     TEXT,");
+        create.append("     COD_CLIENTE     TEXT");
         create.append(")");
         sqLite.execSQL(create.toString());
     }
 
     public long insert(Cliente cliente) {
-        ContentValues contentValuesCliente = new ContentValues();
-        contentValuesCliente.put("NOME", cliente.getNome());
-        contentValuesCliente.put("COD_CLIENTE", cliente.getCodigoCliente());
+        ContentValues values = new ContentValues();
+        values.put("NOME", cliente.getNome());
+        values.put("COD_CLIENTE", cliente.getCodigoCliente());
 
-        SQLiteDatabase conn = Connection.getInstance(context).getWritableDatabase();
+        SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
 
-        return conn.insert(TABELA_CLIENTE, null, contentValuesCliente);
-
+        return banco.insert(TABELA_CLIENTE, null, values);
     }
 
+
+    public Cliente getClienteById(int idCliente) {
+        SQLiteDatabase banco = Connection.getInstance(context).getReadableDatabase();
+
+        String select = String.format("SELECT %s FROM %s WHERE ID = ?", CAMPOS, TABELA_CLIENTE);
+
+        Cursor cursor = banco.rawQuery(select, new String[]{String.valueOf(idCliente)});
+
+        Cliente cliente = new Cliente();
+
+        if (cursor.moveToFirst()) {
+            cliente.setNome(cursor.getString(cursor.getColumnIndex("NOME")));
+            cliente.setCodigoCliente(cursor.getString(cursor.getColumnIndex("COD_CLIENTE")));
+        }
+        cursor.close();
+
+        return cliente;
+    }
 }

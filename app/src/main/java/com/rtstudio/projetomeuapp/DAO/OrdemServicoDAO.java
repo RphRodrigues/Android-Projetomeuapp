@@ -29,61 +29,72 @@ public class OrdemServicoDAO {
         create.append("(");
         create.append("     ID                  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,");
         create.append("     ORDEM_SERVICO_ID    INTEGER,");
-        create.append("     BAIRRO              TEXT,");
-        create.append("     TIPOSERVICO         TEXT,");
+        create.append("     CLIENTE             INTEGER,");
+        create.append("     ENDERECO            INTEGER,");
+        create.append("     TIPOSERVICO         TEXT");
         create.append(")");
         sqLite.execSQL(create.toString());
     }
 
     public boolean insert(OrdemServico os) {
-        ContentValues contentValuesOS = new ContentValues();
+        SQLiteDatabase banco;
+        ContentValues values = new ContentValues();
 
         ClienteDAO clienteDAO = new ClienteDAO(context);
-        if (clienteDAO.insert(os.getCliente()) == -1) {
+        long idCliente = clienteDAO.insert(os.getCliente());
+        if (idCliente == -1) {
             return false;
         }
 
         EnderecoDAO enderecoDAO = new EnderecoDAO(context);
-        if (enderecoDAO.insert(os.getEndereco()) == -1) {
+        long idEndereco = enderecoDAO.insert(os.getEndereco());
+        if (idEndereco == -1) {
             return false;
         }
 
-        contentValuesOS.put("TIPOSERVICO", os.getTipo());
+        values.put("ORDEM_SERVICO_ID", os.getOrdemServicoId());
+        values.put("CLIENTE", idCliente);
+        values.put("ENDERECO", idEndereco);
+        values.put("TIPOSERVICO", os.getTipoServico());
 
-        SQLiteDatabase conn = Connection.getInstance(context).getWritableDatabase();
+        banco = Connection.getInstance(context).getWritableDatabase();
 
-        conn.beginTransaction();
+        banco.beginTransaction();
 
+        long idOrdemServico;
+        try {
+            idOrdemServico = banco.insert(ORDEM_SERVICO, null, values);
+            banco.setTransactionSuccessful();
+        } finally {
+            banco.endTransaction(); // no final
+        }
 
-        conn.endTransaction(); // no final
-
-        return conn.insert(ORDEM_SERVICO, null, contentValuesOS) != -1;
+        return idOrdemServico != -1;
     }
 
     public List<OrdemServico> getAll() {
         String select = String.format("SELECT %s FROM %s", CAMPOS, ORDEM_SERVICO);
 
-        SQLiteDatabase conn = Connection.getInstance(context).getReadableDatabase();
+        SQLiteDatabase banco = Connection.getInstance(context).getReadableDatabase();
 
-        Cursor cursor = conn.rawQuery(select, null);
+        Cursor cursor = banco.rawQuery(select, null);
 
         List<OrdemServico> ordens = new ArrayList<>();
 
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    String bairro = cursor.getString(cursor.getColumnIndex("BAIRRO"));
+                    int idOrdemServico = cursor.getInt(cursor.getColumnIndex("ORDEM_SERVICO_ID"));
+                    int idCliente = cursor.getInt(cursor.getColumnIndex("CLIENTE"));
+                    int idEndereco = cursor.getInt(cursor.getColumnIndex("ENDERECO"));
                     String tipoServico = cursor.getString(cursor.getColumnIndex("TIPOSERVICO"));
-                    int ordemServicoId = cursor.getInt(cursor.getColumnIndex("ORDEM_SERVICO_ID"));
 
-                    Cliente c = new Cliente();
-                    Endereco end = new Endereco();
-                    end.setBairro(bairro);
-//
-//                    OrdemServico os = new OrdemServico(c, end, tipoServico);
-//                    os.setOrdemServicoId(ordemServicoId);
+                    Cliente cliente = new ClienteDAO(context).getClienteById(idCliente);
+                    Endereco endereco = new EnderecoDAO(context).getEnderecoById(idEndereco);
 
-//                    ordens.add(os);
+                    OrdemServico os = new OrdemServico(idOrdemServico, cliente, endereco, tipoServico);
+
+                    ordens.add(os);
                 } while (cursor.moveToNext());
             }
         } finally {
