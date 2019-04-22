@@ -57,4 +57,12 @@ public class ClienteDAO {
 
         return cliente;
     }
+
+    public boolean deleteCliente(int clienteId) {
+        SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
+
+        String[] value = new String[]{String.valueOf(clienteId)};
+
+        return banco.delete(TABELA_CLIENTE, "ID = ?", value) > 0;
+    }
 }

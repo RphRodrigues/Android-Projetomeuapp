@@ -68,4 +68,12 @@ public class EnderecoDAO {
 
         return endereco;
     }
+
+    public boolean deleteEndereco(int enderecoId) {
+        SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
+
+        String[] value = new String[]{String.valueOf(enderecoId)};
+
+        return banco.delete(TABELA_ENDERECO, "ID = ?", value) > 0;
+    }
 }

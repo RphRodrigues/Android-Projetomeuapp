@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
@@ -67,7 +68,10 @@ public class OrdemServicoDAO {
         } finally {
             banco.endTransaction();
         }
-
+        Log.v("BANCO", "Escrevendo -> Os: " + os.getOrdemServicoId() +
+                " Cliente: " + os.getCliente().getNome() +
+                " Endereco: " + os.getEndereco().getBairro() +
+                " Tipo serviço: " + os.getTipoServico());
         return ordemServicoId != -1;
     }
 
@@ -93,6 +97,11 @@ public class OrdemServicoDAO {
 
                     OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, tipoServico);
 
+                    Log.v("BANCO", "Lendo -> Os: " + os.getOrdemServicoId() +
+                            " Cliente: " + cliente.getNome() +
+                            " Endereco: " + endereco.getBairro() +
+                            " Tipo serviço: " + tipoServico);
+
                     ordens.add(os);
                 } while (cursor.moveToNext());
             }
@@ -100,5 +109,13 @@ public class OrdemServicoDAO {
             cursor.close();
         }
         return ordens;
+    }
+
+    public boolean deleteOrdemServico(int ordemServicoId) {
+        SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
+
+        String[] value = new String[]{String.valueOf(ordemServicoId)};
+        Log.v("BANCO", "Deletando -> Os: " + ordemServicoId);
+        return banco.delete(TABELA_ORDEM_SERVICO, "ORDEM_SERVICO_ID = ?", value) > 0;
     }
 }
