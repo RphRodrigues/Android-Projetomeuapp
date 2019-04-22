@@ -36,26 +36,26 @@ public class OrdemServicoDAO {
         sqLite.execSQL(create.toString());
     }
 
-    public boolean insert(OrdemServico os) {
+    public boolean insertOrdemServico(OrdemServico ordemServico) {
         SQLiteDatabase banco;
         ContentValues values = new ContentValues();
 
         ClienteDAO clienteDAO = new ClienteDAO(context);
-        long clienteId = clienteDAO.insert(os.getCliente());
+        long clienteId = clienteDAO.insertCliente(ordemServico.getCliente());
         if (clienteId == -1) {
             return false;
         }
 
         EnderecoDAO enderecoDAO = new EnderecoDAO(context);
-        long enderecoId = enderecoDAO.insert(os.getEndereco());
+        long enderecoId = enderecoDAO.insertEndereco(ordemServico.getEndereco());
         if (enderecoId == -1) {
             return false;
         }
 
-        values.put("ORDEM_SERVICO_ID", os.getOrdemServicoId());
+        values.put("ORDEM_SERVICO_ID", ordemServico.getOrdemServicoId());
         values.put("CLIENTE_ID", clienteId);
         values.put("ENDERECO_ID", enderecoId);
-        values.put("TIPOSERVICO", os.getTipoServico());
+        values.put("TIPOSERVICO", ordemServico.getTipoServico());
 
         banco = Connection.getInstance(context).getWritableDatabase();
 
@@ -68,10 +68,10 @@ public class OrdemServicoDAO {
         } finally {
             banco.endTransaction();
         }
-        Log.v("BANCO", "Escrevendo -> Os: " + os.getOrdemServicoId() +
-                " Cliente: " + os.getCliente().getNome() +
-                " Endereco: " + os.getEndereco().getBairro() +
-                " Tipo serviço: " + os.getTipoServico());
+        Log.v("BANCO", "Escrevendo -> Os: " + ordemServico.getOrdemServicoId() +
+                " Cliente: " + ordemServico.getCliente().getNome() +
+                " Endereco: " + ordemServico.getEndereco().getBairro() +
+                " Tipo serviço: " + ordemServico.getTipoServico());
         return ordemServicoId != -1;
     }
 

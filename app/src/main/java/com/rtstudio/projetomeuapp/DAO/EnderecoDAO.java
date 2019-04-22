@@ -33,7 +33,7 @@ public class EnderecoDAO {
         sqLite.execSQL(create.toString());
     }
 
-    public long insert(Endereco endereco) {
+    public long insertEndereco(Endereco endereco) {
         ContentValues contentValuesEndereco = new ContentValues();
         contentValuesEndereco.put("RUA", endereco.getRua());
         contentValuesEndereco.put("NUMERO", endereco.getNumero());

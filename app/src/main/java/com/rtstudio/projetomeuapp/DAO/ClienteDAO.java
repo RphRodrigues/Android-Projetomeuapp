@@ -29,7 +29,7 @@ public class ClienteDAO {
         sqLite.execSQL(create.toString());
     }
 
-    public long insert(Cliente cliente) {
+    public long insertCliente(Cliente cliente) {
         ContentValues values = new ContentValues();
         values.put("NOME_CLIENTE", cliente.getNome());
         values.put("COD_CLIENTE", cliente.getCodigoCliente());
