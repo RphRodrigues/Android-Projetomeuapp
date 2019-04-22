@@ -26,6 +26,8 @@ public class Connection extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        ClienteDAO.createTable(db);
+        EnderecoDAO.createTable(db);
         OrdemServicoDAO.createTable(db);
     }
 
