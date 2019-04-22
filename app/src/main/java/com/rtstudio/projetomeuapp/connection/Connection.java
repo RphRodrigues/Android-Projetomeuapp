@@ -4,24 +4,26 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.rtstudio.projetomeuapp.DAO.ClienteDAO;
+import com.rtstudio.projetomeuapp.DAO.EnderecoDAO;
 import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 
 public class Connection extends SQLiteOpenHelper {
 
-    private static String BD_NAME = "projeto";
-    private static int BD_VERSION = 1;
+    private static final String BD_NAME = "BancoDeDadosTcc";
+    private static final int BD_VERSION = 1;
 
-    private static Connection data;
+    private static Connection connection;
 
     public Connection(Context context) {
         super(context, BD_NAME, null, BD_VERSION);
     }
 
     public static Connection getInstance(Context context) {
-        if (data == null) {
-            data = new Connection(context);
+        if (connection == null) {
+            connection = new Connection(context);
         }
-        return data;
+        return connection;
     }
 
     @Override
