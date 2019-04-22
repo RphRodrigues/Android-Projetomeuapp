@@ -97,7 +97,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
         Bundle bundle;
         if (data != null) {
-            bundle = data.getExtras();
+            bundle = data.getBundleExtra("BUNDLE");
             if (requestCode == 1 && resultCode == RESULT_OK && bundle != null) {
                 OrdemServico ordemServico = bundle.getParcelable("ORDEM_SERVICO");
                 ordemServicoList.add(ordemServico);
@@ -123,6 +123,30 @@ public class TelaInicialActivity extends AppCompatActivity {
                 atualizarRecyclerView(ordemServicoList);
 
             }
+        }
+        if (requestCode == 3) {
+            if (adapter.getFileFoto() != null) {
+                File foto = adapter.getFileFoto();
+
+                String i = foto.getAbsolutePath();
+                int inicio = i.lastIndexOf("minhaFoto") + 9;
+                int fim = i.lastIndexOf("jpg") - 1;
+                int pos = Integer.parseInt(i.substring(inicio, fim));
+
+                Log.v("myString", "" + pos);
+
+                ordemServicoList.get(pos).setFilename(foto.getAbsolutePath());
+
+                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
+
+                atualizarRecyclerView(ordemServicoList);
+            }
+
+//                Bitmap img = (Bitmap) bundle.get("data");
+//
+//                ImageView imageView = findViewById(R.id.cadastrar_ivBitmap);
+//                imageView.setImageBitmap(img);
+            Log.v("LOG", "camera ok");
         }
     }
 
