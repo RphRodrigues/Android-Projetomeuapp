@@ -10,7 +10,7 @@ import com.rtstudio.projetomeuapp.connection.Connection;
 
 public class ClienteDAO {
     private static final String TABELA_CLIENTE = "TABELA_CLIENTE";
-    private static final String CAMPOS = "ID, NOME, COD_CLIENTE";
+    private static final String CAMPOS = "ID, NOME_CLIENTE, COD_CLIENTE";
 
     private Context context;
 
@@ -23,7 +23,7 @@ public class ClienteDAO {
         create.append("CREATE TABLE IF NOT EXISTS TABELA_CLIENTE");
         create.append("(");
         create.append("     ID              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,");
-        create.append("     NOME            TEXT,");
+        create.append("     NOME_CLIENTE    TEXT,");
         create.append("     COD_CLIENTE     TEXT");
         create.append(")");
         sqLite.execSQL(create.toString());
@@ -31,7 +31,7 @@ public class ClienteDAO {
 
     public long insert(Cliente cliente) {
         ContentValues values = new ContentValues();
-        values.put("NOME", cliente.getNome());
+        values.put("NOME_CLIENTE", cliente.getNome());
         values.put("COD_CLIENTE", cliente.getCodigoCliente());
 
         SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
@@ -40,17 +40,17 @@ public class ClienteDAO {
     }
 
 
-    public Cliente getClienteById(int idCliente) {
+    public Cliente getClienteById(int clienteId) {
         SQLiteDatabase banco = Connection.getInstance(context).getReadableDatabase();
 
         String select = String.format("SELECT %s FROM %s WHERE ID = ?", CAMPOS, TABELA_CLIENTE);
 
-        Cursor cursor = banco.rawQuery(select, new String[]{String.valueOf(idCliente)});
+        Cursor cursor = banco.rawQuery(select, new String[]{String.valueOf(clienteId)});
 
         Cliente cliente = new Cliente();
 
         if (cursor.moveToFirst()) {
-            cliente.setNome(cursor.getString(cursor.getColumnIndex("NOME")));
+            cliente.setNome(cursor.getString(cursor.getColumnIndex("NOME_CLIENTE")));
             cliente.setCodigoCliente(cursor.getString(cursor.getColumnIndex("COD_CLIENTE")));
         }
         cursor.close();

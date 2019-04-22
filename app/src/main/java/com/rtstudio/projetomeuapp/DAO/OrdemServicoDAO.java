@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrdemServicoDAO {
-    private final String ORDEM_SERVICO = "TABELA_ORDEM_SERVICO";
-    private final String CAMPOS = "ID, ORDEM_SERVICO_ID, CLIENTE, ENDERECO, TIPOSERVICO";
+    private final String TABELA_ORDEM_SERVICO = "TABELA_ORDEM_SERVICO";
+    private final String CAMPOS = "ORDEM_SERVICO_ID, CLIENTE_ID, ENDERECO_ID, TIPOSERVICO";
 
     private Context context;
 
@@ -27,10 +27,9 @@ public class OrdemServicoDAO {
         StringBuffer create = new StringBuffer();
         create.append("CREATE TABLE IF NOT EXISTS TABELA_ORDEM_SERVICO");
         create.append("(");
-        create.append("     ID                  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,");
-        create.append("     ORDEM_SERVICO_ID    INTEGER,");
-        create.append("     CLIENTE             INTEGER,");
-        create.append("     ENDERECO            INTEGER,");
+        create.append("     ORDEM_SERVICO_ID    INTEGER NOT NULL PRIMARY KEY,");
+        create.append("     CLIENTE_ID          INTEGER,");
+        create.append("     ENDERECO_ID         INTEGER,");
         create.append("     TIPOSERVICO         TEXT");
         create.append(")");
         sqLite.execSQL(create.toString());
@@ -41,39 +40,39 @@ public class OrdemServicoDAO {
         ContentValues values = new ContentValues();
 
         ClienteDAO clienteDAO = new ClienteDAO(context);
-        long idCliente = clienteDAO.insert(os.getCliente());
-        if (idCliente == -1) {
+        long clienteId = clienteDAO.insert(os.getCliente());
+        if (clienteId == -1) {
             return false;
         }
 
         EnderecoDAO enderecoDAO = new EnderecoDAO(context);
-        long idEndereco = enderecoDAO.insert(os.getEndereco());
-        if (idEndereco == -1) {
+        long enderecoId = enderecoDAO.insert(os.getEndereco());
+        if (enderecoId == -1) {
             return false;
         }
 
         values.put("ORDEM_SERVICO_ID", os.getOrdemServicoId());
-        values.put("CLIENTE", idCliente);
-        values.put("ENDERECO", idEndereco);
+        values.put("CLIENTE_ID", clienteId);
+        values.put("ENDERECO_ID", enderecoId);
         values.put("TIPOSERVICO", os.getTipoServico());
 
         banco = Connection.getInstance(context).getWritableDatabase();
 
         banco.beginTransaction();
 
-        long idOrdemServico;
+        long ordemServicoId;
         try {
-            idOrdemServico = banco.insert(ORDEM_SERVICO, null, values);
+            ordemServicoId = banco.insert(TABELA_ORDEM_SERVICO, null, values);
             banco.setTransactionSuccessful();
         } finally {
-            banco.endTransaction(); // no final
+            banco.endTransaction();
         }
 
-        return idOrdemServico != -1;
+        return ordemServicoId != -1;
     }
 
     public List<OrdemServico> getAll() {
-        String select = String.format("SELECT %s FROM %s", CAMPOS, ORDEM_SERVICO);
+        String select = String.format("SELECT %s FROM %s", CAMPOS, TABELA_ORDEM_SERVICO);
 
         SQLiteDatabase banco = Connection.getInstance(context).getReadableDatabase();
 
@@ -84,15 +83,15 @@ public class OrdemServicoDAO {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    int idOrdemServico = cursor.getInt(cursor.getColumnIndex("ORDEM_SERVICO_ID"));
-                    int idCliente = cursor.getInt(cursor.getColumnIndex("CLIENTE"));
-                    int idEndereco = cursor.getInt(cursor.getColumnIndex("ENDERECO"));
+                    int ordemServicoId = cursor.getInt(cursor.getColumnIndex("ORDEM_SERVICO_ID"));
+                    int clienteId = cursor.getInt(cursor.getColumnIndex("CLIENTE_ID"));
+                    int enderecoId = cursor.getInt(cursor.getColumnIndex("ENDERECO_ID"));
                     String tipoServico = cursor.getString(cursor.getColumnIndex("TIPOSERVICO"));
 
-                    Cliente cliente = new ClienteDAO(context).getClienteById(idCliente);
-                    Endereco endereco = new EnderecoDAO(context).getEnderecoById(idEndereco);
+                    Cliente cliente = new ClienteDAO(context).getClienteById(clienteId);
+                    Endereco endereco = new EnderecoDAO(context).getEnderecoById(enderecoId);
 
-                    OrdemServico os = new OrdemServico(idOrdemServico, cliente, endereco, tipoServico);
+                    OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, tipoServico);
 
                     ordens.add(os);
                 } while (cursor.moveToNext());

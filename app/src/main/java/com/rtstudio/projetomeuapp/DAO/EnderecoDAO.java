@@ -47,12 +47,12 @@ public class EnderecoDAO {
         return conn.insert(TABELA_ENDERECO, null, contentValuesEndereco);
     }
 
-    public Endereco getEnderecoById(int idEndereco) {
+    public Endereco getEnderecoById(int enderecoId) {
         SQLiteDatabase banco = Connection.getInstance(context).getReadableDatabase();
 
         String select = String.format("SELECT %s FROM %s WHERE ID = ?", CAMPOS, TABELA_ENDERECO);
 
-        Cursor cursor = banco.rawQuery(select, new String[]{String.valueOf(idEndereco)});
+        Cursor cursor = banco.rawQuery(select, new String[]{String.valueOf(enderecoId)});
 
         Endereco endereco = new Endereco();
 
