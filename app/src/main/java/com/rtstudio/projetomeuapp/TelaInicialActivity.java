@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -110,7 +109,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 //Grava a lista de O.S. em arquivo .txt
                 new ArquivoDAO().salvarArquivo(ordemServicoList, file);
 
-                atualizaRecyclerView(ordemServicoList);
+                atualizarRecyclerView(ordemServicoList);
 
             } else if (requestCode == 2 && bundle != null) {
                 OrdemServico os = bundle.getParcelable("ORDEM_SERVICO");
@@ -121,19 +120,13 @@ public class TelaInicialActivity extends AppCompatActivity {
                 //Grava a lista de O.S. em arquivo .txt
                 new ArquivoDAO().salvarArquivo(ordemServicoList, file);
 
-                atualizaRecyclerView(ordemServicoList);
+                atualizarRecyclerView(ordemServicoList);
 
-            } else if (requestCode == 3 && bundle != null) {
-                Bitmap img = (Bitmap) bundle.get("data");
-
-                ImageView imageView = findViewById(R.id.cadastrar_ivBitmap);
-//                imageView.setImageBitmap(img);
-                Log.v("LOG", "camera ok");
             }
         }
     }
 
-    private void atualizaRecyclerView(List<OrdemServico> ordemServicoList) {
+    private void atualizarRecyclerView(List<OrdemServico> ordemServicoList) {
 
         adapter = new OrdemServicoAdapter(TelaInicialActivity.this, ordemServicoList);
 
