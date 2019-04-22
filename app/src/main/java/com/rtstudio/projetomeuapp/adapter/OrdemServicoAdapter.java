@@ -66,7 +66,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
         holder.numOS.setText(String.valueOf(ordemServico.getOrdemServicoId()));
 
-        holder.tipoServico.setText(ordemServico.getTipo());
+        holder.tipoServico.setText(ordemServico.getTipoServico());
 
         holder.bairro.setText(ordemServico.getEndereco().getBairro());
 
