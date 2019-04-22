@@ -35,7 +35,6 @@ import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +42,6 @@ import java.util.Locale;
 public class CadastrarServicoActivity extends AppCompatActivity {
 
     int position;
-    File file;
     OrdemServicoDAO OrdemServicoDAO;
     private Cliente cliente = null;
     private Endereco endereco = null;
@@ -60,7 +58,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private Button btnLocalizar;
     private Spinner estado;
     private Spinner tipoServico;
-    private List<OrdemServico> osList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,33 +93,11 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 //                    return;
 //                }
 
-                //Gerar o código do cliente a partir do nome e do cpf
-                String codCliente = nomeCliente.getText().toString().substring(0, 3);
+                createCliente();
 
-                //Cria o cliente
-                cliente = new Cliente(
-                        nomeCliente.getText().toString(),
-                        codCliente
-                );
+                createEndereco();
 
-                //Cria o endereço do serviço
-                endereco = new Endereco(
-                        cep.getText().toString(),
-                        rua.getText().toString(),
-                        numero.getText().toString(),
-                        cidade.getText().toString(),
-                        estado.getSelectedItem().toString(),
-                        bairro.getText().toString(),
-                        complemento.getText().toString()
-                );
-
-                //Cria a ordem de serviço
-                ordemServico = new OrdemServico(
-                        cliente,
-                        endereco,
-                        descricaoServico.getText().toString(),
-                        tipoServico.getSelectedItem().toString()
-                );
+                createOrdemServico();
 
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("ORDEM_SERVICO", ordemServico);
@@ -132,11 +107,9 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 intent.putExtra("BUNDLE", bundle);
                 setResult(RESULT_OK, intent);
 
-                Log.v("Raphael", "salvando " + ordemServico.getEndereco().getRua());
-
-                OrdemServicoDAO = new OrdemServicoDAO(CadastrarServicoActivity.this);
-                boolean id = OrdemServicoDAO.insert(ordemServico);
-                Toast.makeText(CadastrarServicoActivity.this, "OS cadastrada com sucesso? " + id, Toast.LENGTH_SHORT).show();
+                if (salvarOrdemServicoNoBancoDeDados()) {
+                    Toast.makeText(CadastrarServicoActivity.this, "OS cadastrada com sucesso ", Toast.LENGTH_SHORT).show();
+                }
 
                 new AlertDialog.Builder(CadastrarServicoActivity.this)
                         .setTitle("Aviso")
@@ -174,6 +147,40 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 getLocalizacao();
             }
         });
+    }
+
+    private boolean salvarOrdemServicoNoBancoDeDados() {
+        return new OrdemServicoDAO(CadastrarServicoActivity.this).insertOrdemServico(ordemServico);
+    }
+
+    private void createOrdemServico() {
+        ordemServico = new OrdemServico(
+                cliente,
+                endereco,
+                descricaoServico.getText().toString(),
+                tipoServico.getSelectedItem().toString()
+        );
+    }
+
+    private void createEndereco() {
+        endereco = new Endereco(
+                cep.getText().toString(),
+                rua.getText().toString(),
+                numero.getText().toString(),
+                cidade.getText().toString(),
+                estado.getSelectedItem().toString(),
+                bairro.getText().toString(),
+                complemento.getText().toString()
+        );
+    }
+
+    private void createCliente() {
+        String codCliente = nomeCliente.getText().toString().substring(0, 3);
+
+        cliente = new Cliente(
+                nomeCliente.getText().toString(),
+                codCliente
+        );
     }
 
     @SuppressLint("MissingPermission")
