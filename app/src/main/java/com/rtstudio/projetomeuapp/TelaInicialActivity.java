@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.DAO.ArquivoDAO;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
@@ -58,9 +59,11 @@ public class TelaInicialActivity extends AppCompatActivity {
             try {
                 ordemServicoList = new ArrayList<>();
 
-                ordemServicoList = new ArquivoDAO().lerArquivo(file);
+//                ordemServicoList = new ArquivoDAO().lerArquivo(file);
 
-                atualizaRecyclerView(ordemServicoList);
+                ordemServicoList = new OrdemServicoDAO(this).getAll();
+
+                atualizarRecyclerView(ordemServicoList);
             } catch (Exception e) {
                 e.printStackTrace();
             }
