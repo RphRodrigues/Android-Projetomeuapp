@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
@@ -43,6 +44,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
     int position;
     File file;
+    OrdemServicoDAO OrdemServicoDAO;
     private Cliente cliente = null;
     private Endereco endereco = null;
     private OrdemServico ordemServico = null;
@@ -131,6 +133,10 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 setResult(RESULT_OK, intent);
 
                 Log.v("Raphael", "salvando " + ordemServico.getEndereco().getRua());
+
+                OrdemServicoDAO = new OrdemServicoDAO(CadastrarServicoActivity.this);
+                boolean id = OrdemServicoDAO.insert(ordemServico);
+                Toast.makeText(CadastrarServicoActivity.this, "OS cadastrada com sucesso? " + id, Toast.LENGTH_SHORT).show();
 
                 new AlertDialog.Builder(CadastrarServicoActivity.this)
                         .setTitle("Aviso")
@@ -308,7 +314,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 //
 //            i = 0;
 //            for (String s : arrayTipoServico) {
-//                if (s.equals(os.getTipo())) {
+//                if (s.equals(os.getTipoServico())) {
 //                    tipoServico.setSelection(i);
 //                }
 //                i++;
