@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -24,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -59,6 +62,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private Spinner estado;
     private Spinner tipoServico;
     private List<OrdemServico> osList;
+    private ImageView imgBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         descricaoServico = findViewById(R.id.cadastrar_edtDescricaoServicosId);
         btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
         btnLocalizar = findViewById(R.id.cadastrar_btnLocation);
+        imgBitmap = findViewById(R.id.cadastrar_ivBitmap);
 
         //Inicializa o spinner de estados com RJ
         estado.setSelection(18);
@@ -164,7 +169,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                     );
                     return;
                 }
-
                 getLocalizacao();
             }
         });
@@ -263,7 +267,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == 101) {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
@@ -316,6 +319,9 @@ public class CadastrarServicoActivity extends AppCompatActivity {
             descricaoServico.setText(os.getDescricaoServico());
 
             btnCriarOS.setText("Salvar");
+
+            Bitmap img = BitmapFactory.decodeFile(os.getFile());
+            imgBitmap.setImageBitmap(img);
         }
     }
 
