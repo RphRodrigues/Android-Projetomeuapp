@@ -1,24 +1,21 @@
 package com.rtstudio.projetomeuapp.adapter;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +55,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
         Log.v("LOG", "onBindViewHolder");
 
@@ -91,39 +88,63 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         holder.imageCam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, 1);
-                }
+                PopupMenu popup = new PopupMenu(activity, holder.imageCam);
 
-                fileFoto = new File(activity.getCacheDir(), "minhaFoto" + position + ".jpg");
+                popup.inflate(R.menu.floating_context_menu);
 
-                Uri uri = FileProvider.getUriForFile(activity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.floating_context_menu_camera:
+                                Toast.makeText(activity, "Camera " + position, Toast.LENGTH_SHORT).show();
+                                break;
 
-                Intent camIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            case R.id.floating_context_menu_galeria:
+                                Toast.makeText(activity, "Galeria " + position, Toast.LENGTH_SHORT).show();
+                                break;
 
-                camIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);   //usando para foto original
+                            default:
+                                break;
+                        }
+                        return false;
+                    }
+                });
 
-                activity.startActivityForResult(camIntent, 3);
+                popup.show();
 
-//                    if (camIntent.resolveActivity(activity.getPackageManager()) != null) {
-//                        File fotoF = null;
-//                        try {
-//                            fotoF = createImageFile();
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                        if (fotoF != null) {
-//                        Uri fotoURI = FileProvider.getUriForFile(activity.getBaseContext(), "com.rtstudio.projetomeuapp", fotoF);
+//                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, 1);
+//                }
 //
-//                        camIntent.putExtra(MediaStore.EXTRA_OUTPUT, fotoURI);
-//                            activity.startActivityForResult(camIntent, 3);
-//                        }
+//                fileFoto = new File(activity.getCacheDir(), "minhaFoto" + position + ".jpg");
 //
-//                    }
-
-                Toast.makeText(activity, "Camera", Toast.LENGTH_SHORT).show();
+//                Uri uri = FileProvider.getUriForFile(activity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
+//
+//                Intent camIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//
+//                camIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);   //usando para foto original
+//
+//                activity.startActivityForResult(camIntent, 3);
+//
+////                    if (camIntent.resolveActivity(activity.getPackageManager()) != null) {
+////                        File fotoF = null;
+////                        try {
+////                            fotoF = createImageFile();
+////                        } catch (IOException e) {
+////                            e.printStackTrace();
+////                        }
+////                        if (fotoF != null) {
+////                        Uri fotoURI = FileProvider.getUriForFile(activity.getBaseContext(), "com.rtstudio.projetomeuapp", fotoF);
+////
+////                        camIntent.putExtra(MediaStore.EXTRA_OUTPUT, fotoURI);
+////                            activity.startActivityForResult(camIntent, 3);
+////                        }
+////
+////                    }
+//
+//                Toast.makeText(activity, "Camera", Toast.LENGTH_SHORT).show();
             }
-
         });
 
         holder.view.setOnClickListener(new View.OnClickListener() {
