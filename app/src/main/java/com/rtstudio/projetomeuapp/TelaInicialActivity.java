@@ -98,7 +98,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
         Bundle bundle;
         if (data != null) {
-            bundle = data.getExtras();
+            bundle = data.getBundleExtra("BUNDLE");
             if (requestCode == 1 && resultCode == RESULT_OK && bundle != null) {
                 OrdemServico ordemServico = bundle.getParcelable("ORDEM_SERVICO");
                 ordemServicoList.add(ordemServico);

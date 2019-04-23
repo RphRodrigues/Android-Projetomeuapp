@@ -23,6 +23,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), TelaInicialActivity.class));
                 finish();
             }
-        }, 3000);
+        }, 1000);
     }
 }
