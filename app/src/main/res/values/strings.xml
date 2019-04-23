@@ -26,6 +26,8 @@
     <string name="bairro">Bairro</string>
     <string name="ordem_de_servico">Ordem de Serviço</string>
     <string name="localizar">Localizar</string>
+    <string name="camera">Câmera</string>
+    <string name="galeria">Galeria</string>
     <string-array name="lista_servico">
         <item>Instalação</item>
         <item>Reparo</item>
