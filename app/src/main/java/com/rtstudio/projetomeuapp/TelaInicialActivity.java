@@ -1,16 +1,13 @@
 package com.rtstudio.projetomeuapp;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -61,7 +58,9 @@ public class TelaInicialActivity extends AppCompatActivity {
 
                 ordemServicoList = new ArquivoDAO().lerArquivo(file);
 
-                atualizaRecyclerView(ordemServicoList);
+                if (!ordemServicoList.isEmpty()) {
+                    atualizaRecyclerView(ordemServicoList);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -100,12 +99,10 @@ public class TelaInicialActivity extends AppCompatActivity {
         if (data != null) {
             bundle = data.getBundleExtra("BUNDLE");
             if (requestCode == 1 && resultCode == RESULT_OK && bundle != null) {
-                OrdemServico ordemServico = bundle.getParcelable("ORDEM_SERVICO");
-                ordemServicoList.add(ordemServico);
 
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                }
+                OrdemServico ordemServico = bundle.getParcelable("ORDEM_SERVICO");
+
+                ordemServicoList.add(ordemServico);
 
                 //Grava a lista de O.S. em arquivo .txt
                 new ArquivoDAO().salvarArquivo(ordemServicoList, file);
@@ -113,7 +110,9 @@ public class TelaInicialActivity extends AppCompatActivity {
                 atualizaRecyclerView(ordemServicoList);
 
             } else if (requestCode == 2 && bundle != null) {
+
                 OrdemServico os = bundle.getParcelable("ORDEM_SERVICO");
+
                 int pos = bundle.getInt("POSITION");
 
                 ordemServicoList.set(pos, os);
@@ -123,8 +122,27 @@ public class TelaInicialActivity extends AppCompatActivity {
 
                 atualizaRecyclerView(ordemServicoList);
 
-            } else if (requestCode == 3 && bundle != null) {
-                Bitmap img = (Bitmap) bundle.get("data");
+            }
+
+        }
+
+        if (requestCode == 3 && resultCode == RESULT_OK) {
+
+            if (adapter.getFileFoto() != null) {
+
+                String fileFotoAbsolutePath = adapter.getFileFoto().getAbsolutePath();
+                int inicio = fileFotoAbsolutePath.lastIndexOf("Foto") + 4;
+                int fim = fileFotoAbsolutePath.lastIndexOf("jpg") - 1;
+                int pos = Integer.parseInt(fileFotoAbsolutePath.substring(inicio, fim));
+
+                ordemServicoList.get(pos).setFile(fileFotoAbsolutePath);
+
+                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
+
+                atualizaRecyclerView(ordemServicoList);
+            }
+        }
+    }
 
                 ImageView imageView = findViewById(R.id.cadastrar_ivBitmap);
 //                imageView.setImageBitmap(img);
