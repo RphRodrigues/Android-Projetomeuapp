@@ -42,7 +42,6 @@ import java.util.Locale;
 public class CadastrarServicoActivity extends AppCompatActivity {
 
     int position;
-    OrdemServicoDAO OrdemServicoDAO;
     private Cliente cliente = null;
     private Endereco endereco = null;
     private OrdemServico ordemServico = null;
@@ -66,21 +65,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nomeCliente = findViewById(R.id.cadastrar_edtNomeClienteId);
-        rua = findViewById(R.id.cadastrar_edtRuaId);
-        cep = findViewById(R.id.cadastrar_edtCepId);
-        numero = findViewById(R.id.cadastrar_edtNumeroId);
-        cidade = findViewById(R.id.cadastrar_edtCidadeId);
-        estado = findViewById(R.id.cadastrar_spinnerEstados);
-        complemento = findViewById(R.id.cadastrar_edtComplementoId);
-        bairro = findViewById(R.id.cadastrar_edtBairroId);
-        tipoServico = findViewById(R.id.cadastrar_spinnerId);
-        descricaoServico = findViewById(R.id.cadastrar_edtDescricaoServicosId);
-        btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
-        btnLocalizar = findViewById(R.id.cadastrar_btnLocation);
-
-        //Inicializa o spinner de estados com RJ
-        estado.setSelection(18);
+        inicilizarVariaveisDeClasse();
 
         if (getIntent().getExtras() != null) {
             editarOS();
@@ -143,10 +128,27 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                     );
                     return;
                 }
-
                 getLocalizacao();
             }
         });
+    }
+
+    private void inicilizarVariaveisDeClasse() {
+        nomeCliente = findViewById(R.id.cadastrar_edtNomeClienteId);
+        rua = findViewById(R.id.cadastrar_edtRuaId);
+        cep = findViewById(R.id.cadastrar_edtCepId);
+        numero = findViewById(R.id.cadastrar_edtNumeroId);
+        cidade = findViewById(R.id.cadastrar_edtCidadeId);
+        estado = findViewById(R.id.cadastrar_spinnerEstados);
+        complemento = findViewById(R.id.cadastrar_edtComplementoId);
+        bairro = findViewById(R.id.cadastrar_edtBairroId);
+        tipoServico = findViewById(R.id.cadastrar_spinnerId);
+        descricaoServico = findViewById(R.id.cadastrar_edtDescricaoServicosId);
+        btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
+        btnLocalizar = findViewById(R.id.cadastrar_btnLocation);
+
+        //Inicializa o spinner de estados com RJ
+        estado.setSelection(18);
     }
 
     private boolean salvarOrdemServicoNoBancoDeDados() {
