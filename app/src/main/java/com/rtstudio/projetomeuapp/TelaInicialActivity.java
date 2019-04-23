@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.DAO.ArquivoDAO;
@@ -28,6 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TelaInicialActivity extends AppCompatActivity {
+
+    public static final int PERMISSION_REQUEST_CAMERA = 1;
+    public static final int PERMISSION_REQUEST_GALERIA = 2;
 
     File file;
     private FloatingActionButton fab;
@@ -144,9 +148,22 @@ public class TelaInicialActivity extends AppCompatActivity {
         }
     }
 
-                ImageView imageView = findViewById(R.id.cadastrar_ivBitmap);
-//                imageView.setImageBitmap(img);
-                Log.v("LOG", "camera ok");
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == PERMISSION_REQUEST_CAMERA) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.v("PERMISSAO", "permissão camera concedida");
+//                OrdemServicoAdapter.camera(this, 0);
+            } else {
+                Log.v("PERMISSAO", "permissão camera negada");
+                Toast.makeText(this, "O acesso à câmera é necessário para adicionar uma imagem a OS.", Toast.LENGTH_LONG).show();
+            }
+        } else if (requestCode == PERMISSION_REQUEST_GALERIA) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.v("PERMISSAO", "permissão galeria concedida");
+            } else {
+                Log.v("PERMISSAO", "permissão galeria negada");
             }
         }
     }
