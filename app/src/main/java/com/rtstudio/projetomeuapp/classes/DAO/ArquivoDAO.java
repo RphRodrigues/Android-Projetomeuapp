@@ -42,7 +42,7 @@ public class ArquivoDAO implements InterfaceDAO {
         ObjectInputStream objInput;
         try {
             objInput = new ObjectInputStream(new FileInputStream(file));
-            ordens = (List) objInput.readObject();
+            ordens = (List<OrdemServico>) objInput.readObject();
             objInput.close();
 
         } catch (EOFException e) {
