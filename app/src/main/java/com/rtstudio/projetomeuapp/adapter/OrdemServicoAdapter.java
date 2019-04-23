@@ -1,13 +1,18 @@
 package com.rtstudio.projetomeuapp.adapter;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +26,7 @@ import android.widget.Toast;
 
 import com.rtstudio.projetomeuapp.CadastrarServicoActivity;
 import com.rtstudio.projetomeuapp.R;
+import com.rtstudio.projetomeuapp.TelaInicialActivity;
 import com.rtstudio.projetomeuapp.classes.DAO.ArquivoDAO;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 
@@ -88,6 +94,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         holder.imageCam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 PopupMenu popup = new PopupMenu(activity, holder.imageCam);
 
                 popup.inflate(R.menu.floating_context_menu);
@@ -97,7 +104,23 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.floating_context_menu_camera:
-                                Toast.makeText(activity, "Camera " + position, Toast.LENGTH_SHORT).show();
+                                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+                                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, TelaInicialActivity.PERMISSION_REQUEST_CAMERA);
+
+                                    return false;
+                                }
+
+                                camera(activity, position);
+
+//                                Uri uriFileFoto = FileProvider.getUriForFile(activity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
+//
+//                                Intent intentFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//
+//                                intentFoto.putExtra(MediaStore.EXTRA_OUTPUT, uriFileFoto);
+//
+//                                activity.startActivityForResult(intentFoto, 3);
+
                                 break;
 
                             case R.id.floating_context_menu_galeria:
@@ -107,7 +130,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                             default:
                                 break;
                         }
-                        return false;
+                        return true;
                     }
                 });
 
@@ -185,6 +208,17 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         });
     }
 
+    public static void camera(Activity activity, int position) {
+        File fileFoto = new File(activity.getCacheDir(), "Foto" + position + ".jpg");
+
+        Uri uriFileFoto = FileProvider.getUriForFile(activity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
+
+        Intent intentFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        intentFoto.putExtra(MediaStore.EXTRA_OUTPUT, uriFileFoto);
+
+        activity.startActivityForResult(intentFoto, 3);
+    }
 
     public File getFileFoto() {
         return fileFoto;
