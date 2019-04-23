@@ -44,6 +44,9 @@ import java.util.Locale;
 
 public class CadastrarServicoActivity extends AppCompatActivity {
 
+    public static final int PERMISSION_REQUEST_GPS = 100;
+    public static final int PERMISSION_REQUEST_MEMORIA = 101;
+
     int position;
     File file;
     private Cliente cliente = null;
@@ -68,6 +71,13 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_servico);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_MEMORIA);
+
+            return;
+        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -155,18 +165,12 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         btnLocalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(
-                        CadastrarServicoActivity.this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                        (ActivityCompat.checkSelfPermission(CadastrarServicoActivity.this,
-                                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+                if (ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        || (ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
 
-                    ActivityCompat.requestPermissions(
-                            CadastrarServicoActivity.this,
-                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-                                    Manifest.permission.ACCESS_FINE_LOCATION},
-                            101
-                    );
+                    String[] permissoes = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+
+                    ActivityCompat.requestPermissions(CadastrarServicoActivity.this, permissoes, PERMISSION_REQUEST_GPS);
                     return;
                 }
                 getLocalizacao();
@@ -268,13 +272,24 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (requestCode == 101) {
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == PERMISSION_REQUEST_GPS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.v("PERMISSAO", "Permissão gps concedida");
                 getLocalizacao();
-                Log.v("GPS", "onRequestPermissionsResult");
+            } else {
+                Log.v("PERMISSAO", "Permissão gps negada");
+                Toast.makeText(this, "O acesso a localização é necessário para utilizar o GPS.", Toast.LENGTH_LONG).show();
+            }
+        } else if (requestCode == PERMISSION_REQUEST_MEMORIA) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.v("PERMISSAO", "Permissão memória concedida");
+
+            } else {
+                Log.v("PERMISSAO", "Permissão memória negada");
+                Toast.makeText(this, "O acesso à memória é necessário para salvar OS", Toast.LENGTH_LONG).show();
+                finish();
             }
         }
-
     }
 
     private void editarOS() {
