@@ -41,10 +41,11 @@ public class ArquivoDAO implements InterfaceDAO {
         List<OrdemServico> ordens = new ArrayList<>();
         ObjectInputStream objInput;
         try {
-            objInput = new ObjectInputStream(new FileInputStream(file));
-            ordens = (List<OrdemServico>) objInput.readObject();
-            objInput.close();
-
+            if (file.exists()) {
+                objInput = new ObjectInputStream(new FileInputStream(file));
+                ordens = (List<OrdemServico>) objInput.readObject();
+                objInput.close();
+            }
         } catch (EOFException e) {
             e.printStackTrace();
         } catch (IOException | ClassNotFoundException e) {

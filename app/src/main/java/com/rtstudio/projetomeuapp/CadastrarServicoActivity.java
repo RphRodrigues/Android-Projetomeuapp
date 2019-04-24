@@ -286,7 +286,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
             } else {
                 Log.v("PERMISSAO", "Permissão memória negada");
-                Toast.makeText(this, "O acesso à memória é necessário para salvar OS", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "O acesso à memória é necessário para criar OS", Toast.LENGTH_LONG).show();
                 finish();
             }
         }

@@ -1,6 +1,7 @@
 package com.rtstudio.projetomeuapp.adapter;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -8,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -41,6 +41,10 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     private Activity activity;
     private List<OrdemServico> ordemServicoList;
     private File fileFoto;
+    int posicao;
+
+    public OrdemServicoAdapter() {
+    }
 
     public OrdemServicoAdapter(Activity activity, List<OrdemServico> list) {
         this.ordemServicoList = list;
@@ -110,8 +114,8 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
                                     return false;
                                 }
-
-                                camera(activity, position);
+                                posicao = position;
+                                tirarFoto();
 
 //                                Uri uriFileFoto = FileProvider.getUriForFile(activity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
 //
@@ -208,38 +212,39 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         });
     }
 
-    public static void camera(Activity activity, int position) {
-        File fileFoto = new File(activity.getCacheDir(), "Foto" + position + ".jpg");
-
-        Uri uriFileFoto = FileProvider.getUriForFile(activity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
-
-        Intent intentFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        intentFoto.putExtra(MediaStore.EXTRA_OUTPUT, uriFileFoto);
-
-        activity.startActivityForResult(intentFoto, 3);
-    }
-
     public File getFileFoto() {
         return fileFoto;
     }
 
-    private File createImageFile() throws IOException {
-        String currentPhotoPath;
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,   /* prefix */
-                ".jpg",   /* suffix */
-                storageDir       /* directory */
-        );
+    public void tirarFoto() {
 
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
+        try {
+            fileFoto = createImageFile(posicao);
+
+            Uri uriFile = FileProvider.getUriForFile(activity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
+
+            Intent intentFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            intentFoto.putExtra(MediaStore.EXTRA_OUTPUT, uriFile);
+
+            activity.startActivityForResult(intentFoto, 3);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private File createImageFile(int position) throws IOException {
+
+        @SuppressLint("SimpleDateFormat")
+        String dataHoraAtual = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageName = "RPH_" + position + "-" + dataHoraAtual + "_";
+
+        //File caminhaDaPasta = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+
+        File caminhaDaPasta = activity.getCacheDir().getAbsoluteFile();
+
+        return File.createTempFile(imageName, ".jpg", caminhaDaPasta);
     }
 
     @Override

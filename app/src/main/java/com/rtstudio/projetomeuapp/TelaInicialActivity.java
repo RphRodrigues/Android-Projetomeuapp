@@ -136,8 +136,8 @@ public class TelaInicialActivity extends AppCompatActivity {
             if (adapter.getFileFoto() != null) {
 
                 String fileFotoAbsolutePath = adapter.getFileFoto().getAbsolutePath();
-                int inicio = fileFotoAbsolutePath.lastIndexOf("Foto") + 4;
-                int fim = fileFotoAbsolutePath.lastIndexOf("jpg") - 1;
+                int inicio = fileFotoAbsolutePath.lastIndexOf("RPH_") + 4;
+                int fim = fileFotoAbsolutePath.lastIndexOf("-");
                 int pos = Integer.parseInt(fileFotoAbsolutePath.substring(inicio, fim));
 
                 ordemServicoList.get(pos).setFile(fileFotoAbsolutePath);
@@ -155,7 +155,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         if (requestCode == PERMISSION_REQUEST_CAMERA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.v("PERMISSAO", "permissão camera concedida");
-//                OrdemServicoAdapter.camera(this, 0);
+                new OrdemServicoAdapter().tirarFoto();
             } else {
                 Log.v("PERMISSAO", "permissão camera negada");
                 Toast.makeText(this, "O acesso à câmera é necessário para adicionar uma imagem a OS.", Toast.LENGTH_LONG).show();
