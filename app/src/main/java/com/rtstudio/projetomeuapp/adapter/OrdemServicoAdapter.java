@@ -41,7 +41,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     private Activity activity;
     private List<OrdemServico> ordemServicoList;
     private File fileFoto;
-    int posicao;
+    private int posicao;
 
     public OrdemServicoAdapter() {
     }
@@ -117,14 +117,6 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                                 posicao = position;
                                 tirarFoto();
 
-//                                Uri uriFileFoto = FileProvider.getUriForFile(activity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
-//
-//                                Intent intentFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//
-//                                intentFoto.putExtra(MediaStore.EXTRA_OUTPUT, uriFileFoto);
-//
-//                                activity.startActivityForResult(intentFoto, 3);
-
                                 break;
 
                             case R.id.floating_context_menu_galeria:
@@ -139,38 +131,6 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                 });
 
                 popup.show();
-
-//                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, 1);
-//                }
-//
-//                fileFoto = new File(activity.getCacheDir(), "minhaFoto" + position + ".jpg");
-//
-//                Uri uri = FileProvider.getUriForFile(activity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
-//
-//                Intent camIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//
-//                camIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);   //usando para foto original
-//
-//                activity.startActivityForResult(camIntent, 3);
-//
-////                    if (camIntent.resolveActivity(activity.getPackageManager()) != null) {
-////                        File fotoF = null;
-////                        try {
-////                            fotoF = createImageFile();
-////                        } catch (IOException e) {
-////                            e.printStackTrace();
-////                        }
-////                        if (fotoF != null) {
-////                        Uri fotoURI = FileProvider.getUriForFile(activity.getBaseContext(), "com.rtstudio.projetomeuapp", fotoF);
-////
-////                        camIntent.putExtra(MediaStore.EXTRA_OUTPUT, fotoURI);
-////                            activity.startActivityForResult(camIntent, 3);
-////                        }
-////
-////                    }
-//
-//                Toast.makeText(activity, "Camera", Toast.LENGTH_SHORT).show();
             }
         });
 
