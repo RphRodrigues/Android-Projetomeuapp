@@ -120,7 +120,18 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                                 break;
 
                             case R.id.floating_context_menu_galeria:
-                                Toast.makeText(activity, "Galeria " + position, Toast.LENGTH_SHORT).show();
+
+                                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, TelaInicialActivity.PERMISSION_REQUEST_GALERIA);
+
+                                    return false;
+                                }
+
+                                Intent intentGaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                                activity.startActivityForResult(intentGaleria, TelaInicialActivity.PERMISSION_REQUEST_GALERIA);
+
                                 break;
 
                             default:

@@ -3,8 +3,12 @@ package com.rtstudio.projetomeuapp;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -129,6 +133,26 @@ public class TelaInicialActivity extends AppCompatActivity {
 
             }
 
+        }
+
+        if (requestCode == PERMISSION_REQUEST_GALERIA && resultCode == RESULT_OK) {
+
+            if (data != null) {
+                Uri imagemSeleciona  = data.getData();
+                String[] caminhoFile = {MediaStore.Images.Media.DATA};
+
+                Cursor cursor = getContentResolver().query(imagemSeleciona, caminhoFile, null, null, null);
+                cursor.moveToFirst();
+
+                int indexColuna = cursor.getColumnIndex(caminhoFile[0]);
+                String caminhoImagem = cursor.getString(indexColuna);
+                cursor.close();
+
+                Bitmap imagemBitmap = BitmapFactory.decodeFile(caminhoImagem);
+
+                Log.v("PERMISSAO", caminhoImagem);
+                //falta pega a posição da OS na lista
+            }
         }
 
         if (requestCode == 3 && resultCode == RESULT_OK) {
