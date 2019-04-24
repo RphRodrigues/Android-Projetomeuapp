@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
@@ -197,6 +198,21 @@ public class TelaInicialActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_principal, menu);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String string) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String string) {
+                return false;
+            }
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 
