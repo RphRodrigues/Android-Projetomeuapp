@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rtstudio.projetomeuapp.CadastrarServicoActivity;
 import com.rtstudio.projetomeuapp.R;
@@ -41,9 +40,10 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     private Activity activity;
     private List<OrdemServico> ordemServicoList;
     private File fileFoto;
-    private int posicao;
+    private int posicaoGlobal;
 
-    public OrdemServicoAdapter() {
+    public OrdemServicoAdapter(Activity activity) {
+        this.activity = activity;
     }
 
     public OrdemServicoAdapter(Activity activity, List<OrdemServico> list) {
@@ -114,7 +114,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
                                     return false;
                                 }
-                                posicao = position;
+                                posicaoGlobal = position;
                                 tirarFoto();
 
                                 break;
@@ -190,7 +190,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     public void tirarFoto() {
 
         try {
-            fileFoto = createImageFile(posicao);
+            fileFoto = createImageFile(posicaoGlobal);
 
             Uri uriFile = FileProvider.getUriForFile(activity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
 

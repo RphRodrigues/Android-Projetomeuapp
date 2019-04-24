@@ -179,7 +179,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         if (requestCode == PERMISSION_REQUEST_CAMERA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.v("PERMISSAO", "permissão camera concedida");
-                new OrdemServicoAdapter().tirarFoto();
+                adapter.tirarFoto();
             } else {
                 Log.v("PERMISSAO", "permissão camera negada");
                 Toast.makeText(this, "O acesso à câmera é necessário para adicionar uma imagem a OS.", Toast.LENGTH_LONG).show();
