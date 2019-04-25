@@ -1,5 +1,6 @@
 package com.rtstudio.projetomeuapp;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,10 +9,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,8 +23,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.DAO.ArquivoDAO;
@@ -34,9 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TelaInicialActivity extends AppCompatActivity {
-
-    public static final int PERMISSION_REQUEST_CAMERA = 1;
-    public static final int PERMISSION_REQUEST_GALERIA = 2;
 
     File file;
     private FloatingActionButton fab;
@@ -65,8 +61,11 @@ public class TelaInicialActivity extends AppCompatActivity {
             try {
                 ordemServicoList = new ArrayList<>();
 
-                ordemServicoList = new ArquivoDAO().lerArquivo(file);
+//                ordemServicoList = new ArquivoDAO().lerArquivo(file);
 
+                ordemServicoList = new OrdemServicoDAO(this).getAll();
+
+                atualizarRecyclerView(ordemServicoList);
                 if (!ordemServicoList.isEmpty()) {
                     atualizaRecyclerView(ordemServicoList);
                 }
@@ -106,12 +105,14 @@ public class TelaInicialActivity extends AppCompatActivity {
 
         Bundle bundle;
         if (data != null) {
-            bundle = data.getBundleExtra("BUNDLE");
+            bundle = data.getExtras();
             if (requestCode == 1 && resultCode == RESULT_OK && bundle != null) {
-
                 OrdemServico ordemServico = bundle.getParcelable("ORDEM_SERVICO");
-
                 ordemServicoList.add(ordemServico);
+
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                }
 
                 //Grava a lista de O.S. em arquivo .txt
                 new ArquivoDAO().salvarArquivo(ordemServicoList, file);
@@ -119,9 +120,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 atualizaRecyclerView(ordemServicoList);
 
             } else if (requestCode == 2 && bundle != null) {
-
                 OrdemServico os = bundle.getParcelable("ORDEM_SERVICO");
-
                 int pos = bundle.getInt("POSITION");
 
                 ordemServicoList.set(pos, os);
@@ -225,21 +224,6 @@ public class TelaInicialActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_principal, menu);
-
-        SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String string) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String string) {
-                return false;
-            }
-        });
-
         return super.onCreateOptionsMenu(menu);
     }
 

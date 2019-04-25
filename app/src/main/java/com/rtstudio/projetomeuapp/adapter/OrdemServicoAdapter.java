@@ -24,6 +24,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.rtstudio.projetomeuapp.CadastrarServicoActivity;
+import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.TelaInicialActivity;
 import com.rtstudio.projetomeuapp.classes.DAO.ArquivoDAO;
@@ -81,7 +82,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
         holder.numOS.setText(String.valueOf(ordemServico.getOrdemServicoId()));
 
-        holder.tipoServico.setText(ordemServico.getTipo());
+        holder.tipoServico.setText(ordemServico.getTipoServico());
 
         holder.bairro.setText(ordemServico.getEndereco().getBairro());
 
@@ -174,8 +175,9 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+//                                new ArquivoDAO().salvarArquivo(ordemServicoList, new File(activity.getFilesDir(), "TCC.txt"));
+                                new OrdemServicoDAO(activity).deleteOrdemServico(ordemServicoList.get(position).getOrdemServicoId());
                                 ordemServicoList.remove(position);
-                                new ArquivoDAO().salvarArquivo(ordemServicoList, new File(activity.getFilesDir(), "TCC.txt"));
                                 notifyItemRemoved(position);
                             }
                         })

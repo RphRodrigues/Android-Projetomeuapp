@@ -10,29 +10,36 @@ public class OrdemServico implements Parcelable, Serializable {
     private int ordemServicoId;
     private Cliente cliente;
     private Endereco endereco;
-    private String tipo;
+    private String tipoServico;
     private String descricaoServico;
-    private String file;
+    private String filename;
 
     //Bloco de inicialização que inicializa o id da ordem de serviço
     {
         this.ordemServicoId = gerarId();
     }
 
-    public OrdemServico(Cliente cliente, Endereco endereco, String descricaoServico, String tipo) {
+    public OrdemServico(int ordemServicoId, Cliente cliente, Endereco endereco, String tipoServico) {
+        this.ordemServicoId = ordemServicoId;
+        this.cliente = cliente;
+        this.endereco = endereco;
+        this.tipoServico = tipoServico;
+    }
+
+    public OrdemServico(Cliente cliente, Endereco endereco, String descricaoServico, String tipoServico) {
         this.cliente = cliente;
         this.descricaoServico = descricaoServico;
         this.endereco = endereco;
-        this.tipo = tipo;
+        this.tipoServico = tipoServico;
     }
 
     protected OrdemServico(Parcel in) {
         ordemServicoId = in.readInt();
         cliente = in.readParcelable(Cliente.class.getClassLoader());
         endereco = in.readParcelable(Endereco.class.getClassLoader());
-        tipo = in.readString();
+        tipoServico = in.readString();
         descricaoServico = in.readString();
-        file = in.readString();
+        filename = in.readString();
     }
 
     @Override
@@ -40,9 +47,9 @@ public class OrdemServico implements Parcelable, Serializable {
         dest.writeInt(ordemServicoId);
         dest.writeParcelable(cliente, flags);
         dest.writeParcelable(endereco, flags);
-        dest.writeString(tipo);
+        dest.writeString(tipoServico);
         dest.writeString(descricaoServico);
-        dest.writeString(file);
+        dest.writeString(filename);
     }
 
     @Override
@@ -95,19 +102,19 @@ public class OrdemServico implements Parcelable, Serializable {
         this.endereco = endereco;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getTipoServico() {
+        return tipoServico;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipoServico(String tipoServico) {
+        this.tipoServico = tipoServico;
     }
 
-    public void setFile(String file) {
-        this.file = file;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
-    public String getFile() {
-        return file;
+    public String getFilename() {
+        return filename;
     }
 }
