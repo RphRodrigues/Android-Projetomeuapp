@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -23,7 +24,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.DAO.ArquivoDAO;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
@@ -33,6 +36,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TelaInicialActivity extends AppCompatActivity {
+
+    public static final int PERMISSION_REQUEST_CAMERA = 1;
+    public static final int PERMISSION_REQUEST_GALERIA = 2;
 
     File file;
     private FloatingActionButton fab;
@@ -65,7 +71,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
                 ordemServicoList = new OrdemServicoDAO(this).getAll();
 
-                atualizarRecyclerView(ordemServicoList);
+                atualizaRecyclerView(ordemServicoList);
                 if (!ordemServicoList.isEmpty()) {
                     atualizaRecyclerView(ordemServicoList);
                 }
@@ -164,7 +170,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 int fim = fileFotoAbsolutePath.lastIndexOf("-");
                 int pos = Integer.parseInt(fileFotoAbsolutePath.substring(inicio, fim));
 
-                ordemServicoList.get(pos).setFile(fileFotoAbsolutePath);
+                ordemServicoList.get(pos).setFilename(fileFotoAbsolutePath);
 
                 new ArquivoDAO().salvarArquivo(ordemServicoList, file);
 
