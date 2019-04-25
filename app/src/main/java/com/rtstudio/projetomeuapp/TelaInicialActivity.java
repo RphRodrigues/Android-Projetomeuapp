@@ -139,6 +139,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
             if (data != null) {
                 Uri imagemSeleciona  = data.getData();
+                int pos = adapter.getPosicaoGlobal();
                 String[] caminhoFile = {MediaStore.Images.Media.DATA};
 
                 Cursor cursor = getContentResolver().query(imagemSeleciona, caminhoFile, null, null, null);
@@ -187,8 +188,10 @@ public class TelaInicialActivity extends AppCompatActivity {
         } else if (requestCode == PERMISSION_REQUEST_GALERIA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.v("PERMISSAO", "permissão galeria concedida");
+                adapter.abrirGaleria();
             } else {
                 Log.v("PERMISSAO", "permissão galeria negada");
+                Toast.makeText(this, "O acesso à galeria é necessário para adicionar uma imagem a OS.", Toast.LENGTH_LONG).show();
             }
         }
     }

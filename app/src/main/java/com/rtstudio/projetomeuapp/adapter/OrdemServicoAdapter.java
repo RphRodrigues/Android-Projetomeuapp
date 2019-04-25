@@ -51,6 +51,14 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         this.activity = activity;
     }
 
+    public int getPosicaoGlobal() {
+        return posicaoGlobal;
+    }
+
+    public void setPosicaoGlobal(int posicaoGlobal) {
+        this.posicaoGlobal = posicaoGlobal;
+    }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -120,17 +128,14 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                                 break;
 
                             case R.id.floating_context_menu_galeria:
-
+                                posicaoGlobal = ordemServicoList.get(position).getOrdemServicoId();
                                 if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
                                     ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, TelaInicialActivity.PERMISSION_REQUEST_GALERIA);
 
                                     return false;
                                 }
-
-                                Intent intentGaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                                activity.startActivityForResult(intentGaleria, TelaInicialActivity.PERMISSION_REQUEST_GALERIA);
+                                abrirGaleria();
 
                                 break;
 
@@ -181,6 +186,11 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                 return false;
             }
         });
+    }
+
+    public void abrirGaleria() {
+        Intent intentGaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        activity.startActivityForResult(intentGaleria, TelaInicialActivity.PERMISSION_REQUEST_GALERIA);
     }
 
     public File getFileFoto() {
