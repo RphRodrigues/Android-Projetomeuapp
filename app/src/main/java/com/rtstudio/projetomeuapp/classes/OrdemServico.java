@@ -26,6 +26,14 @@ public class OrdemServico implements Parcelable, Serializable {
         this.tipoServico = tipoServico;
     }
 
+    public OrdemServico(int ordemServicoId, Cliente cliente, Endereco endereco, String filename,String tipoServico) {
+        this.ordemServicoId = ordemServicoId;
+        this.cliente = cliente;
+        this.endereco = endereco;
+        this.filename = filename;
+        this.tipoServico = tipoServico;
+    }
+
     public OrdemServico(Cliente cliente, Endereco endereco, String descricaoServico, String tipoServico) {
         this.cliente = cliente;
         this.descricaoServico = descricaoServico;
