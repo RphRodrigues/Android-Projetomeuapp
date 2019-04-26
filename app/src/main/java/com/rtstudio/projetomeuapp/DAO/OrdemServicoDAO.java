@@ -31,6 +31,7 @@ public class OrdemServicoDAO {
         create.append("     ORDEM_SERVICO_ID    INTEGER NOT NULL PRIMARY KEY,");
         create.append("     CLIENTE_ID          INTEGER,");
         create.append("     ENDERECO_ID         INTEGER,");
+        create.append("     FOTOSERVICO         TEXT,");
         create.append("     TIPOSERVICO         TEXT");
         create.append(")");
         sqLite.execSQL(create.toString());
@@ -90,16 +91,18 @@ public class OrdemServicoDAO {
                     int ordemServicoId = cursor.getInt(cursor.getColumnIndex("ORDEM_SERVICO_ID"));
                     int clienteId = cursor.getInt(cursor.getColumnIndex("CLIENTE_ID"));
                     int enderecoId = cursor.getInt(cursor.getColumnIndex("ENDERECO_ID"));
+                    String fotoServico = cursor.getString(cursor.getColumnIndex("FOTOSERVICO"));
                     String tipoServico = cursor.getString(cursor.getColumnIndex("TIPOSERVICO"));
 
                     Cliente cliente = new ClienteDAO(context).getClienteById(clienteId);
                     Endereco endereco = new EnderecoDAO(context).getEnderecoById(enderecoId);
 
-                    OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, tipoServico);
+                    OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, fotoServico, tipoServico);
 
                     Log.v("BANCO", "Lendo -> Os: " + os.getOrdemServicoId() +
                             " Cliente: " + cliente.getNome() +
                             " Endereco: " + endereco.getBairro() +
+                            " foto: " + os.getFilename() +
                             " Tipo serviço: " + tipoServico);
 
                     ordens.add(os);
@@ -117,5 +120,54 @@ public class OrdemServicoDAO {
         String[] value = new String[]{String.valueOf(ordemServicoId)};
         Log.v("BANCO", "Deletando -> Os: " + ordemServicoId);
         return banco.delete(TABELA_ORDEM_SERVICO, "ORDEM_SERVICO_ID = ?", value) > 0;
+    }
+
+    public boolean addFotoParaUmaOS(int ordemServicoId, String fotoServico) {
+        SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("FOTOSERVICO", fotoServico);
+
+        return banco.update(TABELA_ORDEM_SERVICO, values, "ORDEM_SERVICO_ID = ?", new String[]{String.valueOf(ordemServicoId)}) == 1;
+    }
+
+    public List<OrdemServico> getOrdemServicoByBairro(String bairro) {
+
+        SQLiteDatabase banco = Connection.getInstance(context).getReadableDatabase();
+
+        String select = String.format("SELECT %s FROM %s as Os INNER JOIN (SELECT ID FROM %s as ende WHERE BAIRRO LIKE '%%%s%%') as res ON Os.ENDERECO_ID = res.ID",
+                CAMPOS, TABELA_ORDEM_SERVICO, EnderecoDAO.TABELA_ENDERECO, bairro);
+
+        Cursor cursor = banco.rawQuery(select, null);
+
+        List<OrdemServico> ordens = new ArrayList<>();
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    int ordemServicoId = cursor.getInt(cursor.getColumnIndex("ORDEM_SERVICO_ID"));
+                    int clienteId = cursor.getInt(cursor.getColumnIndex("CLIENTE_ID"));
+                    int enderecoId = cursor.getInt(cursor.getColumnIndex("ENDERECO_ID"));
+                    String fotoServico = cursor.getString(cursor.getColumnIndex("FOTOSERVICO"));
+                    String tipoServico = cursor.getString(cursor.getColumnIndex("TIPOSERVICO"));
+
+                    Cliente cliente = new ClienteDAO(context).getClienteById(clienteId);
+                    Endereco endereco = new EnderecoDAO(context).getEnderecoById(enderecoId);
+
+                    OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, fotoServico, tipoServico);
+
+                    Log.v("BANCO", "getOrdemServicoByBairro -> Os: " + os.getOrdemServicoId() +
+                            " Cliente: " + cliente.getNome() +
+                            " Endereco: " + endereco.getBairro() +
+                            " foto: " + os.getFilename() +
+                            " Tipo serviço: " + tipoServico);
+
+                    ordens.add(os);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+        return ordens;
     }
 }
