@@ -150,7 +150,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 Log.v("Raphael", "salvando " + ordemServico.getEndereco().getRua());
 
                 OrdemServicoDAO = new OrdemServicoDAO(CadastrarServicoActivity.this);
-                boolean id = OrdemServicoDAO.insert(ordemServico);
+                boolean id = OrdemServicoDAO.insertOrdemServico(ordemServico);
                 Toast.makeText(CadastrarServicoActivity.this, "OS cadastrada com sucesso? " + id, Toast.LENGTH_SHORT).show();
 
                 new AlertDialog.Builder(CadastrarServicoActivity.this)
@@ -341,7 +341,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
             btnCriarOS.setText("Salvar");
 
-            Bitmap img = BitmapFactory.decodeFile(os.getFile());
+            Bitmap img = BitmapFactory.decodeFile(os.getFilename());
             imgBitmap.setImageBitmap(img);
         }
     }
