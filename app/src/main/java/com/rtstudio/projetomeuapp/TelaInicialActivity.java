@@ -18,6 +18,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -234,7 +235,33 @@ public class TelaInicialActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_principal, menu);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String string) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String string) {
+                getOrdemServicoByBairro(string);
+                return false;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void getOrdemServicoByBairro(String bairro) {
+        List<OrdemServico> ordemServicoListBairro = new ArrayList<>();
+
+        for (OrdemServico ordemServico: ordemServicoList) {
+            if (ordemServico.getEndereco().getBairro().toLowerCase().contains(bairro.toLowerCase())) {
+                ordemServicoListBairro.add(ordemServico);
+            }
+        }
+        atualizaRecyclerView(ordemServicoListBairro);
     }
 
     @Override
