@@ -157,8 +157,11 @@ public class TelaInicialActivity extends AppCompatActivity {
 
                 Bitmap imagemBitmap = BitmapFactory.decodeFile(caminhoImagem);
 
-                Log.v("PERMISSAO", caminhoImagem);
-                //falta pega a posição da OS na lista
+                if(new OrdemServicoDAO(this).addFotoParaUmaOS(pos, caminhoImagem)) {
+                    Log.i("BANCO", "onActivityResult: addFotoParaUmaOS");
+                    ordemServicoList = new OrdemServicoDAO(this).getAll();
+                    atualizaRecyclerView(ordemServicoList);
+                }
             }
         }
 
