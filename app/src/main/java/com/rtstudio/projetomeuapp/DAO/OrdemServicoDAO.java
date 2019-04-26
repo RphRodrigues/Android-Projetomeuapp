@@ -16,7 +16,7 @@ import java.util.List;
 
 public class OrdemServicoDAO {
     private final String TABELA_ORDEM_SERVICO = "TABELA_ORDEM_SERVICO";
-    private final String CAMPOS = "ORDEM_SERVICO_ID, CLIENTE_ID, ENDERECO_ID, TIPOSERVICO";
+    private final String CAMPOS = "ORDEM_SERVICO_ID, CLIENTE_ID, ENDERECO_ID, FOTOSERVICO, TIPOSERVICO";
 
     private Context context;
 

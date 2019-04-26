@@ -9,8 +9,8 @@ import com.rtstudio.projetomeuapp.classes.Endereco;
 import com.rtstudio.projetomeuapp.connection.Connection;
 
 public class EnderecoDAO {
-    private final String TABELA_ENDERECO = "TABELA_ENDERECO";
-    private final String CAMPOS = "ID, RUA, NUMERO, BAIRRO, CEP, CIDADE, ESTADO";
+    public static final String TABELA_ENDERECO = "TABELA_ENDERECO";
+    public static final String CAMPOS = "ID, RUA, NUMERO, BAIRRO, CEP, CIDADE, ESTADO";
 
     private Context context;
 
