@@ -87,6 +87,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
         if (getIntent().getExtras() != null) {
             editarOS();
+            alertDialog("Não foi possível editar OS", true);
         }
 
         btnCriarOS.setOnClickListener(new View.OnClickListener() {
@@ -110,21 +111,12 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 intent.putExtra("BUNDLE", bundle);
                 setResult(RESULT_OK, intent);
 
-                if (salvarOrdemServicoNoBancoDeDados()) {
-                    Toast.makeText(CadastrarServicoActivity.this, "OS cadastrada com sucesso ", Toast.LENGTH_SHORT).show();
+                if (btnCriarOS.getText().toString().toLowerCase().equals("salvar")) {
+                    alertDialog("Não foi possível editar OS", true);
+                } else {
+                    salvarOrdemServicoNoBancoDeDados();
+                    alertDialog(getString(R.string.os_gerada_sucesso), false);
                 }
-
-                new AlertDialog.Builder(CadastrarServicoActivity.this)
-                        .setTitle("Aviso")
-                        .setMessage(getString(R.string.os_gerada_sucesso))
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        })
-                        .create()
-                        .show();
 
             }
         });
@@ -158,6 +150,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         descricaoServico = findViewById(R.id.cadastrar_edtDescricaoServicosId);
         btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
         btnLocalizar = findViewById(R.id.cadastrar_btnLocation);
+        imgBitmap = findViewById(R.id.cadastrar_ivBitmap);
 
         //Inicializa o spinner de estados com RJ
         estado.setSelection(18);
@@ -165,6 +158,10 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
     private boolean salvarOrdemServicoNoBancoDeDados() {
         return new OrdemServicoDAO(CadastrarServicoActivity.this).insertOrdemServico(ordemServico);
+    }
+
+    private boolean atualizarOrdemServicoNoBancoDeDados() {
+        return new OrdemServicoDAO(CadastrarServicoActivity.this).updateOS(ordemServico);
     }
 
     private void createOrdemServico() {
@@ -387,6 +384,21 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void alertDialog(String mensagem, boolean bool) {
+        new AlertDialog.Builder(CadastrarServicoActivity.this)
+                .setTitle("Aviso")
+                .setMessage(mensagem)
+                .setCancelable(!bool)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .create()
+                .show();
     }
 
     private Boolean validacao() {

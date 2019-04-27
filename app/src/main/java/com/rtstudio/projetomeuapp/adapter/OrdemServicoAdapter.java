@@ -27,7 +27,6 @@ import com.rtstudio.projetomeuapp.CadastrarServicoActivity;
 import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.TelaInicialActivity;
-import com.rtstudio.projetomeuapp.classes.DAO.ArquivoDAO;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 
 import java.io.File;
@@ -119,7 +118,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                             case R.id.floating_context_menu_camera:
                                 if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
-                                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, TelaInicialActivity.PERMISSION_REQUEST_CAMERA);
+                                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, TelaInicialActivity.REQUEST_CODE_CAMERA);
 
                                     return false;
                                 }
@@ -132,7 +131,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                                 posicaoGlobal = ordemServicoList.get(position).getOrdemServicoId();
                                 if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, TelaInicialActivity.PERMISSION_REQUEST_GALERIA);
+                                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, TelaInicialActivity.REQUEST_CODE_GALERIA);
 
                                     return false;
                                 }
@@ -161,7 +160,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                 Intent intent = new Intent(activity, CadastrarServicoActivity.class);
                 intent.putExtra("BUNDLE", bundle);
 
-                activity.startActivityForResult(intent, 2);
+                activity.startActivityForResult(intent, TelaInicialActivity.REQUEST_CODE_EDITAR);
             }
         });
 
@@ -192,7 +191,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
     public void abrirGaleria() {
         Intent intentGaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        activity.startActivityForResult(intentGaleria, TelaInicialActivity.PERMISSION_REQUEST_GALERIA);
+        activity.startActivityForResult(intentGaleria, TelaInicialActivity.REQUEST_CODE_GALERIA);
     }
 
     public File getFileFoto() {
@@ -210,7 +209,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
             intentFoto.putExtra(MediaStore.EXTRA_OUTPUT, uriFile);
 
-            activity.startActivityForResult(intentFoto, 3);
+            activity.startActivityForResult(intentFoto, TelaInicialActivity.REQUEST_CODE_CAMERA);
         } catch (IOException e) {
             e.printStackTrace();
         }

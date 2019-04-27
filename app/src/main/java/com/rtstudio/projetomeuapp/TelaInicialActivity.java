@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
-import com.rtstudio.projetomeuapp.classes.DAO.ArquivoDAO;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 
 import java.io.File;
@@ -38,8 +37,10 @@ import java.util.List;
 
 public class TelaInicialActivity extends AppCompatActivity {
 
-    public static final int PERMISSION_REQUEST_CAMERA = 1;
-    public static final int PERMISSION_REQUEST_GALERIA = 2;
+    public static final int REQUEST_CODE_CRIAR = 1;
+    public static final int REQUEST_CODE_EDITAR = 2;
+    public static final int REQUEST_CODE_CAMERA = 3;
+    public static final int REQUEST_CODE_GALERIA = 4;
 
     File file;
     private FloatingActionButton fab;
@@ -112,37 +113,32 @@ public class TelaInicialActivity extends AppCompatActivity {
         Bundle bundle;
         if (data != null) {
             bundle = data.getBundleExtra("BUNDLE");
-            if (requestCode == 1 && resultCode == RESULT_OK && bundle != null) {
+            if (requestCode == REQUEST_CODE_CRIAR && resultCode == RESULT_OK && bundle != null) {
                 OrdemServico ordemServico = bundle.getParcelable("ORDEM_SERVICO");
                 ordemServicoList.add(ordemServico);
 
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                }
-
                 //Grava a lista de O.S. em arquivo .txt
-                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
+//                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
 
                 new OrdemServicoDAO(this).insertOrdemServico(ordemServico);
 
                 atualizaRecyclerView(ordemServicoList);
 
-            } else if (requestCode == 2 && bundle != null) {
+            } else if (requestCode == REQUEST_CODE_EDITAR && bundle != null) {
                 OrdemServico os = bundle.getParcelable("ORDEM_SERVICO");
                 int pos = bundle.getInt("POSITION");
 
                 ordemServicoList.set(pos, os);
 
                 //Grava a lista de O.S. em arquivo .txt
-                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
+//                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
 
                 atualizaRecyclerView(ordemServicoList);
-
             }
 
         }
 
-        if (requestCode == PERMISSION_REQUEST_GALERIA && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_GALERIA && resultCode == RESULT_OK) {
 
             if (data != null) {
                 Uri imagemSeleciona  = data.getData();
@@ -166,18 +162,18 @@ public class TelaInicialActivity extends AppCompatActivity {
             }
         }
 
-        if (requestCode == 3 && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK) {
 
             if (adapter.getFileFoto() != null) {
 
+                int position = adapter.getPosicaoGlobal();
+
                 String fileFotoAbsolutePath = adapter.getFileFoto().getAbsolutePath();
-                int inicio = fileFotoAbsolutePath.lastIndexOf("RPH_") + 4;
-                int fim = fileFotoAbsolutePath.lastIndexOf("-");
-                int pos = Integer.parseInt(fileFotoAbsolutePath.substring(inicio, fim));
 
-                ordemServicoList.get(pos).setFilename(fileFotoAbsolutePath);
+                ordemServicoList.get(position).setFilename(fileFotoAbsolutePath);
 
-                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
+//                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
+                new OrdemServicoDAO(this).addFotoParaUmaOS(ordemServicoList.get(position).getOrdemServicoId(), fileFotoAbsolutePath);
 
                 atualizaRecyclerView(ordemServicoList);
             }
@@ -187,7 +183,7 @@ public class TelaInicialActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (requestCode == PERMISSION_REQUEST_CAMERA) {
+        if (requestCode == REQUEST_CODE_CAMERA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.v("PERMISSAO", "permissão camera concedida");
                 adapter.tirarFoto();
@@ -195,7 +191,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 Log.v("PERMISSAO", "permissão camera negada");
                 Toast.makeText(this, "O acesso à câmera é necessário para adicionar uma imagem a OS.", Toast.LENGTH_LONG).show();
             }
-        } else if (requestCode == PERMISSION_REQUEST_GALERIA) {
+        } else if (requestCode == REQUEST_CODE_GALERIA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.v("PERMISSAO", "permissão galeria concedida");
                 adapter.abrirGaleria();
@@ -206,13 +202,21 @@ public class TelaInicialActivity extends AppCompatActivity {
         }
     }
 
+    public void checkImageBackground() {
+        if (adapter.getItemCount() > 0) {
+            imgBackground.setVisibility(View.INVISIBLE);
+        } else {
+            imgBackground.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void atualizaRecyclerView(List<OrdemServico> ordemServicoList) {
 
         adapter = new OrdemServicoAdapter(TelaInicialActivity.this, ordemServicoList);
 
         recyclerView.setAdapter(adapter);
 
-        imgBackground.setVisibility(View.INVISIBLE);
+        checkImageBackground();
     }
 
     @Override
