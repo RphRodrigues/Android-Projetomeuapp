@@ -87,7 +87,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
         if (getIntent().getExtras() != null) {
             editarOS();
-            alertDialog("Não foi possível editar OS", true);
+            alertDialog("Não foi possível editar OS", false);
         }
 
         btnCriarOS.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +112,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 setResult(RESULT_OK, intent);
 
                 if (btnCriarOS.getText().toString().toLowerCase().equals("salvar")) {
-                    alertDialog("Não foi possível editar OS", true);
+                    alertDialog("Não foi possível editar OS", false);
                 } else {
                     salvarOrdemServicoNoBancoDeDados();
                     alertDialog(getString(R.string.os_gerada_sucesso), false);
@@ -386,11 +386,11 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void alertDialog(String mensagem, boolean bool) {
+    private void alertDialog(String mensagem, boolean cancelable) {
         new AlertDialog.Builder(CadastrarServicoActivity.this)
                 .setTitle("Aviso")
                 .setMessage(mensagem)
-                .setCancelable(!bool)
+                .setCancelable(cancelable)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
