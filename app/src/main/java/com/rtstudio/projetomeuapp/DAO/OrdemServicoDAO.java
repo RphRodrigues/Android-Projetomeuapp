@@ -128,7 +128,17 @@ public class OrdemServicoDAO {
         ContentValues values = new ContentValues();
         values.put("FOTOSERVICO", fotoServico);
 
-        return banco.update(TABELA_ORDEM_SERVICO, values, "ORDEM_SERVICO_ID = ?", new String[]{String.valueOf(ordemServicoId)}) == 1;
+        String[] args = {String.valueOf(ordemServicoId)};
+        return banco.update(TABELA_ORDEM_SERVICO, values, "ORDEM_SERVICO_ID = ?", args) == 1;
+    }
+
+    public boolean updateOS(OrdemServico ordemServico) {
+        SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        String[] args = {String.valueOf(ordemServico.getOrdemServicoId())};
+        return banco.update(TABELA_ORDEM_SERVICO, values, "ORDEM_SERVICO_ID = ?", args) == 1;
     }
 
     public List<OrdemServico> getOrdemServicoByBairro(String bairro) {
