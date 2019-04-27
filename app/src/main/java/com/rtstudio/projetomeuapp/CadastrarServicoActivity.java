@@ -83,22 +83,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nomeCliente = findViewById(R.id.cadastrar_edtNomeClienteId);
-        rua = findViewById(R.id.cadastrar_edtRuaId);
-        cep = findViewById(R.id.cadastrar_edtCepId);
-        numero = findViewById(R.id.cadastrar_edtNumeroId);
-        cidade = findViewById(R.id.cadastrar_edtCidadeId);
-        estado = findViewById(R.id.cadastrar_spinnerEstados);
-        complemento = findViewById(R.id.cadastrar_edtComplementoId);
-        bairro = findViewById(R.id.cadastrar_edtBairroId);
-        tipoServico = findViewById(R.id.cadastrar_spinnerId);
-        descricaoServico = findViewById(R.id.cadastrar_edtDescricaoServicosId);
-        btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
-        btnLocalizar = findViewById(R.id.cadastrar_btnLocation);
-        imgBitmap = findViewById(R.id.cadastrar_ivBitmap);
-
-        //Inicializa o spinner de estados com RJ
-        estado.setSelection(18);
+        inicilizarVariaveisDeClasse();
 
         if (getIntent().getExtras() != null) {
             editarOS();
@@ -111,33 +96,11 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 //                    return;
 //                }
 
-                //Gerar o código do cliente a partir do nome e do cpf
-                String codCliente = nomeCliente.getText().toString().substring(0, 3);
+                createCliente();
 
-                //Cria o cliente
-                cliente = new Cliente(
-                        nomeCliente.getText().toString(),
-                        codCliente
-                );
+                createEndereco();
 
-                //Cria o endereço do serviço
-                endereco = new Endereco(
-                        cep.getText().toString(),
-                        rua.getText().toString(),
-                        numero.getText().toString(),
-                        cidade.getText().toString(),
-                        estado.getSelectedItem().toString(),
-                        bairro.getText().toString(),
-                        complemento.getText().toString()
-                );
-
-                //Cria a ordem de serviço
-                ordemServico = new OrdemServico(
-                        cliente,
-                        endereco,
-                        descricaoServico.getText().toString(),
-                        tipoServico.getSelectedItem().toString()
-                );
+                createOrdemServico();
 
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("ORDEM_SERVICO", ordemServico);
@@ -147,11 +110,9 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 intent.putExtra("BUNDLE", bundle);
                 setResult(RESULT_OK, intent);
 
-                Log.v("Raphael", "salvando " + ordemServico.getEndereco().getRua());
-
-                OrdemServicoDAO = new OrdemServicoDAO(CadastrarServicoActivity.this);
-                boolean id = OrdemServicoDAO.insertOrdemServico(ordemServico);
-                Toast.makeText(CadastrarServicoActivity.this, "OS cadastrada com sucesso? " + id, Toast.LENGTH_SHORT).show();
+                if (salvarOrdemServicoNoBancoDeDados()) {
+                    Toast.makeText(CadastrarServicoActivity.this, "OS cadastrada com sucesso ", Toast.LENGTH_SHORT).show();
+                }
 
                 new AlertDialog.Builder(CadastrarServicoActivity.this)
                         .setTitle("Aviso")
@@ -182,6 +143,58 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 getLocalizacao();
             }
         });
+    }
+
+    private void inicilizarVariaveisDeClasse() {
+        nomeCliente = findViewById(R.id.cadastrar_edtNomeClienteId);
+        rua = findViewById(R.id.cadastrar_edtRuaId);
+        cep = findViewById(R.id.cadastrar_edtCepId);
+        numero = findViewById(R.id.cadastrar_edtNumeroId);
+        cidade = findViewById(R.id.cadastrar_edtCidadeId);
+        estado = findViewById(R.id.cadastrar_spinnerEstados);
+        complemento = findViewById(R.id.cadastrar_edtComplementoId);
+        bairro = findViewById(R.id.cadastrar_edtBairroId);
+        tipoServico = findViewById(R.id.cadastrar_spinnerId);
+        descricaoServico = findViewById(R.id.cadastrar_edtDescricaoServicosId);
+        btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
+        btnLocalizar = findViewById(R.id.cadastrar_btnLocation);
+
+        //Inicializa o spinner de estados com RJ
+        estado.setSelection(18);
+    }
+
+    private boolean salvarOrdemServicoNoBancoDeDados() {
+        return new OrdemServicoDAO(CadastrarServicoActivity.this).insertOrdemServico(ordemServico);
+    }
+
+    private void createOrdemServico() {
+        ordemServico = new OrdemServico(
+                cliente,
+                endereco,
+                descricaoServico.getText().toString(),
+                tipoServico.getSelectedItem().toString()
+        );
+    }
+
+    private void createEndereco() {
+        endereco = new Endereco(
+                cep.getText().toString(),
+                rua.getText().toString(),
+                numero.getText().toString(),
+                cidade.getText().toString(),
+                estado.getSelectedItem().toString(),
+                bairro.getText().toString(),
+                complemento.getText().toString()
+        );
+    }
+
+    private void createCliente() {
+        String codCliente = nomeCliente.getText().toString().substring(0, 3);
+
+        cliente = new Cliente(
+                nomeCliente.getText().toString(),
+                codCliente
+        );
     }
 
     @SuppressLint("MissingPermission")
