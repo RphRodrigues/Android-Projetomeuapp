@@ -1,19 +1,20 @@
 package com.rtstudio.projetomeuapp;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,11 +26,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,12 +45,16 @@ public class TelaInicialActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_CAMERA = 3;
     public static final int REQUEST_CODE_GALERIA = 4;
 
+    public static final String COR_CINZA_CLARO = "cinza claro";
+    public static final String COR_CINZA_ESCURO = "cinza escuro";
+
     File file;
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
     private OrdemServicoAdapter adapter;
     private List<OrdemServico> ordemServicoList = null;
     private ImageView imgBackground;
+    private RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,8 @@ public class TelaInicialActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.telaInicial_RecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        relativeLayout = findViewById(R.id.telaInicial_relative_layout);
 
         //Recupera as O.S salvas em arquivo e carrega no recyclerView
         if (ordemServicoList == null) {
@@ -141,7 +150,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_GALERIA && resultCode == RESULT_OK) {
 
             if (data != null) {
-                Uri imagemSeleciona  = data.getData();
+                Uri imagemSeleciona = data.getData();
                 int pos = adapter.getPosicaoGlobal();
                 String[] caminhoFile = {MediaStore.Images.Media.DATA};
 
@@ -154,7 +163,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
                 Bitmap imagemBitmap = BitmapFactory.decodeFile(caminhoImagem);
 
-                if(new OrdemServicoDAO(this).addFotoParaUmaOS(pos, caminhoImagem)) {
+                if (new OrdemServicoDAO(this).addFotoParaUmaOS(pos, caminhoImagem)) {
                     Log.i("BANCO", "onActivityResult: addFotoParaUmaOS");
                     ordemServicoList = new OrdemServicoDAO(this).getAll();
                     atualizaRecyclerView(ordemServicoList);
@@ -254,13 +263,18 @@ public class TelaInicialActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        String cor = PreferenciasUsuario.getCor(TelaInicialActivity.this);
+        if (cor.equals(COR_CINZA_ESCURO)) {
+            menu.findItem(R.id.app_bar_checkbox).setChecked(true);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
     private void getOrdemServicoByBairro(String bairro) {
         List<OrdemServico> ordemServicoListBairro = new ArrayList<>();
 
-        for (OrdemServico ordemServico: ordemServicoList) {
+        for (OrdemServico ordemServico : ordemServicoList) {
             if (ordemServico.getEndereco().getBairro().toLowerCase().contains(bairro.toLowerCase())) {
                 ordemServicoListBairro.add(ordemServico);
             }
@@ -275,7 +289,42 @@ public class TelaInicialActivity extends AppCompatActivity {
             String siteAjuda = "http://www.sinapseinformatica.com.br/";
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteAjuda));
             startActivity(intent);
+
+        } else if (id == R.id.app_bar_checkbox) {
+            boolean isChecked = !item.isChecked();
+            item.setChecked(isChecked);
+            if (item.isChecked()) {
+                PreferenciasUsuario.setCor(TelaInicialActivity.this, COR_CINZA_ESCURO);
+                onResume();
+            } else {
+                PreferenciasUsuario.setCor(TelaInicialActivity.this, COR_CINZA_CLARO);
+                onResume();
+            }
         }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String cor = PreferenciasUsuario.getCor(TelaInicialActivity.this);
+
+        if (cor.equals(COR_CINZA_CLARO)) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                relativeLayout.setBackgroundColor(getResources().getColor(R.color.cinza_claro, getTheme()));
+                getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark, getTheme()));
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark, getTheme())));
+            }
+        } else {
+//            fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getBaseContext(), R.color.lightPrimaryColor)));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                relativeLayout.setBackgroundColor(getResources().getColor(R.color.cinza_escuro, getTheme()));
+                getWindow().setStatusBarColor(Color.argb(225, 0, 0, 0));
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#333333")));
+            }
+        }
     }
 }

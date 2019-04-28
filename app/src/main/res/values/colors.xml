@@ -9,4 +9,7 @@
     <color name="dividerColor">#BDBDBD</color>
     <color name="textIcon">#FFFFFF</color>
     <color name="myBlue">#2C86FF</color>
+
+    <color name="cinza_claro">#f2f2f2</color>
+    <color name="cinza_escuro">#616161</color>
 </resources>
