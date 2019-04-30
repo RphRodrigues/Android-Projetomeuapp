@@ -37,9 +37,8 @@ import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.classes.CepListener;
 import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
-import com.rtstudio.projetomeuapp.classes.EnderecoPOJO;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
-import com.rtstudio.projetomeuapp.classes.Utilidade;
+import com.rtstudio.projetomeuapp.classes.Utilitaria;
 
 import java.io.File;
 import java.io.IOException;
@@ -71,7 +70,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private Spinner tipoServico;
     private List<OrdemServico> osList;
     private ImageView imgBitmap;
-    private Utilidade util;
+    private Utilitaria util;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +91,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
         cep.addTextChangedListener(new CepListener(this));
 
-        util = new Utilidade(this,
+        util = new Utilitaria(this,
                 R.id.cadastrar_edtRuaId,
                 R.id.cadastrar_edtBairroId,
                 R.id.cadastrar_edtCepId,
@@ -101,8 +100,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 R.id.cadastrar_edtComplementoId,
                 R.id.cadastrar_spinnerEstados
         );
-
-//        util.bloquearCampos(true);
 
         if (getIntent().getExtras() != null) {
             editarOS();
@@ -221,23 +218,23 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         util.bloquearCampos(isBloquear);
     }
 
-    public void setDadosEndereco(EnderecoPOJO enderecoPOJO) {
-        setCamposEndereco(R.id.cadastrar_edtRuaId, enderecoPOJO.getLogradouro());
-        setCamposEndereco(R.id.cadastrar_edtBairroId, enderecoPOJO.getBairro());
-        setCamposEndereco(R.id.cadastrar_edtCidadeId, enderecoPOJO.getLocalidade());
-        setCamposEndereco(R.id.cadastrar_edtComplementoId, enderecoPOJO.getComplemento());
-        setSpinnerEstados(R.id.cadastrar_spinnerEstados, R.array.estados, enderecoPOJO.getUf());
+    public void setDadosEndereco(Endereco endereco) {
+        setCamposEndereco(R.id.cadastrar_edtRuaId, endereco.getLogradouro());
+        setCamposEndereco(R.id.cadastrar_edtBairroId, endereco.getBairro());
+        setCamposEndereco(R.id.cadastrar_edtCidadeId, endereco.getLocalidade());
+        setCamposEndereco(R.id.cadastrar_edtComplementoId, endereco.getComplemento());
+        setSpinnerEstados(R.id.cadastrar_spinnerEstados, R.array.estados, endereco.getUf());
     }
 
     private void setCamposEndereco(int id, String data) {
         ((EditText) findViewById(id)).setText(data);
     }
 
-    public void setSpinnerEstados(int id, int arrayId, String data) {
+    public void setSpinnerEstados(int id, int arrayId, String estado) {
         String[] estados = getResources().getStringArray(arrayId);
 
         for (int i = 0; i < estados.length; i++) {
-            if (data.equals(estados[i])) {
+            if (estado.equals(estados[i])) {
                 ((Spinner) findViewById(id)).setSelection(i);
                 return;
             }
@@ -365,12 +362,12 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         position = b.getInt("POSITION");
         if (os != null) {
             nomeCliente.setText(os.getCliente().getNome());
-            rua.setText(os.getEndereco().getRua());
+            rua.setText(os.getEndereco().getLogradouro());
             complemento.setText(os.getEndereco().getComplemento());
             bairro.setText(os.getEndereco().getBairro());
             cep.setText(os.getEndereco().getCep());
             numero.setText(os.getEndereco().getNumero());
-            cidade.setText(os.getEndereco().getCidade());
+            cidade.setText(os.getEndereco().getLocalidade());
 
 //            String[] arrayEstados = {
 //                    "AC", "AL", "AP", "AM", "BA",

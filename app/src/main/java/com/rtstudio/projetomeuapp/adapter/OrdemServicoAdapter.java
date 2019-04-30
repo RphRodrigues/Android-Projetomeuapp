@@ -89,10 +89,10 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
             @Override
             public void onClick(View v) {
                 Uri mapUri = Uri.parse("geo:0,0?q=" + ordemServico.getEndereco().getNumero().trim() + " " +
-                        ordemServico.getEndereco().getRua().trim() + "," + " " +
+                        ordemServico.getEndereco().getLogradouro().trim() + "," + " " +
                         ordemServico.getEndereco().getBairro().trim() + "," + " " +
-                        ordemServico.getEndereco().getCidade().trim() + "," + " " +
-                        ordemServico.getEndereco().getEstado()
+                        ordemServico.getEndereco().getLocalidade().trim() + "," + " " +
+                        ordemServico.getEndereco().getUf()
                 );
 
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapUri);

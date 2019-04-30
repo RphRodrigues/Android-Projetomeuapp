@@ -157,7 +157,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_toEndOf="@id/cidadeIdLayout"
                 android:layout_toRightOf="@id/cidadeIdLayout"
-                android:entries="@array/estados"></Spinner>
+                android:entries="@array/estados" />
         </RelativeLayout>
 
         <TextView
@@ -172,7 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15sp"
             android:background="#f2f2f2"
-            android:entries="@array/lista_servico"></Spinner>
+            android:entries="@array/lista_servico" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

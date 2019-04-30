@@ -35,12 +35,12 @@ public class EnderecoDAO {
 
     public long insertEndereco(Endereco endereco) {
         ContentValues contentValuesEndereco = new ContentValues();
-        contentValuesEndereco.put("RUA", endereco.getRua());
+        contentValuesEndereco.put("RUA", endereco.getLogradouro());
         contentValuesEndereco.put("NUMERO", endereco.getNumero());
         contentValuesEndereco.put("BAIRRO", endereco.getBairro());
         contentValuesEndereco.put("CEP", endereco.getCep());
-        contentValuesEndereco.put("CIDADE", endereco.getCidade());
-        contentValuesEndereco.put("ESTADO", endereco.getEstado());
+        contentValuesEndereco.put("CIDADE", endereco.getLocalidade());
+        contentValuesEndereco.put("ESTADO", endereco.getUf());
 
         SQLiteDatabase conn = Connection.getInstance(context).getWritableDatabase();
 
@@ -57,11 +57,11 @@ public class EnderecoDAO {
         Endereco endereco = new Endereco();
 
         if (cursor.moveToFirst()) {
-            endereco.setRua(cursor.getString(cursor.getColumnIndex("RUA")));
+            endereco.setLogradouro(cursor.getString(cursor.getColumnIndex("RUA")));
             endereco.setNumero(cursor.getString(cursor.getColumnIndex("NUMERO")));
-            endereco.setCidade(cursor.getString(cursor.getColumnIndex("CIDADE")));
+            endereco.setLocalidade(cursor.getString(cursor.getColumnIndex("CIDADE")));
             endereco.setCep(cursor.getString(cursor.getColumnIndex("CEP")));
-            endereco.setEstado(cursor.getString(cursor.getColumnIndex("ESTADO")));
+            endereco.setUf(cursor.getString(cursor.getColumnIndex("ESTADO")));
             endereco.setBairro(cursor.getString(cursor.getColumnIndex("BAIRRO")));
         }
         cursor.close();

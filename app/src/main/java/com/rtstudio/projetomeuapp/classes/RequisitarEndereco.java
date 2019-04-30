@@ -10,7 +10,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by Raphael Rodrigues on 29/04/2019.
  */
-public class RequisitarEndereco extends AsyncTask<Void, Void, EnderecoPOJO> {
+public class RequisitarEndereco extends AsyncTask<Void, Void, Endereco> {
 
     private WeakReference<CadastrarServicoActivity> cadastrarServicoActivityWeakReference;
 
@@ -27,14 +27,14 @@ public class RequisitarEndereco extends AsyncTask<Void, Void, EnderecoPOJO> {
     }
 
     @Override
-    protected EnderecoPOJO doInBackground(Void... voids) {
+    protected Endereco doInBackground(Void... voids) {
 
         try {
             String jsonCep = JsonRequest.requesitarJson(cadastrarServicoActivityWeakReference.get().getUriCep());
 
             Gson gson = new Gson();
 
-            return gson.fromJson(jsonCep, EnderecoPOJO.class);
+            return gson.fromJson(jsonCep, Endereco.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,13 +43,13 @@ public class RequisitarEndereco extends AsyncTask<Void, Void, EnderecoPOJO> {
     }
 
     @Override
-    protected void onPostExecute(EnderecoPOJO enderecoPOJO) {
-        super.onPostExecute(enderecoPOJO);
+    protected void onPostExecute(Endereco endereco) {
+        super.onPostExecute(endereco);
         if (cadastrarServicoActivityWeakReference.get() != null) {
             cadastrarServicoActivityWeakReference.get().bloquearCampos(false);
 
-            if (enderecoPOJO != null) {
-                cadastrarServicoActivityWeakReference.get().setDadosEndereco(enderecoPOJO);
+            if (endereco != null) {
+                cadastrarServicoActivityWeakReference.get().setDadosEndereco(endereco);
             }
         }
     }

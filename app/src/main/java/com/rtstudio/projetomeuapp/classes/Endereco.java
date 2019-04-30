@@ -8,30 +8,30 @@ import java.io.Serializable;
 
 public class Endereco implements Parcelable, Serializable {
     private int enderecoId;
-    private String estado;
-    private String cidade;
-    private String rua;
-    private String numero;
     private String cep;
+    private String logradouro;
+    private String numero;
     private String bairro;
+    private String localidade;
+    private String uf;
     private String complemento;
 
     public Endereco() {
     }
 
-    public Endereco(String cep, String rua, String numero, String cidade, String estado, String bairro) {
-        this.estado = estado;
-        this.cidade = cidade;
-        this.rua = rua;
+    public Endereco(String cep, String logradouro, String numero, String localidade, String uf, String bairro) {
+        this.uf = uf;
+        this.localidade = localidade;
+        this.logradouro = logradouro;
         this.numero = numero;
         this.cep = cep;
         this.bairro = bairro;
     }
 
-    public Endereco(String cep, String rua, String numero, String cidade, String estado, String bairro, String complemento) {
-        this.estado = estado;
-        this.cidade = cidade;
-        this.rua = rua;
+    public Endereco(String cep, String logradouro, String numero, String localidade, String uf, String bairro, String complemento) {
+        this.uf = uf;
+        this.localidade = localidade;
+        this.logradouro = logradouro;
         this.numero = numero;
         this.cep = cep;
         this.bairro = bairro;
@@ -41,9 +41,9 @@ public class Endereco implements Parcelable, Serializable {
 
     protected Endereco(Parcel in) {
         enderecoId = in.readInt();
-        estado = in.readString();
-        cidade = in.readString();
-        rua = in.readString();
+        uf = in.readString();
+        localidade = in.readString();
+        logradouro = in.readString();
         numero = in.readString();
         cep = in.readString();
         bairro = in.readString();
@@ -53,9 +53,9 @@ public class Endereco implements Parcelable, Serializable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(enderecoId);
-        dest.writeString(estado);
-        dest.writeString(cidade);
-        dest.writeString(rua);
+        dest.writeString(uf);
+        dest.writeString(localidade);
+        dest.writeString(logradouro);
         dest.writeString(numero);
         dest.writeString(cep);
         dest.writeString(bairro);
@@ -95,28 +95,28 @@ public class Endereco implements Parcelable, Serializable {
         this.cep = cep;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getUf() {
+        return uf;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setUf(String uf) {
+        this.uf = uf;
     }
 
-    public String getCidade() {
-        return cidade;
+    public String getLocalidade() {
+        return localidade;
     }
 
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
+    public void setLocalidade(String localidade) {
+        this.localidade = localidade;
     }
 
-    public String getRua() {
-        return rua;
+    public String getLogradouro() {
+        return logradouro;
     }
 
-    public void setRua(String rua) {
-        this.rua = rua;
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
 
     public String getNumero() {
