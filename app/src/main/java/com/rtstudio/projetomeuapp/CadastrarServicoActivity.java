@@ -34,9 +34,12 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
+import com.rtstudio.projetomeuapp.classes.CepListener;
 import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
+import com.rtstudio.projetomeuapp.classes.EnderecoPOJO;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.classes.Utilidade;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,11 +71,14 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private Spinner tipoServico;
     private List<OrdemServico> osList;
     private ImageView imgBitmap;
+    private Utilidade util;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_servico);
+
+        inicilizarVariaveisDeClasse();
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
@@ -83,7 +89,20 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        inicilizarVariaveisDeClasse();
+
+        cep.addTextChangedListener(new CepListener(this));
+
+        util = new Utilidade(this,
+                R.id.cadastrar_edtRuaId,
+                R.id.cadastrar_edtBairroId,
+                R.id.cadastrar_edtCepId,
+                R.id.cadastrar_edtCidadeId,
+                R.id.cadastrar_edtNumeroId,
+                R.id.cadastrar_edtComplementoId,
+                R.id.cadastrar_spinnerEstados
+        );
+
+//        util.bloquearCampos(true);
 
         if (getIntent().getExtras() != null) {
             editarOS();
@@ -192,6 +211,38 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 nomeCliente.getText().toString(),
                 codCliente
         );
+    }
+
+    public String getUriCep() {
+        return "https://viacep.com.br/ws/" + cep.getText() + "/json/";
+    }
+
+    public void bloquearCampos(boolean isBloquear) {
+        util.bloquearCampos(isBloquear);
+    }
+
+    public void setDadosEndereco(EnderecoPOJO enderecoPOJO) {
+        setCamposEndereco(R.id.cadastrar_edtRuaId, enderecoPOJO.getLogradouro());
+        setCamposEndereco(R.id.cadastrar_edtBairroId, enderecoPOJO.getBairro());
+        setCamposEndereco(R.id.cadastrar_edtCidadeId, enderecoPOJO.getLocalidade());
+        setCamposEndereco(R.id.cadastrar_edtComplementoId, enderecoPOJO.getComplemento());
+        setSpinnerEstados(R.id.cadastrar_spinnerEstados, R.array.estados, enderecoPOJO.getUf());
+    }
+
+    private void setCamposEndereco(int id, String data) {
+        ((EditText) findViewById(id)).setText(data);
+    }
+
+    public void setSpinnerEstados(int id, int arrayId, String data) {
+        String[] estados = getResources().getStringArray(arrayId);
+
+        for (int i = 0; i < estados.length; i++) {
+            if (data.equals(estados[i])) {
+                ((Spinner) findViewById(id)).setSelection(i);
+                return;
+            }
+        }
+        ((Spinner) findViewById(id)).setSelection(0);
     }
 
     @SuppressLint("MissingPermission")
@@ -332,7 +383,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 //
 //            int i = 0;
 //            for (String s : arrayEstados) {
-//                if (s.equals(os.getEndereco().getEstado())) {
+//                if (s.equals(os.getEndereco().getUf())) {
 //                    estado.setSelection(i);
 //                }
 //                i++;

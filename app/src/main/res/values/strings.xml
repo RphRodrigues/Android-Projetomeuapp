@@ -12,11 +12,11 @@
     <string name="descricao_do_servico">Descrição do serviço</string>
     <string name="endereco_servico">Endereço do serviço</string>
     <string name="endereco">Endereço</string>
-    <string name="rua">Rua</string>
+    <string name="logradouro">Rua</string>
     <string name="cep">Cep</string>
-    <string name="cidade">Cidade</string>
+    <string name="localidade">Cidade</string>
     <string name="numero">Nº</string>
-    <string name="estado">Estado</string>
+    <string name="uf">Estado</string>
     <string name="insira_nome_cliente">Insira o nome do cliente</string>
     <string name="insira_cpf_cliente">Insira o cpf do cliente</string>
     <string name="preencha_endereco">Preencha o endereço completo</string>

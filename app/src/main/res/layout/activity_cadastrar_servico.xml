@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="10dp"
         android:paddingLeft="15sp"
+        android:paddingTop="10dp"
         android:paddingRight="15sp">
 
         <TextView
@@ -47,7 +48,7 @@
                 android:id="@+id/cadastrar_edtRuaId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/rua"
+                android:hint="@string/logradouro"
                 android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
         </android.support.design.widget.TextInputLayout>
 
@@ -93,14 +94,17 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/cepIdLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/cadastrar_edtCepId"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/cep"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="8" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -133,18 +137,18 @@
                     android:id="@+id/cadastrar_edtCidadeId"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/cidade"
+                    android:hint="@string/localidade"
                     android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
             </android.support.design.widget.TextInputLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/estado"
-                android:paddingLeft="3dp"
-                android:layout_toRightOf="@id/cidadeIdLayout"
                 android:layout_toEndOf="@id/cidadeIdLayout"
-                android:paddingStart="3dp" />
+                android:layout_toRightOf="@id/cidadeIdLayout"
+                android:paddingStart="3dp"
+                android:paddingLeft="3dp"
+                android:text="@string/uf" />
 
             <Spinner
                 android:id="@+id/cadastrar_spinnerEstados"
@@ -153,8 +157,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_toEndOf="@id/cidadeIdLayout"
                 android:layout_toRightOf="@id/cidadeIdLayout"
-                android:entries="@array/estados">
-            </Spinner>
+                android:entries="@array/estados"></Spinner>
         </RelativeLayout>
 
         <TextView
@@ -169,8 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15sp"
             android:background="#f2f2f2"
-            android:entries="@array/lista_servico">
-        </Spinner>
+            android:entries="@array/lista_servico"></Spinner>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
