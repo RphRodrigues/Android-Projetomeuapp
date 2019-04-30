@@ -5,11 +5,11 @@ import android.app.Activity;
 /**
  * Created by Raphael Rodrigues on 29/04/2019.
  */
-public class Utilidade {
+public class Utilitaria {
     private Activity activity;
     private int[] ids;
 
-    public Utilidade(Activity activity, int... ids) {
+    public Utilitaria(Activity activity, int... ids) {
         this.activity = activity;
         this.ids = ids;
     }
