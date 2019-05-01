@@ -39,6 +39,7 @@ import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
+import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,6 +75,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        PreferenciasUsuario.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_servico);
 

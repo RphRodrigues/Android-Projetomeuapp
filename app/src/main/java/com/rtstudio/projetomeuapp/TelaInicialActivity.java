@@ -6,10 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -45,8 +42,8 @@ public class TelaInicialActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_CAMERA = 3;
     public static final int REQUEST_CODE_GALERIA = 4;
 
-    public static final String COR_CINZA_CLARO = "cinza claro";
-    public static final String COR_CINZA_ESCURO = "cinza escuro";
+    public static final String TEMA_PADRAO = "temaPadrao";
+    public static final String TEMA_NOTURNO = "temaNoturno";
 
     File file;
     private FloatingActionButton fab;
@@ -58,6 +55,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        PreferenciasUsuario.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
 
@@ -264,8 +262,8 @@ public class TelaInicialActivity extends AppCompatActivity {
             }
         });
 
-        String cor = PreferenciasUsuario.getCor(TelaInicialActivity.this);
-        if (cor.equals(COR_CINZA_ESCURO)) {
+        String tema = PreferenciasUsuario.getPreferenciaTema(TelaInicialActivity.this);
+        if (tema.equals(TEMA_NOTURNO)) {
             menu.findItem(R.id.app_bar_checkbox).setChecked(true);
         }
         return super.onCreateOptionsMenu(menu);
@@ -293,38 +291,16 @@ public class TelaInicialActivity extends AppCompatActivity {
         } else if (id == R.id.app_bar_checkbox) {
             boolean isChecked = !item.isChecked();
             item.setChecked(isChecked);
+
             if (item.isChecked()) {
-                PreferenciasUsuario.setCor(TelaInicialActivity.this, COR_CINZA_ESCURO);
-                onResume();
+                PreferenciasUsuario.setPreferenciaTema(TelaInicialActivity.this, TEMA_NOTURNO);
+                recreate();
             } else {
-                PreferenciasUsuario.setCor(TelaInicialActivity.this, COR_CINZA_CLARO);
-                onResume();
+                PreferenciasUsuario.setPreferenciaTema(TelaInicialActivity.this, TEMA_PADRAO);
+                recreate();
             }
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        String cor = PreferenciasUsuario.getCor(TelaInicialActivity.this);
-
-        if (cor.equals(COR_CINZA_CLARO)) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                relativeLayout.setBackgroundColor(getResources().getColor(R.color.cinza_claro, getTheme()));
-                getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark, getTheme()));
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark, getTheme())));
-            }
-        } else {
-//            fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getBaseContext(), R.color.lightPrimaryColor)));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                relativeLayout.setBackgroundColor(getResources().getColor(R.color.cinza_escuro, getTheme()));
-                getWindow().setStatusBarColor(Color.argb(225, 0, 0, 0));
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#333333")));
-            }
-        }
     }
 }

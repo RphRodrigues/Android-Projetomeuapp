@@ -9,7 +9,10 @@
     <color name="dividerColor">#BDBDBD</color>
     <color name="textIcon">#FFFFFF</color>
     <color name="myBlue">#2C86FF</color>
+    <color name="cinzaClaro">#f2f2f2</color>
 
-    <color name="cinza_claro">#f2f2f2</color>
-    <color name="cinza_escuro">#616161</color>
+    <color name="colorPrimaryTemaModoNotuno">#212121</color>
+    <color name="colorPrimaryDarkTemaModoNotuno">#000000</color>
+    <color name="colorAccentTemaModoNotuno">#BDBDBD</color>
+    <color name="cinzaEscuroTemaModoNotuno">#888888</color>
 </resources>

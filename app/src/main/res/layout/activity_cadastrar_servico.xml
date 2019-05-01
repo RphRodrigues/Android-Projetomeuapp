@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/linearLayoutId"
+        android:id="@+id/cadastrar_linearLayoutId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -171,7 +171,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15sp"
-            android:background="#f2f2f2"
+            android:background="@color/dividerColor"
             android:entries="@array/lista_servico" />
 
         <android.support.design.widget.TextInputLayout
