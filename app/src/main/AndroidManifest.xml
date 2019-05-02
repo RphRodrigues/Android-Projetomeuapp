@@ -44,8 +44,6 @@
 
         <activity android:name=".TelaInicialActivity" />
 
-        <activity android:name=".MainActivity" />
-
         <activity
             android:name=".EditarOrdemServicoActivity"
             android:label="@string/ediatar_ordem_servico"/>
@@ -53,15 +51,6 @@
         <activity
             android:name=".CadastrarServicoActivity"
             android:label="@string/cadastrar_servico" />
-        <activity
-            android:name=".ServicoAbertoActivity"
-            android:label="@string/servico_aberto" />
-        <activity
-            android:name=".ServicoFechadoActivity"
-            android:label="@string/servico_fechado" />
-        <activity
-            android:name=".AssumirOSActivity"
-            android:label="@string/assumir_os" />
     </application>
 
 </manifest>
