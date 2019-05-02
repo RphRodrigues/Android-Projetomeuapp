@@ -23,8 +23,8 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.rtstudio.projetomeuapp.CadastrarServicoActivity;
 import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
+import com.rtstudio.projetomeuapp.EditarOrdemServicoActivity;
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.TelaInicialActivity;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
@@ -155,9 +155,8 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("ORDEM_SERVICO", ordemServico);
-                bundle.putInt("POSITION", position);
 
-                Intent intent = new Intent(activity, CadastrarServicoActivity.class);
+                Intent intent = new Intent(activity, EditarOrdemServicoActivity.class);
                 intent.putExtra("BUNDLE", bundle);
 
                 activity.startActivityForResult(intent, TelaInicialActivity.REQUEST_CODE_EDITAR);

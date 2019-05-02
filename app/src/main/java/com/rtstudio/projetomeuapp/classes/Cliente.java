@@ -52,6 +52,10 @@ public class Cliente implements Parcelable, Serializable {
         return clienteId;
     }
 
+    public void setClienteId(int clienteId) {
+        this.clienteId = clienteId;
+    }
+
     public String getNome() {
         return nome;
     }

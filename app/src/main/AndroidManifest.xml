@@ -41,10 +41,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".TelaInicialActivity" />
+
+        <activity android:name=".MainActivity" />
+
         <activity
-            android:name=".TelaInicialActivity" />
-        <activity
-            android:name=".MainActivity" />
+            android:name=".EditarOrdemServicoActivity"
+            android:label="@string/ediatar_ordem_servico"/>
+
         <activity
             android:name=".CadastrarServicoActivity"
             android:label="@string/cadastrar_servico" />

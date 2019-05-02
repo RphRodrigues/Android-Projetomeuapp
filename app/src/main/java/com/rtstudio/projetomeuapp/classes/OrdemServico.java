@@ -19,6 +19,9 @@ public class OrdemServico implements Parcelable, Serializable {
         this.ordemServicoId = gerarId();
     }
 
+    public OrdemServico() {
+    }
+
     public OrdemServico(int ordemServicoId, Cliente cliente, Endereco endereco, String tipoServico) {
         this.ordemServicoId = ordemServicoId;
         this.cliente = cliente;
@@ -86,6 +89,10 @@ public class OrdemServico implements Parcelable, Serializable {
         return ordemServicoId;
     }
 
+    public void setOrdemServicoId(int ordemServicoId) {
+        this.ordemServicoId = ordemServicoId;
+    }
+
     public Cliente getCliente() {
         return cliente;
     }
@@ -118,11 +125,11 @@ public class OrdemServico implements Parcelable, Serializable {
         this.tipoServico = tipoServico;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
     public String getFilename() {
         return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

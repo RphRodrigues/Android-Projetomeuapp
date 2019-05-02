@@ -3,21 +3,16 @@ package com.rtstudio.projetomeuapp;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -103,11 +98,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 R.id.cadastrar_spinnerEstados
         );
 
-        if (getIntent().getExtras() != null) {
-            editarOS();
-            alertDialog("Não foi possível editar OS", false);
-        }
-
         btnCriarOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,11 +119,10 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 intent.putExtra("BUNDLE", bundle);
                 setResult(RESULT_OK, intent);
 
-                if (btnCriarOS.getText().toString().toLowerCase().equals("salvar")) {
-                    alertDialog("Não foi possível editar OS", false);
+                if(salvarOrdemServicoNoBancoDeDados()) {
+                    util.alertDialog("Aviso", getString(R.string.os_gerada_sucesso), false);
                 } else {
-                    salvarOrdemServicoNoBancoDeDados();
-                    alertDialog(getString(R.string.os_gerada_sucesso), false);
+                    util.alertDialog("Aviso", "Não foi possível criar O.S.", false);
                 }
 
             }
@@ -164,7 +153,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         estado = findViewById(R.id.cadastrar_spinnerEstados);
         complemento = findViewById(R.id.cadastrar_edtComplementoId);
         bairro = findViewById(R.id.cadastrar_edtBairroId);
-        tipoServico = findViewById(R.id.cadastrar_spinnerId);
+        tipoServico = findViewById(R.id.cadastrar_spinnerTipoServico);
         descricaoServico = findViewById(R.id.cadastrar_edtDescricaoServicosId);
         btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
         btnLocalizar = findViewById(R.id.cadastrar_btnLocation);
@@ -204,12 +193,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     }
 
     private void createCliente() {
-        String codCliente = nomeCliente.getText().toString().substring(0, 3);
-
-        cliente = new Cliente(
-                nomeCliente.getText().toString(),
-                codCliente
-        );
+        cliente = util.createCliente(nomeCliente.getText().toString());
     }
 
     public String getUriCep() {
@@ -218,30 +202,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
     public void bloquearCampos(boolean isBloquear) {
         util.bloquearCampos(isBloquear);
-    }
-
-    public void setDadosEndereco(Endereco endereco) {
-        setCamposEndereco(R.id.cadastrar_edtRuaId, endereco.getLogradouro());
-        setCamposEndereco(R.id.cadastrar_edtBairroId, endereco.getBairro());
-        setCamposEndereco(R.id.cadastrar_edtCidadeId, endereco.getLocalidade());
-        setCamposEndereco(R.id.cadastrar_edtComplementoId, endereco.getComplemento());
-        setSpinnerEstados(R.id.cadastrar_spinnerEstados, R.array.estados, endereco.getUf());
-    }
-
-    private void setCamposEndereco(int id, String data) {
-        ((EditText) findViewById(id)).setText(data);
-    }
-
-    public void setSpinnerEstados(int id, int arrayId, String estado) {
-        String[] estados = getResources().getStringArray(arrayId);
-
-        for (int i = 0; i < estados.length; i++) {
-            if (estado.equals(estados[i])) {
-                ((Spinner) findViewById(id)).setSelection(i);
-                return;
-            }
-        }
-        ((Spinner) findViewById(id)).setSelection(0);
     }
 
     @SuppressLint("MissingPermission")
@@ -358,54 +318,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         }
     }
 
-    private void editarOS() {
-        Bundle b = getIntent().getBundleExtra("BUNDLE");
-        OrdemServico os = b.getParcelable("ORDEM_SERVICO");
-        position = b.getInt("POSITION");
-        if (os != null) {
-            nomeCliente.setText(os.getCliente().getNome());
-            rua.setText(os.getEndereco().getLogradouro());
-            complemento.setText(os.getEndereco().getComplemento());
-            bairro.setText(os.getEndereco().getBairro());
-            cep.setText(os.getEndereco().getCep());
-            numero.setText(os.getEndereco().getNumero());
-            cidade.setText(os.getEndereco().getLocalidade());
-
-//            String[] arrayEstados = {
-//                    "AC", "AL", "AP", "AM", "BA",
-//                    "CE", "DF", "ES", "GO", "MA",
-//                    "MT", "MS", "MG", "PA", "PB",
-//                    "PR", "PE", "PI", "RJ", "RN",
-//                    "RS", "RO", "RR", "SC", "SP",
-//                    "SE", "TO",
-//            };
-//
-//            int i = 0;
-//            for (String s : arrayEstados) {
-//                if (s.equals(os.getEndereco().getUf())) {
-//                    estado.setSelection(i);
-//                }
-//                i++;
-//            }
-//
-//            String[] arrayTipoServico = {"Instalação", "Reparo", "Desistalação"};
-//
-//            i = 0;
-//            for (String s : arrayTipoServico) {
-//                if (s.equals(os.getTipoServico())) {
-//                    tipoServico.setSelection(i);
-//                }
-//                i++;
-//            }
-            descricaoServico.setText(os.getDescricaoServico());
-
-            btnCriarOS.setText("Salvar");
-
-            Bitmap img = BitmapFactory.decodeFile(os.getFilename());
-            imgBitmap.setImageBitmap(img);
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -413,18 +325,18 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         if (id == android.R.id.home) {
             finish();
         } else if (id == R.id.menu_itemLimpar) {
-            nomeCliente.setText("");
-            rua.setText("");
-            complemento.setText("");
-            bairro.setText("");
-            cep.setText("");
-            numero.setText("");
-            cidade.setText("");
-            descricaoServico.setText("");
+            util.limparCampos(
+                    R.id.cadastrar_edtNomeClienteId,
+                    R.id.cadastrar_edtRuaId,
+                    R.id.cadastrar_edtComplementoId,
+                    R.id.cadastrar_edtBairroId,
+                    R.id.cadastrar_edtCepId,
+                    R.id.cadastrar_edtNumeroId,
+                    R.id.cadastrar_edtCidadeId,
+                    R.id.cadastrar_edtDescricaoServicosId
+            );
         } else if (id == R.id.menu_itemAjuda) {
-            String siteAjuda = "http://www.sinapseinformatica.com.br/";
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteAjuda));
-            startActivity(intent);
+            util.menuItemAjuda();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -434,21 +346,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    private void alertDialog(String mensagem, boolean cancelable) {
-        new AlertDialog.Builder(CadastrarServicoActivity.this)
-                .setTitle("Aviso")
-                .setMessage(mensagem)
-                .setCancelable(cancelable)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .create()
-                .show();
     }
 
     private Boolean validacao() {

@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/cep"
                     android:inputType="number"
-                    android:maxLength="8" />
+                    android:maxLength="9" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -167,7 +167,7 @@
             android:text="@string/informacoes_do_servico" />
 
         <Spinner
-            android:id="@+id/cadastrar_spinnerId"
+            android:id="@+id/cadastrar_spinnerTipoServico"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15sp"
