@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.classes.Utilitaria;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 
 import java.io.File;
@@ -52,6 +54,7 @@ public class TelaInicialActivity extends AppCompatActivity {
     private List<OrdemServico> ordemServicoList = null;
     private ImageView imgBackground;
     private RelativeLayout relativeLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +112,19 @@ public class TelaInicialActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(TelaInicialActivity.this, CadastrarServicoActivity.class);
                 startActivityForResult(intent, 1);
+            }
+        });
+
+        mSwipeRefreshLayout = findViewById(R.id.telaInicial_swipeRefreshLayoutId);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ordemServicoList = new OrdemServicoDAO(TelaInicialActivity.this).getAll();
+                if (!ordemServicoList.isEmpty()) {
+                    atualizaRecyclerView(ordemServicoList);
+                }
+                Toast.makeText(TelaInicialActivity.this, "Atualizado", Toast.LENGTH_SHORT).show();
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -284,10 +300,7 @@ public class TelaInicialActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.menu_itemAjuda) {
-            String siteAjuda = "http://www.sinapseinformatica.com.br/";
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(siteAjuda));
-            startActivity(intent);
-
+            new Utilitaria(this).menuItemAjuda();
         } else if (id == R.id.app_bar_checkbox) {
             boolean isChecked = !item.isChecked();
             item.setChecked(isChecked);
