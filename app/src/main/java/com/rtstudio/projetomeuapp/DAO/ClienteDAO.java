@@ -50,6 +50,7 @@ public class ClienteDAO {
         Cliente cliente = new Cliente();
 
         if (cursor.moveToFirst()) {
+            cliente.setClienteId(cursor.getInt(cursor.getColumnIndex("ID")));
             cliente.setNome(cursor.getString(cursor.getColumnIndex("NOME_CLIENTE")));
             cliente.setCodigoCliente(cursor.getString(cursor.getColumnIndex("COD_CLIENTE")));
         }
@@ -64,5 +65,18 @@ public class ClienteDAO {
         String[] value = new String[]{String.valueOf(clienteId)};
 
         return banco.delete(TABELA_CLIENTE, "ID = ?", value) > 0;
+    }
+
+
+    public boolean updateCliente(Cliente cliente) {
+        SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
+
+        ContentValues valuesCliente = new ContentValues();
+        valuesCliente.put("NOME_CLIENTE", cliente.getNome());
+        valuesCliente.put("COD_CLIENTE", cliente.getCodigoCliente());
+
+        String[] args = new String[]{String.valueOf(cliente.getClienteId())};
+
+        return banco.update(TABELA_CLIENTE, valuesCliente, "ID = ?", args) > 0;
     }
 }

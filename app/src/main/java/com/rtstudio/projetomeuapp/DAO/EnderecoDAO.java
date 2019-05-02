@@ -57,6 +57,7 @@ public class EnderecoDAO {
         Endereco endereco = new Endereco();
 
         if (cursor.moveToFirst()) {
+            endereco.setEnderecoId(cursor.getInt(cursor.getColumnIndex("ID")));
             endereco.setLogradouro(cursor.getString(cursor.getColumnIndex("RUA")));
             endereco.setNumero(cursor.getString(cursor.getColumnIndex("NUMERO")));
             endereco.setLocalidade(cursor.getString(cursor.getColumnIndex("CIDADE")));
@@ -75,5 +76,21 @@ public class EnderecoDAO {
         String[] value = new String[]{String.valueOf(enderecoId)};
 
         return banco.delete(TABELA_ENDERECO, "ID = ?", value) > 0;
+    }
+
+    public boolean updateEndereco(Endereco endereco) {
+        SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
+
+        ContentValues valuesEndereco = new ContentValues();
+        valuesEndereco.put("RUA", endereco.getLogradouro());
+        valuesEndereco.put("NUMERO", endereco.getNumero());
+        valuesEndereco.put("BAIRRO", endereco.getBairro());
+        valuesEndereco.put("CEP", endereco.getCep());
+        valuesEndereco.put("CIDADE", endereco.getLocalidade());
+        valuesEndereco.put("ESTADO", endereco.getUf());
+
+        String[] args = new String[]{String.valueOf(endereco.getEnderecoId())};
+
+        return banco.update(TABELA_ENDERECO, valuesEndereco, "ID = ?", args) > 0;
     }
 }
