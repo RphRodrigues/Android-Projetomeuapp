@@ -108,7 +108,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
     }
 
     public String getUriCep() {
-        return "https://viacep.com.br/ws/" + ((EditText) findViewById(R.id.cadastrar_edtCepId)).getText() + "/json/";
+        return "https://viacep.com.br/ws/" + ((TextInputLayout) findViewById(R.id.cadastrar_edtCepId)).getEditText().getText() + "/json/";
     }
 
     @Override
