@@ -31,7 +31,7 @@ import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
-import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
+import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuari;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferenciasUsuario.setTema(this);
+        PreferenciasUsuari.Companion.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
 
@@ -283,7 +283,7 @@ public class TelaInicialActivity extends AppCompatActivity {
             }
         });
 
-        String tema = PreferenciasUsuario.getPreferenciaTema(TelaInicialActivity.this);
+        String tema = PreferenciasUsuari.Companion.getPreferenciaTema(TelaInicialActivity.this);
         if (tema.equals(TEMA_NOTURNO)) {
             menu.findItem(R.id.app_bar_checkbox).setChecked(true);
         }
@@ -311,10 +311,10 @@ public class TelaInicialActivity extends AppCompatActivity {
             item.setChecked(isChecked);
 
             if (item.isChecked()) {
-                PreferenciasUsuario.setPreferenciaTema(TelaInicialActivity.this, TEMA_NOTURNO);
+                PreferenciasUsuari.Companion.setPreferenciaTema(TelaInicialActivity.this, TEMA_NOTURNO);
                 recreate();
             } else {
-                PreferenciasUsuario.setPreferenciaTema(TelaInicialActivity.this, TEMA_PADRAO);
+                PreferenciasUsuari.Companion.setPreferenciaTema(TelaInicialActivity.this, TEMA_PADRAO);
                 recreate();
             }
         }

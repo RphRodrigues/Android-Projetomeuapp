@@ -19,7 +19,7 @@ import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
-import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
+import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuari;
 
 public class EditarOrdemServicoActivity extends AppCompatActivity {
 
@@ -29,7 +29,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
     OrdemServico ordemServico = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferenciasUsuario.setTema(this);
+        PreferenciasUsuari.Companion.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_ordem_servico);
 
