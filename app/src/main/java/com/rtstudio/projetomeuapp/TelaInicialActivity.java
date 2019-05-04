@@ -148,7 +148,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 //Grava a lista de O.S. em arquivo .txt
 //                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
 
-                new OrdemServicoDAO(this).insertOrdemServico(ordemServico);
+//                new OrdemServicoDAO(this).insertOrdemServico(ordemServico);
 
                 atualizaRecyclerView(ordemServicoList);
 
