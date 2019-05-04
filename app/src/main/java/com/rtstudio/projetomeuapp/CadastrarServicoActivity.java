@@ -295,6 +295,9 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Ligue o gps amigão", Toast.LENGTH_SHORT).show();
         }
     }
 
