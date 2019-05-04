@@ -119,11 +119,16 @@ public class TelaInicialActivity extends AppCompatActivity {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ordemServicoList = new OrdemServicoDAO(TelaInicialActivity.this).getAll();
+
+                try {
+                    ordemServicoList = new OrdemServicoDAO(TelaInicialActivity.this).getAll();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
                 if (!ordemServicoList.isEmpty()) {
                     atualizaRecyclerView(ordemServicoList);
+                    Toast.makeText(TelaInicialActivity.this, "Atualizado " + ordemServicoList.size(), Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(TelaInicialActivity.this, "Atualizado", Toast.LENGTH_SHORT).show();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
