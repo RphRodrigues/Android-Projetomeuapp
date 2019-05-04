@@ -13,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
@@ -241,6 +242,14 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private void getLocalizacao() {
         Log.v("GPS", "getLocalizacao");
 
+        LocationManager locationManager =  (LocationManager) getSystemService(LOCATION_SERVICE);
+        boolean ativado = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        if (!ativado) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+        }
+
         FusedLocationProviderClient flpc = LocationServices.getFusedLocationProviderClient(getApplicationContext());
 
         flpc.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
@@ -297,7 +306,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (NullPointerException e) {
             e.printStackTrace();
-            Toast.makeText(this, "Ligue o gps amigão", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Aguardando triangulação do gps", Toast.LENGTH_SHORT).show();
         }
     }
 
