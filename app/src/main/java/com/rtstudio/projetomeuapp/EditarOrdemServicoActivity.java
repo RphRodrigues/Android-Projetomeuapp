@@ -3,6 +3,7 @@ package com.rtstudio.projetomeuapp;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,22 +58,22 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
             ((ImageView) findViewById(R.id.cadastrar_ivBitmap)).setImageBitmap(img);
         }
 
-        ((EditText) findViewById(R.id.cadastrar_edtCepId)).addTextChangedListener(new CepListener(this));
+        ((TextInputLayout) findViewById(R.id.cadastrar_edtCepId)).getEditText().addTextChangedListener(new CepListener(this));
 
 
         findViewById(R.id.cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String nomeCliente = ((EditText) findViewById(R.id.cadastrar_edtNomeClienteId)).getText().toString();
-                String rua         = ((EditText) findViewById(R.id.cadastrar_edtRuaId)).getText().toString();
-                String complemento = ((EditText) findViewById(R.id.cadastrar_edtComplementoId)).getText().toString();
-                String bairro      = ((EditText) findViewById(R.id.cadastrar_edtBairroId)).getText().toString();
-                String cep         = ((EditText) findViewById(R.id.cadastrar_edtCepId)).getText().toString();
-                String numero      = ((EditText) findViewById(R.id.cadastrar_edtNumeroId)).getText().toString();
-                String cidade      = ((EditText) findViewById(R.id.cadastrar_edtCidadeId)).getText().toString();
-                String descrisao   = ((EditText) findViewById(R.id.cadastrar_edtDescricaoServicosId)).getText().toString();
-                String estado      = ((Spinner)  findViewById(R.id.cadastrar_spinnerEstados)).getSelectedItem().toString();
-                String tipoServico = ((Spinner)  findViewById(R.id.cadastrar_spinnerTipoServico)).getSelectedItem().toString();
+                String nomeCliente = ((TextInputLayout) findViewById(R.id.cadastrar_edtNomeClienteId)).getEditText().getText().toString();
+                String rua         = ((TextInputLayout) findViewById(R.id.cadastrar_edtRuaId)).getEditText().getText().toString();
+                String complemento = ((EditText)        findViewById(R.id.cadastrar_edtComplementoId)).getText().toString();
+                String bairro      = ((TextInputLayout) findViewById(R.id.cadastrar_edtBairroId)).getEditText().getText().toString();
+                String cep         = ((TextInputLayout) findViewById(R.id.cadastrar_edtCepId)).getEditText().getText().toString();
+                String numero      = ((TextInputLayout) findViewById(R.id.cadastrar_edtNumeroId)).getEditText().getText().toString();
+                String cidade      = ((TextInputLayout) findViewById(R.id.cadastrar_edtCidadeId)).getEditText().getText().toString();
+                String descrisao   = ((EditText)        findViewById(R.id.cadastrar_edtDescricaoServicosId)).getText().toString();
+                String estado      = ((Spinner)         findViewById(R.id.cadastrar_spinnerEstados)).getSelectedItem().toString();
+                String tipoServico = ((Spinner)         findViewById(R.id.cadastrar_spinnerTipoServico)).getSelectedItem().toString();
 
                 cliente.setNome(nomeCliente);
                 cliente.setCodigoCliente(nomeCliente.substring(0, 3));

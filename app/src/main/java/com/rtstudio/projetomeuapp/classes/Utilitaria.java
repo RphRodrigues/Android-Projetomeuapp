@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -48,7 +49,7 @@ public class Utilitaria {
     }
 
     public void setCampos(int id, String data) {
-        ((EditText) activity.findViewById(id)).setText(data);
+        ((TextInputLayout) activity.findViewById(id)).getEditText().setText(data);
     }
 
     public void setDadosCliente(Cliente cliente) {
@@ -61,7 +62,7 @@ public class Utilitaria {
         setCampos(R.id.cadastrar_edtNumeroId, endereco.getNumero());
         setCampos(R.id.cadastrar_edtBairroId, endereco.getBairro());
         setCampos(R.id.cadastrar_edtCidadeId, endereco.getLocalidade());
-        setCampos(R.id.cadastrar_edtComplementoId, endereco.getComplemento());
+//        setCampos(R.id.cadastrar_edtComplementoId, endereco.getComplemento());
         setSpinner(R.id.cadastrar_spinnerEstados, R.array.estados, endereco.getUf());
     }
 

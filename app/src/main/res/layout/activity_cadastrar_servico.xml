@@ -20,13 +20,13 @@
             android:text="@string/dados_do_cliente" />
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/nomeClienteIdLayout"
+            android:id="@+id/cadastrar_edtNomeClienteId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20sp">
+            android:layout_marginTop="20sp"
+            app:errorEnabled="true">
 
-            <EditText
-                android:id="@+id/cadastrar_edtNomeClienteId"
+            <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/nome_cliente"
@@ -40,12 +40,13 @@
             android:text="@string/endereco_servico" />
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/cadastrar_edtRuaId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20sp">
+            android:layout_marginTop="20sp"
+            app:errorEnabled="true">
 
-            <EditText
-                android:id="@+id/cadastrar_edtRuaId"
+            <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/logradouro"
@@ -70,14 +71,14 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/bairroIdLayout"
+                android:id="@+id/cadastrar_edtBairroId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/complementoIdLayout"
-                android:layout_toRightOf="@id/complementoIdLayout">
+                android:layout_toRightOf="@id/complementoIdLayout"
+                app:errorEnabled="true">
 
-                <EditText
-                    android:id="@+id/cadastrar_edtBairroId"
+                <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/bairro"
@@ -92,13 +93,12 @@
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/cepIdLayout"
+                android:id="@+id/cadastrar_edtCepId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/cadastrar_edtCepId"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/cep"
@@ -108,14 +108,14 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/numeroIdLayout"
+                android:id="@+id/cadastrar_edtNumeroId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/cepIdLayout"
-                android:layout_toRightOf="@id/cepIdLayout">
+                android:layout_toEndOf="@id/cadastrar_edtCepId"
+                android:layout_toRightOf="@id/cadastrar_edtCepId"
+                app:errorEnabled="true">
 
-                <EditText
-                    android:id="@+id/cadastrar_edtNumeroId"
+                <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/numero"
@@ -129,12 +129,12 @@
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/cidadeIdLayout"
+                android:id="@+id/cadastrar_edtCidadeId"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
 
-                <EditText
-                    android:id="@+id/cadastrar_edtCidadeId"
+                <android.support.design.widget.TextInputEditText
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/localidade"
@@ -144,8 +144,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/cidadeIdLayout"
-                android:layout_toRightOf="@id/cidadeIdLayout"
+                android:layout_toEndOf="@id/cadastrar_edtCidadeId"
+                android:layout_toRightOf="@id/cadastrar_edtCidadeId"
                 android:paddingStart="3dp"
                 android:paddingLeft="3dp"
                 android:text="@string/uf" />
@@ -155,8 +155,8 @@
                 android:layout_width="100dp"
                 android:layout_height="35dp"
                 android:layout_marginTop="20dp"
-                android:layout_toEndOf="@id/cidadeIdLayout"
-                android:layout_toRightOf="@id/cidadeIdLayout"
+                android:layout_toEndOf="@id/cadastrar_edtCidadeId"
+                android:layout_toRightOf="@id/cadastrar_edtCidadeId"
                 android:entries="@array/estados" />
         </RelativeLayout>
 

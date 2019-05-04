@@ -2,6 +2,7 @@ package com.rtstudio.projetomeuapp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,8 +11,10 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -52,13 +55,13 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private Cliente cliente = null;
     private Endereco endereco = null;
     private OrdemServico ordemServico = null;
-    private EditText nomeCliente;
-    private EditText rua;
-    private EditText cep;
+    private TextInputLayout nomeCliente;
+    private TextInputLayout rua;
+    private TextInputLayout cep;
     private EditText complemento;
-    private EditText bairro;
-    private EditText numero;
-    private EditText cidade;
+    private TextInputLayout bairro;
+    private TextInputLayout numero;
+    private TextInputLayout cidade;
     private EditText descricaoServico;
     private Button btnCriarOS;
     private Button btnLocalizar;
@@ -86,7 +89,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        cep.addTextChangedListener(new CepListener(this));
+        cep.getEditText().addTextChangedListener(new CepListener(this));
 
         util = new Utilitaria(this,
                 R.id.cadastrar_edtRuaId,
@@ -101,9 +104,9 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         btnCriarOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (!validacao()) {
-//                    return;
-//                }
+                if (!validacao()) {
+                    return;
+                }
 
                 createCliente();
 
@@ -119,7 +122,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 intent.putExtra("BUNDLE", bundle);
                 setResult(RESULT_OK, intent);
 
-                if(salvarOrdemServicoNoBancoDeDados()) {
+                if (salvarOrdemServicoNoBancoDeDados()) {
                     util.alertDialog("Aviso", getString(R.string.os_gerada_sucesso), false);
                 } else {
                     util.alertDialog("Aviso", "Não foi possível criar O.S.", false);
@@ -182,22 +185,22 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
     private void createEndereco() {
         endereco = new Endereco(
-                cep.getText().toString(),
-                rua.getText().toString(),
-                numero.getText().toString(),
-                cidade.getText().toString(),
+                cep.getEditText().getText().toString(),
+                rua.getEditText().getText().toString(),
+                numero.getEditText().getText().toString(),
+                cidade.getEditText().getText().toString(),
                 estado.getSelectedItem().toString(),
-                bairro.getText().toString(),
+                bairro.getEditText().getText().toString(),
                 complemento.getText().toString()
         );
     }
 
     private void createCliente() {
-        cliente = util.createCliente(nomeCliente.getText().toString());
+        cliente = util.createCliente(nomeCliente.getEditText().getText().toString());
     }
 
     public String getUriCep() {
-        return "https://viacep.com.br/ws/" + cep.getText() + "/json/";
+        return "https://viacep.com.br/ws/" + cep.getEditText().getText() + "/json/";
     }
 
     public void bloquearCampos(boolean isBloquear) {
@@ -259,23 +262,23 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 Address address = enderecos.get(0);
 
                 //Rua
-                rua.setText(address.getThoroughfare());
+                rua.getEditText().setText(address.getThoroughfare());
 
                 //Número
                 if (address.getFeatureName().contains("-")) {
                     numero.setTag(address.getFeatureName().substring(0, address.getFeatureName().indexOf("-")));
                 } else {
-                    numero.setText(address.getFeatureName());
+                    numero.getEditText().setText(address.getFeatureName());
                 }
 
                 //Bairro
-                bairro.setText(address.getSubLocality());
+                bairro.getEditText().setText(address.getSubLocality());
 
                 //Cidade
-                cidade.setText(address.getSubAdminArea());
+                cidade.getEditText().setText(address.getSubAdminArea());
 
                 //Cep
-                cep.setText(address.getPostalCode());
+                cep.getEditText().setText(address.getPostalCode());
 
                 //Estado
                 address.getAdminArea();
@@ -348,40 +351,29 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     private Boolean validacao() {
         //Validação para testar se o usuário inseriu os dados do cliente
-        if (nomeCliente.getText().toString().isEmpty()) {
-            Toast.makeText(CadastrarServicoActivity.this,
-                    getString(R.string.insira_nome_cliente),
-                    Toast.LENGTH_SHORT).show();
+        if (nomeCliente.getEditText().getText().toString().trim().isEmpty()) {
+            nomeCliente.setError("Digite o nome do cliente");
             return false;
         }
 
         //Validação para testar se o usuário inseriu o endereço do serviço
-        if (rua.getText().toString().isEmpty()) {
-            Toast.makeText(CadastrarServicoActivity.this,
-                    getString(R.string.preencha_endereco),
-                    Toast.LENGTH_SHORT).show();
+        if (rua.getEditText().getText().toString().trim().isEmpty()) {
+            rua.setError("Digite o nome da rua");
             return false;
-        } else if (bairro.getText().toString().isEmpty()) {
-            Toast.makeText(CadastrarServicoActivity.this,
-                    getString(R.string.preencha_endereco),
-                    Toast.LENGTH_SHORT).show();
+        } else if (bairro.getEditText().getText().toString().trim().isEmpty()) {
+            bairro.setError("Digite o bairro");
             return false;
-        } else if (cep.getText().toString().isEmpty()) {
-            Toast.makeText(CadastrarServicoActivity.this,
-                    getString(R.string.preencha_endereco),
-                    Toast.LENGTH_SHORT).show();
+        } else if (cep.getEditText().getText().toString().trim().isEmpty()) {
+            cep.setError("Digite o cep");
             return false;
-        } else if (numero.getText().toString().isEmpty()) {
-            Toast.makeText(CadastrarServicoActivity.this,
-                    getString(R.string.preencha_endereco),
-                    Toast.LENGTH_SHORT).show();
+        } else if (numero.getEditText().getText().toString().trim().isEmpty()) {
+            numero.setError("Digite o número");
             return false;
-        } else if (cidade.getText().toString().isEmpty()) {
-            Toast.makeText(CadastrarServicoActivity.this,
-                    getString(R.string.preencha_endereco),
-                    Toast.LENGTH_SHORT).show();
+        } else if (cidade.getEditText().getText().toString().trim().isEmpty()) {
+            cidade.setError("Digite a cidade");
             return false;
         }
 
