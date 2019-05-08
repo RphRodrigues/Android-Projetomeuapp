@@ -49,6 +49,9 @@ public class Utilitaria {
     }
 
     public void setCampos(int id, String data) {
+        if (id == R.id.cadastrar_edtComplementoId || id == R.id.cadastrar_edtDescricaoServicosId) {
+            ((EditText) activity.findViewById(id)).setText(data);
+        }
         ((TextInputLayout) activity.findViewById(id)).getEditText().setText(data);
     }
 
