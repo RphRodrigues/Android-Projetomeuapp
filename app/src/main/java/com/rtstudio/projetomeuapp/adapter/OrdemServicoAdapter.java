@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapter.MyViewHolder> {
 
@@ -173,7 +174,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-//                                new ArquivoDAO().salvarArquivo(ordemServicoList, new File(activity.getFilesDir(), "TCC.txt"));
+
                                 new OrdemServicoDAO(activity).deleteOrdemServico(ordemServicoList.get(position).getOrdemServicoId());
                                 ordemServicoList.remove(position);
                                 notifyItemRemoved(position);
@@ -224,8 +225,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
     private File createImageFile(int position) throws IOException {
 
-        @SuppressLint("SimpleDateFormat")
-        String dataHoraAtual = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String dataHoraAtual = new SimpleDateFormat("yyyyMMdd_HHmmss", new Locale("pt-BR")).format(new Date());
         String imageName = "RPH_" + position + "-" + dataHoraAtual + "_";
 
         //File caminhaDaPasta = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);

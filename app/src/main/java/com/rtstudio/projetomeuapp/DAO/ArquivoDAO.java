@@ -1,4 +1,4 @@
-package com.rtstudio.projetomeuapp.classes.DAO;
+package com.rtstudio.projetomeuapp.DAO;
 
 import android.util.Log;
 
