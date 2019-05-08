@@ -38,9 +38,8 @@ import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
-import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuari;
+import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -51,7 +50,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     public static final int PERMISSION_REQUEST_MEMORIA = 101;
 
     int position;
-    File file;
     OrdemServicoDAO OrdemServicoDAO;
     private Cliente cliente = null;
     private Endereco endereco = null;
@@ -74,7 +72,8 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferenciasUsuari.Companion.setTema(this);
+        PreferenciasUsuario.setTema(this);
+//        PreferenciasUsuari.Companion.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_servico);
 

@@ -31,9 +31,9 @@ import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
-import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuari;
+import com.rtstudio.projetomeuapp.interfaces.OrdemServicoCliente;
+import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,11 +58,11 @@ public class TelaInicialActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferenciasUsuari.Companion.setTema(this);
+        PreferenciasUsuario.setTema(this);
+//        PreferenciasUsuari.Companion.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
 
-        file = new File(getBaseContext().getFilesDir(), "TCC.txt");
 
         imgBackground = findViewById(R.id.telaInicial_imgBg);
 
@@ -78,8 +78,6 @@ public class TelaInicialActivity extends AppCompatActivity {
         if (ordemServicoList == null) {
             try {
                 ordemServicoList = new ArrayList<>();
-
-//                ordemServicoList = new ArquivoDAO().lerArquivo(file);
 
                 ordemServicoList = new OrdemServicoDAO(this).getAll();
 
@@ -145,9 +143,6 @@ public class TelaInicialActivity extends AppCompatActivity {
                 OrdemServico ordemServico = bundle.getParcelable("ORDEM_SERVICO");
                 ordemServicoList.add(ordemServico);
 
-                //Grava a lista de O.S. em arquivo .txt
-//                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
-
 //                new OrdemServicoDAO(this).insertOrdemServico(ordemServico);
 
                 atualizaRecyclerView(ordemServicoList);
@@ -157,9 +152,6 @@ public class TelaInicialActivity extends AppCompatActivity {
                 int pos = bundle.getInt("POSITION");
 
                 ordemServicoList.set(pos, os);
-
-                //Grava a lista de O.S. em arquivo .txt
-//                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
 
                 atualizaRecyclerView(ordemServicoList);
             }
@@ -200,7 +192,6 @@ public class TelaInicialActivity extends AppCompatActivity {
 
                 ordemServicoList.get(position).setFilename(fileFotoAbsolutePath);
 
-//                new ArquivoDAO().salvarArquivo(ordemServicoList, file);
                 new OrdemServicoDAO(this).addFotoParaUmaOS(ordemServicoList.get(position).getOrdemServicoId(), fileFotoAbsolutePath);
 
                 atualizaRecyclerView(ordemServicoList);
@@ -283,7 +274,8 @@ public class TelaInicialActivity extends AppCompatActivity {
             }
         });
 
-        String tema = PreferenciasUsuari.Companion.getPreferenciaTema(TelaInicialActivity.this);
+//        String tema = PreferenciasUsuari.Companion.getPreferenciaTema(TelaInicialActivity.this);
+        String tema = PreferenciasUsuario.getPreferenciaTema(TelaInicialActivity.this);
         if (tema.equals(TEMA_NOTURNO)) {
             menu.findItem(R.id.app_bar_checkbox).setChecked(true);
         }
@@ -311,10 +303,12 @@ public class TelaInicialActivity extends AppCompatActivity {
             item.setChecked(isChecked);
 
             if (item.isChecked()) {
-                PreferenciasUsuari.Companion.setPreferenciaTema(TelaInicialActivity.this, TEMA_NOTURNO);
+//                PreferenciasUsuari.Companion.setPreferenciaTema(TelaInicialActivity.this, TEMA_NOTURNO);
+                PreferenciasUsuario.setPreferenciaTema(TelaInicialActivity.this, TEMA_NOTURNO);
                 recreate();
             } else {
-                PreferenciasUsuari.Companion.setPreferenciaTema(TelaInicialActivity.this, TEMA_PADRAO);
+//                PreferenciasUsuari.Companion.setPreferenciaTema(TelaInicialActivity.this, TEMA_PADRAO);
+                PreferenciasUsuario.setPreferenciaTema(TelaInicialActivity.this, TEMA_PADRAO);
                 recreate();
             }
         }
