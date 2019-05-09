@@ -31,9 +31,11 @@ import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
-import com.rtstudio.projetomeuapp.interfaces.OrdemServicoCliente;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
+import com.rtstudio.projetomeuapp.server.WebServiceGet;
+import com.rtstudio.projetomeuapp.server.WebServicePost;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -199,6 +201,24 @@ public class TelaInicialActivity extends AppCompatActivity {
         }
     }
 
+    public void addList(List<OrdemServico> ordensJson) {
+        List<OrdemServico> ordensAUX = new ArrayList<>(ordensJson);
+        for (OrdemServico ordemServico : ordensJson) {
+            for (int i = 0; i < ordemServicoList.size(); i++) {
+                if (ordemServicoList.get(i).getOrdemServicoId() == ordemServico.getOrdemServicoId()) {
+                    ordensAUX.remove(ordemServico);
+                }
+            }
+        }
+
+        if (ordensAUX.size() == 0) {
+            Toast.makeText(this, "Lista atualizada", Toast.LENGTH_SHORT).show();
+        } else {
+            ordemServicoList.addAll(ordensAUX);
+        }
+        atualizaRecyclerView(ordemServicoList);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
@@ -311,8 +331,18 @@ public class TelaInicialActivity extends AppCompatActivity {
                 PreferenciasUsuario.setPreferenciaTema(TelaInicialActivity.this, TEMA_PADRAO);
                 recreate();
             }
+        } else if (id == R.id.menu_sicronizar) {
+            WebServiceGet webServiceGet = new WebServiceGet(this);
+            webServiceGet.execute();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        WebServicePost webservice = new WebServicePost();
+        webservice.execute(ordemServicoList);
     }
 }
