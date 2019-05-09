@@ -16,7 +16,7 @@ import java.util.List;
 
 public class OrdemServicoDAO {
     private final String TABELA_ORDEM_SERVICO = "TABELA_ORDEM_SERVICO";
-    private final String CAMPOS = "ORDEM_SERVICO_ID, CLIENTE_ID, ENDERECO_ID, FOTOSERVICO, TIPOSERVICO";
+    private final String CAMPOS = "ORDEM_SERVICO_ID, CLIENTE_ID, ENDERECO_ID, FOTOSERVICO, TIPOSERVICO, SYNC_STATUS";
 
     private Context context;
 
@@ -32,7 +32,8 @@ public class OrdemServicoDAO {
         create.append("     CLIENTE_ID          INTEGER,");
         create.append("     ENDERECO_ID         INTEGER,");
         create.append("     FOTOSERVICO         TEXT,");
-        create.append("     TIPOSERVICO         TEXT");
+        create.append("     TIPOSERVICO         TEXT,");
+        create.append("     SYNC_STATUS         INTEGER");
         create.append(")");
         sqLite.execSQL(create.toString());
     }
@@ -57,6 +58,7 @@ public class OrdemServicoDAO {
         values.put("CLIENTE_ID", clienteId);
         values.put("ENDERECO_ID", enderecoId);
         values.put("TIPOSERVICO", ordemServico.getTipoServico());
+        values.put("SYNC_STATUS", ordemServico.getStatus());
 
         banco = Connection.getInstance(context).getWritableDatabase();
 

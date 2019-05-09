@@ -7,12 +7,18 @@ import java.io.Serializable;
 import java.util.Random;
 
 public class OrdemServico implements Parcelable, Serializable {
+
+    public static final int SYNC_STATUS_TRUE = 1;
+    public static final int SYNC_STATUS_FALSE = 0;
+
     private int ordemServicoId;
     private Cliente cliente;
     private Endereco endereco;
     private String tipoServico;
     private String descricaoServico;
     private String filename;
+    private int status = OrdemServico.SYNC_STATUS_FALSE;
+
 
     //Bloco de inicialização que inicializa o id da ordem de serviço
     {
@@ -131,5 +137,13 @@ public class OrdemServico implements Parcelable, Serializable {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
