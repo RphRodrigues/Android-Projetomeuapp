@@ -241,7 +241,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private void getLocalizacao() {
         Log.v("GPS", "getLocalizacao");
 
-        LocationManager locationManager =  (LocationManager) getSystemService(LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         boolean ativado = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
         if (!ativado) {

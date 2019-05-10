@@ -1,7 +1,6 @@
 package com.rtstudio.projetomeuapp.adapter;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
