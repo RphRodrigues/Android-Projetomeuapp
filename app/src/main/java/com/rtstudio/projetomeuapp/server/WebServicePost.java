@@ -13,7 +13,9 @@ public class WebServicePost extends AsyncTask<List<OrdemServico>, Void, Void> {
         List<OrdemServico> ondens = lists[0];
 
         for (OrdemServico os : ondens) {
-            ConnectServer.post(os);
+            if (os.getSyncStatus() == OrdemServico.SYNC_STATUS_FALSE) {
+                ConnectServer.post(os);
+            }
         }
 
         return null;

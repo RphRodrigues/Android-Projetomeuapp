@@ -23,8 +23,8 @@ public class ConnectServer {
 
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
-    public static void post(OrdemServico ordemServico) {
-        String url_post = "http://192.168.0.5:8080/ProjetoWebService/webresources/projeto/InserirOrdemServico";
+    public static boolean post(OrdemServico ordemServico) {
+        String url_post = "http://192.168.0.5:8080/ProjetoWebService/webresources/inserirOS";
 
         OkHttpClient client = new OkHttpClient();
 
@@ -40,17 +40,19 @@ public class ConnectServer {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            if (response.body() != null) {
-
+            if (response.isSuccessful()) {
+                ordemServico.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
                 Log.i("Response", "post: " + response.toString() + " -> " + response.body().string());
+                return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public static List<OrdemServico> get() {
-        String url_get = "http://192.168.0.5:8080/ProjetoWebService/webresources/projeto/listaOrdensServico/";
+        String url_get = "http://192.168.0.5:8080/ProjetoWebService/webresources/getListaOS";
 
         OkHttpClient client = new OkHttpClient();
 
@@ -75,5 +77,49 @@ public class ConnectServer {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void put(OrdemServico ordemServico) {
+        String url_post = "http://192.168.0.5:8080/ProjetoWebService/webresources/atualizarOS/" + ordemServico.getOrdemServicoId();
+
+        OkHttpClient client = new OkHttpClient();
+
+        Gson gson = new Gson();
+
+        String json = gson.toJson(ordemServico);
+
+        RequestBody body = RequestBody.create(JSON, json);
+
+        Request request = new Request.Builder()
+                .url(url_post)
+                .put(body)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.body() != null) {
+                Log.i("Response", "post: " + response.toString() + " -> " + response.body().string());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void delete(int ordemServicoId) {
+        String url_post = "http://192.168.0.5:8080/ProjetoWebService/webresources/DeletarOS/" + ordemServicoId;
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url_post)
+                .delete()
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.body() != null) {
+                Log.i("Response", "post: " + response.toString() + " -> " + response.body().string());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

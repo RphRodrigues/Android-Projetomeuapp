@@ -20,6 +20,7 @@ import com.rtstudio.projetomeuapp.classes.Endereco;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
+import com.rtstudio.projetomeuapp.server.WebServicePut;
 
 public class EditarOrdemServicoActivity extends AppCompatActivity {
 
@@ -93,6 +94,8 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
                 ordemServico.setDescricaoServico(descrisao);
 
                 if ((new OrdemServicoDAO(getBaseContext()).updateOS(ordemServico))) {
+                    WebServicePut webServicePut = new WebServicePut();
+                    webServicePut.execute(ordemServico);
                     util.alertDialog("Aviso", "O.S. Editada com sucesso", false);
                 } else {
                     util.alertDialog("Aviso", "Não foi possível editar O.S.", false);

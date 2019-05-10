@@ -26,6 +26,9 @@ public class WebServiceGet extends AsyncTask<Void, Void, List<OrdemServico>> {
     protected void onPostExecute(List<OrdemServico> ordemServicos) {
         super.onPostExecute(ordemServicos);
         if (ordemServicos != null) {
+            for (int i = 0; i < ordemServicos.size(); i++) {
+                ordemServicos.get(i).setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
+            }
             telaInicialActivityWeakReference.get().addList(ordemServicos);
         }
     }

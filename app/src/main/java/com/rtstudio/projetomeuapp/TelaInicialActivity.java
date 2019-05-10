@@ -35,7 +35,6 @@ import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 import com.rtstudio.projetomeuapp.server.WebServiceGet;
 import com.rtstudio.projetomeuapp.server.WebServicePost;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +48,7 @@ public class TelaInicialActivity extends AppCompatActivity {
     public static final String TEMA_PADRAO = "temaPadrao";
     public static final String TEMA_NOTURNO = "temaNoturno";
 
-    File file;
+    private Utilitaria util;
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
     private OrdemServicoAdapter adapter;
@@ -65,6 +64,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
 
+        util = new Utilitaria(this);
 
         imgBackground = findViewById(R.id.telaInicial_imgBg);
 
@@ -78,18 +78,20 @@ public class TelaInicialActivity extends AppCompatActivity {
 
         //Recupera as O.S salvas em arquivo e carrega no recyclerView
         if (ordemServicoList == null) {
-            try {
+//            try {
                 ordemServicoList = new ArrayList<>();
-
-                ordemServicoList = new OrdemServicoDAO(this).getAll();
-
-                if (!ordemServicoList.isEmpty()) {
-                    atualizaRecyclerView(ordemServicoList);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//
+//                ordemServicoList = new OrdemServicoDAO(this).getAll();
+//
+//                if (!ordemServicoList.isEmpty()) {
+//                    atualizaRecyclerView(ordemServicoList);
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
         }
+
+        get();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -119,19 +121,19 @@ public class TelaInicialActivity extends AppCompatActivity {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
-                try {
-                    ordemServicoList = new OrdemServicoDAO(TelaInicialActivity.this).getAll();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                if (!ordemServicoList.isEmpty()) {
-                    atualizaRecyclerView(ordemServicoList);
-                    Toast.makeText(TelaInicialActivity.this, "Atualizado " + ordemServicoList.size(), Toast.LENGTH_SHORT).show();
-                }
+                get();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    public void get() {
+        if (util.checkConnection()) {
+            WebServiceGet webServiceGet = new WebServiceGet(this);
+            webServiceGet.execute();
+//            Toast.makeText(TelaInicialActivity.this, "Atualizado " + ordemServicoList.size(), Toast.LENGTH_SHORT).show();
+            atualizaRecyclerView(ordemServicoList);
+        }
     }
 
     @Override
@@ -332,17 +334,14 @@ public class TelaInicialActivity extends AppCompatActivity {
                 recreate();
             }
         } else if (id == R.id.menu_sicronizar) {
-            WebServiceGet webServiceGet = new WebServiceGet(this);
-            webServiceGet.execute();
+            if (util.checkConnection()) {
+                WebServicePost webServicePost = new WebServicePost();
+                webServicePost.execute(ordemServicoList);
+            } else {
+                Toast.makeText(this, "Sem acesso internet, não é possível buscar OS", Toast.LENGTH_SHORT).show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        WebServicePost webservice = new WebServicePost();
-        webservice.execute(ordemServicoList);
     }
 }
