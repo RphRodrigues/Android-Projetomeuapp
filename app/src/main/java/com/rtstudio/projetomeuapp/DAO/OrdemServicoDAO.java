@@ -10,6 +10,7 @@ import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.connection.Connection;
+import com.rtstudio.projetomeuapp.server.WebServiceDelete;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class OrdemServicoDAO {
         values.put("CLIENTE_ID", clienteId);
         values.put("ENDERECO_ID", enderecoId);
         values.put("TIPOSERVICO", ordemServico.getTipoServico());
-        values.put("SYNC_STATUS", ordemServico.getStatus());
+        values.put("SYNC_STATUS", ordemServico.getSyncStatus());
 
         banco = Connection.getInstance(context).getWritableDatabase();
 
@@ -74,7 +75,8 @@ public class OrdemServicoDAO {
         Log.v("BANCO", "Escrevendo -> Os: " + ordemServico.getOrdemServicoId() +
                 " Cliente: " + ordemServico.getCliente().getNome() +
                 " Endereco: " + ordemServico.getEndereco().getBairro() +
-                " Tipo serviço: " + ordemServico.getTipoServico());
+                " Tipo serviço: " + ordemServico.getTipoServico() +
+                " Sync status: " + ordemServico.getSyncStatus());
         return ordemServicoId != -1;
     }
 
@@ -95,17 +97,20 @@ public class OrdemServicoDAO {
                     int enderecoId = cursor.getInt(cursor.getColumnIndex("ENDERECO_ID"));
                     String fotoServico = cursor.getString(cursor.getColumnIndex("FOTOSERVICO"));
                     String tipoServico = cursor.getString(cursor.getColumnIndex("TIPOSERVICO"));
+                    int syncStatus = cursor.getInt(cursor.getColumnIndex("SYNC_STATUS"));
 
                     Cliente cliente = new ClienteDAO(context).getClienteById(clienteId);
                     Endereco endereco = new EnderecoDAO(context).getEnderecoById(enderecoId);
 
                     OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, fotoServico, tipoServico);
+                    os.setSyncStatus(syncStatus);
 
                     Log.v("BANCO", "Lendo -> Os: " + os.getOrdemServicoId() +
                             " Cliente: " + cliente.getNome() +
                             " Endereco: " + endereco.getBairro() +
                             " foto: " + os.getFilename() +
-                            " Tipo serviço: " + tipoServico);
+                            " Tipo serviço: " + os.getTipoServico() +
+                            " Sync status: " + os.getSyncStatus());
 
                     ordens.add(os);
                 } while (cursor.moveToNext());
@@ -117,6 +122,8 @@ public class OrdemServicoDAO {
     }
 
     public boolean deleteOrdemServico(int ordemServicoId) {
+        WebServiceDelete webServiceDelete = new WebServiceDelete();
+        webServiceDelete.execute(ordemServicoId);
         SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
 
         String[] value = new String[]{String.valueOf(ordemServicoId)};
@@ -149,6 +156,17 @@ public class OrdemServicoDAO {
 
         valuesOS.put("FOTOSERVICO", ordemServico.getFilename());
         valuesOS.put("TIPOSERVICO", ordemServico.getTipoServico());
+        valuesOS.put("SYNC_STATUS", ordemServico.getSyncStatus());
+
+        String[] args = {String.valueOf(ordemServico.getOrdemServicoId())};
+        return banco.update(TABELA_ORDEM_SERVICO, valuesOS, "ORDEM_SERVICO_ID = ?", args) == 1;
+    }
+
+    public boolean updateStatusOS(OrdemServico ordemServico, int syncStatus) {
+        SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
+
+        ContentValues valuesOS = new ContentValues();
+        valuesOS.put("SYNC_STATUS", syncStatus);
 
         String[] args = {String.valueOf(ordemServico.getOrdemServicoId())};
         return banco.update(TABELA_ORDEM_SERVICO, valuesOS, "ORDEM_SERVICO_ID = ?", args) == 1;
@@ -173,17 +191,20 @@ public class OrdemServicoDAO {
                     int enderecoId = cursor.getInt(cursor.getColumnIndex("ENDERECO_ID"));
                     String fotoServico = cursor.getString(cursor.getColumnIndex("FOTOSERVICO"));
                     String tipoServico = cursor.getString(cursor.getColumnIndex("TIPOSERVICO"));
+                    int syncStatus = cursor.getInt(cursor.getColumnIndex("SYNC_STATUS"));
 
                     Cliente cliente = new ClienteDAO(context).getClienteById(clienteId);
                     Endereco endereco = new EnderecoDAO(context).getEnderecoById(enderecoId);
 
                     OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, fotoServico, tipoServico);
+                    os.setSyncStatus(syncStatus);
 
                     Log.v("BANCO", "getOrdemServicoByBairro -> Os: " + os.getOrdemServicoId() +
                             " Cliente: " + cliente.getNome() +
                             " Endereco: " + endereco.getBairro() +
                             " foto: " + os.getFilename() +
-                            " Tipo serviço: " + tipoServico);
+                            " Tipo serviço: " + os.getTipoServico() +
+                            " syncStatus: " + os.getSyncStatus());
 
                     ordens.add(os);
                 } while (cursor.moveToNext());

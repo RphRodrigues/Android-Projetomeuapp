@@ -17,12 +17,13 @@ public class OrdemServico implements Parcelable, Serializable {
     private String tipoServico;
     private String descricaoServico;
     private String filename;
-    private int status = OrdemServico.SYNC_STATUS_FALSE;
+    private int syncStatus;
 
 
     //Bloco de inicialização que inicializa o id da ordem de serviço
     {
         this.ordemServicoId = gerarId();
+        this.syncStatus = OrdemServico.SYNC_STATUS_FALSE;
     }
 
     public OrdemServico() {
@@ -139,11 +140,11 @@ public class OrdemServico implements Parcelable, Serializable {
         this.filename = filename;
     }
 
-    public int getStatus() {
-        return status;
+    public int getSyncStatus() {
+        return syncStatus;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setSyncStatus(int syncStatus) {
+        this.syncStatus = syncStatus;
     }
 }
