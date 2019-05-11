@@ -53,6 +53,18 @@
         <activity
             android:name=".CadastrarServicoActivity"
             android:label="@string/cadastrar_servico" />
+
+        <service android:name=".service.Service" >
+            <intent-filter>
+                <action android:name="TESTE"/>
+            </intent-filter>
+        </service>
+        <receiver android:name=".broadcast.MyBroadcast">
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_SET"/>
+            </intent-filter>
+        </receiver>
+        <!--<service android:name=".notificacao.IntentServiceNotificacao"/>-->
     </application>
 
 </manifest>
