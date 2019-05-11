@@ -30,6 +30,9 @@
     <string name="camera">Câmera</string>
     <string name="galeria">Galeria</string>
     <string name="numero_os">O.S.: </string>
+    <string name="abrir">abrir</string>
+    <string name="fechar">fechar</string>
+
     <string-array name="lista_servico">
         <item>Instalação</item>
         <item>Reparo</item>

@@ -12,12 +12,16 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -56,6 +60,9 @@ public class TelaInicialActivity extends AppCompatActivity {
     private ImageView imgBackground;
     private RelativeLayout relativeLayout;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,8 @@ public class TelaInicialActivity extends AppCompatActivity {
 //        PreferenciasUsuari.Companion.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
+
+        setNavigationDrawer();
 
         util = new Utilitaria(this);
 
@@ -79,7 +88,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         //Recupera as O.S salvas em arquivo e carrega no recyclerView
         if (ordemServicoList == null) {
 //            try {
-                ordemServicoList = new ArrayList<>();
+            ordemServicoList = new ArrayList<>();
 //
 //                ordemServicoList = new OrdemServicoDAO(this).getAll();
 //
@@ -91,7 +100,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 //            }
         }
 
-        get();
+        getOrdemServicoFromServer();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -121,13 +130,46 @@ public class TelaInicialActivity extends AppCompatActivity {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                get();
+                getOrdemServicoFromServer();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
 
-    public void get() {
+    public void setNavigationDrawer() {
+        mToolbar = findViewById(R.id.telaInicial_Toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        NavigationView navigationView = findViewById(R.id.telaInicial_navigationView);
+
+        mDrawerLayout = findViewById(R.id.telaInicial_drawer);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.abrir, R.string.fechar);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.isDrawerIndicatorEnabled();
+        mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(navigationView);
+            }
+        });
+        mDrawerToggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                mDrawerLayout.closeDrawer(navigationView);
+                if (id == R.id.drawer_sair) {
+                    finish();
+                }
+                return false;
+            }
+        });
+
+    }
+
+    public void getOrdemServicoFromServer() {
         if (util.checkConnection()) {
             WebServiceGet webServiceGet = new WebServiceGet(this);
             webServiceGet.execute();
