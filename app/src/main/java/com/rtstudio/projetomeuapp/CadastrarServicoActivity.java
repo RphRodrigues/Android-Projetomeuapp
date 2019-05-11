@@ -86,9 +86,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
             return;
         }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
         cep.getEditText().addTextChangedListener(new CepListener(this));
 
         util = new Utilitaria(this,
