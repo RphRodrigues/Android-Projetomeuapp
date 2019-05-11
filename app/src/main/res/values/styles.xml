@@ -21,6 +21,8 @@
         <item name="android:textColorTertiaryInverse">@color/colorPrimaryDarkTemaModoNotuno</item>
     </style>
 
-
+    <style name="toolbar">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
 
 </resources>

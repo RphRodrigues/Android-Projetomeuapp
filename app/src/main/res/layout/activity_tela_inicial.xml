@@ -6,15 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/telaInicial_navigationView"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/drawer_cabecalho"
-        app:menu="@menu/drawer_menu">
-    </android.support.design.widget.NavigationView>
-
     <RelativeLayout
         android:id="@+id/telaInicial_relative_layout"
         android:layout_width="match_parent"
@@ -22,16 +13,19 @@
         tools:context=".TelaInicialActivity">
 
         <android.support.v7.widget.Toolbar
+            style="@style/toolbar"
             android:id="@+id/telaInicial_Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="?attr/colorPrimary"
             app:titleTextColor="#fff"/>
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/telaInicial_swipeRefreshLayoutId"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/telaInicial_Toolbar"
+            android:layout_marginTop="92dp">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/telaInicial_RecyclerView"
@@ -43,7 +37,12 @@
             android:id="@+id/telaInicial_imgBg"
             android:layout_width="match_parent"
             android:layout_height="400dp"
-            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginBottom="178dp"
             android:background="@drawable/ic_android_24dp" />
 
         <android.support.design.widget.FloatingActionButton
@@ -58,4 +57,13 @@
             android:layout_marginBottom="16dp"
             android:src="@drawable/ic_add_24dp" />
     </RelativeLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/telaInicial_navigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/drawer_cabecalho"
+        app:menu="@menu/drawer_menu">
+    </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>
