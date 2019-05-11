@@ -35,9 +35,11 @@ import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
+import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 import com.rtstudio.projetomeuapp.server.WebServiceGet;
 import com.rtstudio.projetomeuapp.server.WebServicePost;
+import com.rtstudio.projetomeuapp.service.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,12 +141,12 @@ public class TelaInicialActivity extends AppCompatActivity {
     public void setNavigationDrawer() {
         mToolbar = findViewById(R.id.telaInicial_Toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        NavigationView navigationView = findViewById(R.id.telaInicial_navigationView);
+        final NavigationView navigationView = findViewById(R.id.telaInicial_navigationView);
 
         mDrawerLayout = findViewById(R.id.telaInicial_drawer);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.abrir, R.string.fechar);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, 0, 0);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.isDrawerIndicatorEnabled();
         mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
@@ -161,7 +163,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 mDrawerLayout.closeDrawer(navigationView);
                 if (id == R.id.drawer_sair) {
-                    finish();
+                    onBackPressed();
                 }
                 return false;
             }
@@ -190,7 +192,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 ordemServicoList.add(ordemServico);
 
 //                new OrdemServicoDAO(this).insertOrdemServico(ordemServico);
-
+                new Notificacao().notificacaoSimples(this, ordemServico.getEndereco().getBairro());
                 atualizaRecyclerView(ordemServicoList);
 
             } else if (requestCode == REQUEST_CODE_EDITAR && bundle != null) {
@@ -361,6 +363,7 @@ public class TelaInicialActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.menu_itemAjuda) {
+            stopService(new Intent(this, Service.class));
             new Utilitaria(this).menuItemAjuda();
         } else if (id == R.id.app_bar_checkbox) {
             boolean isChecked = !item.isChecked();
@@ -376,6 +379,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 recreate();
             }
         } else if (id == R.id.menu_sicronizar) {
+            startService(new Intent(this, Service.class));
             if (util.checkConnection()) {
                 WebServicePost webServicePost = new WebServicePost();
                 webServicePost.execute(ordemServicoList);

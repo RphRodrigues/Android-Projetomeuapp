@@ -27,6 +27,7 @@ import com.rtstudio.projetomeuapp.EditarOrdemServicoActivity;
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.TelaInicialActivity;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 
 import java.io.File;
 import java.io.IOException;
@@ -174,10 +175,12 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
+                                new Notificacao().notificacaoBotao(activity, ordemServicoList.get(position));
+
                                 new OrdemServicoDAO(activity).deleteOrdemServico(ordemServicoList.get(position).getOrdemServicoId());
                                 ordemServicoList.remove(position);
                                 notifyItemRemoved(position);
-
+//                                notifyDataSetChanged();
                                 try {
                                     ordemServicoList = new OrdemServicoDAO(activity).getAll();
                                 } catch (Exception ex) {
