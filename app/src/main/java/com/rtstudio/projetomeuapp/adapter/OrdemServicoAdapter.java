@@ -109,7 +109,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
                 PopupMenu popup = new PopupMenu(activity, holder.imageCam);
 
-                popup.inflate(R.menu.floating_context_menu);
+                popup.inflate(R.menu.popup_menu);
 
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
