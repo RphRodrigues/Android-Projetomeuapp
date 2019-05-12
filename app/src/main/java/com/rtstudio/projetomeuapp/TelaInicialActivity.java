@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
@@ -184,22 +185,19 @@ public class TelaInicialActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Bundle bundle;
         if (data != null) {
-            bundle = data.getBundleExtra("BUNDLE");
-            if (requestCode == REQUEST_CODE_CRIAR && resultCode == RESULT_OK && bundle != null) {
-                OrdemServico ordemServico = bundle.getParcelable("ORDEM_SERVICO");
+            if (requestCode == REQUEST_CODE_CRIAR && resultCode == RESULT_OK) {
+                OrdemServico ordemServico = new Gson().fromJson(data.getStringExtra("ORDEM_SERVICO"), OrdemServico.class);
                 ordemServicoList.add(ordemServico);
 
 //                new OrdemServicoDAO(this).insertOrdemServico(ordemServico);
                 new Notificacao().notificacaoSimples(this, ordemServico.getEndereco().getBairro());
                 atualizaRecyclerView(ordemServicoList);
 
-            } else if (requestCode == REQUEST_CODE_EDITAR && bundle != null) {
-                OrdemServico os = bundle.getParcelable("ORDEM_SERVICO");
-                int pos = bundle.getInt("POSITION");
+            } else if (requestCode == REQUEST_CODE_EDITAR && resultCode == RESULT_OK) {
+                OrdemServico ordemServico = new Gson().fromJson(data.getStringExtra("ORDEM_SERVICO"), OrdemServico.class);
 
-                ordemServicoList.set(pos, os);
+                ordemServicoList.set(adapter.getPosicaoAtualDoClick(), ordemServico);
 
                 atualizaRecyclerView(ordemServicoList);
             }
@@ -210,7 +208,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
             if (data != null) {
                 Uri imagemSeleciona = data.getData();
-                int pos = adapter.getPosicaoGlobal();
+                int pos = adapter.getPosicaoAtualDoClick();
                 String[] caminhoFile = {MediaStore.Images.Media.DATA};
 
                 Cursor cursor = getContentResolver().query(imagemSeleciona, caminhoFile, null, null, null);
@@ -234,7 +232,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
             if (adapter.getFileFoto() != null) {
 
-                int position = adapter.getPosicaoGlobal();
+                int position = adapter.getPosicaoAtualDoClick();
 
                 String fileFotoAbsolutePath = adapter.getFileFoto().getAbsolutePath();
 

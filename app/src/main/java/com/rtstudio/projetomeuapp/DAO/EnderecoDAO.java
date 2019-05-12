@@ -10,7 +10,7 @@ import com.rtstudio.projetomeuapp.connection.Connection;
 
 public class EnderecoDAO {
     public static final String TABELA_ENDERECO = "TABELA_ENDERECO";
-    public static final String CAMPOS = "ID, RUA, NUMERO, BAIRRO, CEP, CIDADE, ESTADO";
+    public static final String CAMPOS = "ID, RUA, NUMERO, BAIRRO, CEP, CIDADE, ESTADO, COMPLEMENTO";
 
     private Context context;
 
@@ -22,13 +22,14 @@ public class EnderecoDAO {
         StringBuffer create = new StringBuffer();
         create.append("CREATE TABLE IF NOT EXISTS TABELA_ENDERECO");
         create.append("(");
-        create.append("     ID          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,");
-        create.append("     RUA         VARCHAR(100),");
-        create.append("     NUMERO      TEXT,");
-        create.append("     BAIRRO      TEXT,");
-        create.append("     CEP         TEXT,");
-        create.append("     CIDADE      TEXT,");
-        create.append("     ESTADO      TEXT");
+        create.append("     ID              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,");
+        create.append("     RUA             VARCHAR(100),");
+        create.append("     NUMERO          TEXT,");
+        create.append("     BAIRRO          TEXT,");
+        create.append("     CEP             TEXT,");
+        create.append("     CIDADE          TEXT,");
+        create.append("     ESTADO          TEXT,");
+        create.append("     COMPLEMENTO     TEXT");
         create.append(")");
         sqLite.execSQL(create.toString());
     }
@@ -41,6 +42,7 @@ public class EnderecoDAO {
         contentValuesEndereco.put("CEP", endereco.getCep());
         contentValuesEndereco.put("CIDADE", endereco.getLocalidade());
         contentValuesEndereco.put("ESTADO", endereco.getUf());
+        contentValuesEndereco.put("COMPLEMENTO", endereco.getComplemento());
 
         SQLiteDatabase conn = Connection.getInstance(context).getWritableDatabase();
 
@@ -64,6 +66,7 @@ public class EnderecoDAO {
             endereco.setCep(cursor.getString(cursor.getColumnIndex("CEP")));
             endereco.setUf(cursor.getString(cursor.getColumnIndex("ESTADO")));
             endereco.setBairro(cursor.getString(cursor.getColumnIndex("BAIRRO")));
+            endereco.setComplemento(cursor.getString(cursor.getColumnIndex("COMPLEMENTO")));
         }
         cursor.close();
 
@@ -88,8 +91,7 @@ public class EnderecoDAO {
         valuesEndereco.put("CEP", endereco.getCep());
         valuesEndereco.put("CIDADE", endereco.getLocalidade());
         valuesEndereco.put("ESTADO", endereco.getUf());
-
-        String[] args = new String[]{String.valueOf(endereco.getEnderecoId())};
+        valuesEndereco.put("COMPLEMENTO", endereco.getComplemento());        String[] args = new String[]{String.valueOf(endereco.getEnderecoId())};
 
         return banco.update(TABELA_ENDERECO, valuesEndereco, "ID = ?", args) > 0;
     }

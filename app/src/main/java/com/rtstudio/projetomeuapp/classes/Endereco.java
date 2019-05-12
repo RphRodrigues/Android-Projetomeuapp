@@ -1,12 +1,9 @@
 package com.rtstudio.projetomeuapp.classes;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 
-public class Endereco implements Parcelable, Serializable {
+public class Endereco implements Serializable {
     private int enderecoId;
     private String cep;
     private String logradouro;
@@ -37,47 +34,6 @@ public class Endereco implements Parcelable, Serializable {
         this.bairro = bairro;
         this.complemento = complemento;
     }
-
-
-    protected Endereco(Parcel in) {
-        enderecoId = in.readInt();
-        uf = in.readString();
-        localidade = in.readString();
-        logradouro = in.readString();
-        numero = in.readString();
-        cep = in.readString();
-        bairro = in.readString();
-        complemento = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(enderecoId);
-        dest.writeString(uf);
-        dest.writeString(localidade);
-        dest.writeString(logradouro);
-        dest.writeString(numero);
-        dest.writeString(cep);
-        dest.writeString(bairro);
-        dest.writeString(complemento);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Endereco> CREATOR = new Creator<Endereco>() {
-        @Override
-        public Endereco createFromParcel(Parcel in) {
-            return new Endereco(in);
-        }
-
-        @Override
-        public Endereco[] newArray(int size) {
-            return new Endereco[size];
-        }
-    };
 
     public int getEnderecoId() {
         return enderecoId;

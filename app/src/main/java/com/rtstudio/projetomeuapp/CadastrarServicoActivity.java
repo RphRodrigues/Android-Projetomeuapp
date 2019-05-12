@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.classes.CepListener;
 import com.rtstudio.projetomeuapp.classes.Cliente;
@@ -48,8 +49,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     public static final int PERMISSION_REQUEST_GPS = 100;
     public static final int PERMISSION_REQUEST_MEMORIA = 101;
 
-    int position;
-    OrdemServicoDAO OrdemServicoDAO;
     private Cliente cliente = null;
     private Endereco endereco = null;
     private OrdemServico ordemServico = null;
@@ -107,20 +106,16 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
                 createOrdemServico();
 
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("ORDEM_SERVICO", ordemServico);
-                bundle.putInt("POSITION", position);
-
                 Intent intent = new Intent();
-                intent.putExtra("BUNDLE", bundle);
-                setResult(RESULT_OK, intent);
+                intent.putExtra("ORDEM_SERVICO", new Gson().toJson(ordemServico));
 
                 if (salvarOrdemServicoNoBancoDeDados()) {
+                    setResult(RESULT_OK, intent);
                     util.alertDialog("Aviso", getString(R.string.os_gerada_sucesso), false);
                 } else {
+                    setResult(RESULT_CANCELED, intent);
                     util.alertDialog("Aviso", "Não foi possível criar O.S.", false);
                 }
-
             }
         });
 
@@ -199,7 +194,14 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     }
 
     public void bloquearCampos(boolean isBloquear) {
-        util.bloquearCampos(isBloquear);
+        util.bloquearCampos(isBloquear,
+                R.id.cadastrar_edtRuaId,
+                R.id.cadastrar_edtComplementoId,
+                R.id.cadastrar_edtBairroId,
+                R.id.cadastrar_edtCepId,
+                R.id.cadastrar_edtNumeroId,
+                R.id.cadastrar_edtCidadeId
+        );
     }
 
     @SuppressLint("MissingPermission")

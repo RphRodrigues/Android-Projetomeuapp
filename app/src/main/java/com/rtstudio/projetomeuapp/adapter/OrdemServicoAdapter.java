@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -22,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.EditarOrdemServicoActivity;
 import com.rtstudio.projetomeuapp.R;
@@ -41,7 +41,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     private Activity activity;
     private List<OrdemServico> ordemServicoList;
     private File fileFoto;
-    private int posicaoGlobal;
+    private int posicaoAtualDoClick;
 
     public OrdemServicoAdapter(Activity activity) {
         this.activity = activity;
@@ -52,12 +52,12 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         this.activity = activity;
     }
 
-    public int getPosicaoGlobal() {
-        return posicaoGlobal;
+    public int getPosicaoAtualDoClick() {
+        return posicaoAtualDoClick;
     }
 
-    public void setPosicaoGlobal(int posicaoGlobal) {
-        this.posicaoGlobal = posicaoGlobal;
+    public void setPosicaoAtualDoClick(int posicaoAtualDoClick) {
+        this.posicaoAtualDoClick = posicaoAtualDoClick;
     }
 
     @NonNull
@@ -123,13 +123,13 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
                                     return false;
                                 }
-                                posicaoGlobal = position;
+                                posicaoAtualDoClick = position;
                                 tirarFoto();
 
                                 break;
 
                             case R.id.floating_context_menu_galeria:
-                                posicaoGlobal = ordemServicoList.get(position).getOrdemServicoId();
+                                posicaoAtualDoClick = ordemServicoList.get(position).getOrdemServicoId();
                                 if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
                                     ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, TelaInicialActivity.REQUEST_CODE_GALERIA);
@@ -154,13 +154,12 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("ORDEM_SERVICO", ordemServico);
+                Intent intentEditar = new Intent(activity, EditarOrdemServicoActivity.class);
+                intentEditar.putExtra("ORDEM_SERVICO", new Gson().toJson(ordemServico));
+                setPosicaoAtualDoClick(position);
 
-                Intent intent = new Intent(activity, EditarOrdemServicoActivity.class);
-                intent.putExtra("BUNDLE", bundle);
-
-                activity.startActivityForResult(intent, TelaInicialActivity.REQUEST_CODE_EDITAR);
+                activity.setResult(Activity.RESULT_OK);
+                activity.startActivityForResult(intentEditar, TelaInicialActivity.REQUEST_CODE_EDITAR);
             }
         });
 
@@ -209,7 +208,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     public void tirarFoto() {
 
         try {
-            fileFoto = createImageFile(posicaoGlobal);
+            fileFoto = createImageFile(posicaoAtualDoClick);
 
             Uri uriFile = FileProvider.getUriForFile(activity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
 

@@ -31,7 +31,7 @@ public class Utilitaria {
         this.ids = ids;
     }
 
-    public void bloquearCampos(boolean isBloquear) {
+    public void bloquearCampos(boolean isBloquear, int...ids) {
         for (int id : ids) {
             setBloquearCampos(id, isBloquear);
         }

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.classes.CepListener;
 import com.rtstudio.projetomeuapp.classes.Cliente;
@@ -45,8 +46,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
 
         util = new Utilitaria(this);
 
-        Bundle bundleEditar = getIntent().getBundleExtra("BUNDLE");
-        final OrdemServico os = bundleEditar.getParcelable("ORDEM_SERVICO");
+        final OrdemServico os = new Gson().fromJson(getIntent().getStringExtra("ORDEM_SERVICO"), OrdemServico.class);
 
         cliente = new Cliente();
         endereco = new Endereco();
