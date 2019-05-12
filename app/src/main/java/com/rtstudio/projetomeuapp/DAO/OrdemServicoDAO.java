@@ -48,12 +48,14 @@ public class OrdemServicoDAO {
         if (clienteId == -1) {
             return false;
         }
+        ordemServico.getCliente().setClienteId(clienteId);
 
         EnderecoDAO enderecoDAO = new EnderecoDAO(context);
         long enderecoId = enderecoDAO.insertEndereco(ordemServico.getEndereco());
         if (enderecoId == -1) {
             return false;
         }
+        ordemServico.getEndereco().setEnderecoId(enderecoId);
 
         values.put("ORDEM_SERVICO_ID", ordemServico.getOrdemServicoId());
         values.put("CLIENTE_ID", clienteId);
@@ -131,7 +133,7 @@ public class OrdemServicoDAO {
         return banco.delete(TABELA_ORDEM_SERVICO, "ORDEM_SERVICO_ID = ?", value) > 0;
     }
 
-    public boolean addFotoParaUmaOS(int ordemServicoId, String fotoServico) {
+    public boolean addFotoParaUmaOS(long ordemServicoId, String fotoServico) {
         SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
 
         ContentValues values = new ContentValues();

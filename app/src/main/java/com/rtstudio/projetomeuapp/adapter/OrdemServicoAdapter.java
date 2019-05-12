@@ -179,12 +179,6 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                                 new OrdemServicoDAO(activity).deleteOrdemServico(ordemServicoList.get(position).getOrdemServicoId());
                                 ordemServicoList.remove(position);
                                 notifyDataSetChanged();
-                                try {
-                                    ordemServicoList = new OrdemServicoDAO(activity).getAll();
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                }
-
                             }
                         })
                         .setNegativeButton("Cancelar", null)

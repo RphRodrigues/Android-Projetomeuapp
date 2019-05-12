@@ -187,7 +187,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
         if (data != null) {
             if (requestCode == REQUEST_CODE_CRIAR && resultCode == RESULT_OK) {
-                OrdemServico ordemServico = new Gson().fromJson(data.getStringExtra("ORDEM_SERVICO"), OrdemServico.class);
+                OrdemServico ordemServico = new Gson().fromJson(data.getStringExtra("ORDEM_SERVICO_CRIADA"), OrdemServico.class);
                 ordemServicoList.add(ordemServico);
 
 //                new OrdemServicoDAO(this).insertOrdemServico(ordemServico);
@@ -195,7 +195,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 atualizaRecyclerView(ordemServicoList);
 
             } else if (requestCode == REQUEST_CODE_EDITAR && resultCode == RESULT_OK) {
-                OrdemServico ordemServico = new Gson().fromJson(data.getStringExtra("ORDEM_SERVICO"), OrdemServico.class);
+                OrdemServico ordemServico = new Gson().fromJson(data.getStringExtra("ORDEM_SERVICO_EDITADA"), OrdemServico.class);
 
                 ordemServicoList.set(adapter.getPosicaoAtualDoClick(), ordemServico);
 
@@ -286,7 +286,7 @@ public class TelaInicialActivity extends AppCompatActivity {
     }
 
     public void checkImageBackground() {
-        if (adapter.getItemCount() > 0) {
+        if (adapter != null && adapter.getItemCount() > 0) {
             imgBackground.setVisibility(View.INVISIBLE);
         } else {
             imgBackground.setVisibility(View.VISIBLE);

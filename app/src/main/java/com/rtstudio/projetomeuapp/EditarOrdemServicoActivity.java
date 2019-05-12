@@ -1,5 +1,6 @@
 package com.rtstudio.projetomeuapp;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -100,6 +101,8 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
                 ordemServico.setTipoServico(tipoServico);
 
                 if ((new OrdemServicoDAO(getBaseContext()).updateOS(ordemServico))) {
+                    setResult(RESULT_OK, new Intent().putExtra("ORDEM_SERVICO_EDITADA", new Gson().toJson(ordemServico)));
+
                     WebServicePut webServicePut = new WebServicePut();
                     webServicePut.execute(ordemServico);
                     util.alertDialog("Aviso", "O.S. Editada com sucesso", false);

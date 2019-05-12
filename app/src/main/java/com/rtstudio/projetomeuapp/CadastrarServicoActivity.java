@@ -93,7 +93,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
         util = new Utilitaria(this);
 
-        btnCriarOS.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!validarInputDoUsuario()) {
@@ -106,20 +106,17 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
                 createOrdemServico();
 
-                Intent intent = new Intent();
-                intent.putExtra("ORDEM_SERVICO", new Gson().toJson(ordemServico));
-
                 if (salvarOrdemServicoNoBancoDeDados()) {
-                    setResult(RESULT_OK, intent);
+                    setResult(RESULT_OK,  new Intent().putExtra("ORDEM_SERVICO_CRIADA", new Gson().toJson(ordemServico)));
                     util.alertDialog("Aviso", getString(R.string.os_gerada_sucesso), false);
                 } else {
-                    setResult(RESULT_CANCELED, intent);
+                    setResult(RESULT_CANCELED);
                     util.alertDialog("Aviso", "Não foi possível criar O.S.", false);
                 }
             }
         });
 
-        btnLocalizar.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.cadastrar_btnLocation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -150,8 +147,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         complemento = findViewById(R.id.cadastrar_edtComplementoId);
         bairro = findViewById(R.id.cadastrar_edtBairroId);
         tipoServico = findViewById(R.id.cadastrar_spinnerTipoServico);
-        btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
-        btnLocalizar = findViewById(R.id.cadastrar_btnLocation);
 
         //Inicializa o spinner de estados com RJ
         estado.setSelection(18);

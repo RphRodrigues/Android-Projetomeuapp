@@ -91,7 +91,9 @@ public class EnderecoDAO {
         valuesEndereco.put("CEP", endereco.getCep());
         valuesEndereco.put("CIDADE", endereco.getLocalidade());
         valuesEndereco.put("ESTADO", endereco.getUf());
-        valuesEndereco.put("COMPLEMENTO", endereco.getComplemento());        String[] args = new String[]{String.valueOf(endereco.getEnderecoId())};
+        valuesEndereco.put("COMPLEMENTO", endereco.getComplemento());
+
+        String[] args = new String[]{String.valueOf(endereco.getEnderecoId())};
 
         return banco.update(TABELA_ENDERECO, valuesEndereco, "ID = ?", args) > 0;
     }

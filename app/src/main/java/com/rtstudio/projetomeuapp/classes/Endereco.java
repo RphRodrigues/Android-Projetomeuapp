@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 
 public class Endereco implements Serializable {
-    private int enderecoId;
+    private long enderecoId;
     private String cep;
     private String logradouro;
     private String numero;
@@ -35,11 +35,11 @@ public class Endereco implements Serializable {
         this.complemento = complemento;
     }
 
-    public int getEnderecoId() {
+    public long getEnderecoId() {
         return enderecoId;
     }
 
-    public void setEnderecoId(int enderecoId) {
+    public void setEnderecoId(long enderecoId) {
         this.enderecoId = enderecoId;
     }
 

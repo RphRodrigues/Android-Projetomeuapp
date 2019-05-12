@@ -3,7 +3,7 @@ package com.rtstudio.projetomeuapp.classes;
 import java.io.Serializable;
 
 public class Cliente implements Serializable {
-    private int clienteId;
+    private long clienteId;
     private String nome;
     private String codigoCliente;
 
@@ -15,11 +15,11 @@ public class Cliente implements Serializable {
         this.codigoCliente = codigoCliente;
     }
 
-    public int getClienteId() {
+    public long getClienteId() {
         return clienteId;
     }
 
-    public void setClienteId(int clienteId) {
+    public void setClienteId(long clienteId) {
         this.clienteId = clienteId;
     }
 
