@@ -47,8 +47,8 @@ public class Utilitaria {
                 setCampos(id, "");
             }
         }
-        ((Spinner) activity.findViewById(R.id.cadastrar_spinnerEstados)).setSelection(0);
-        ((Spinner) activity.findViewById(R.id.cadastrar_spinnerTipoServico)).setSelection(18);
+        ((Spinner) activity.findViewById(R.id.cadastrar_spinnerEstados)).setSelection(18);
+        ((Spinner) activity.findViewById(R.id.cadastrar_spinnerTipoServico)).setSelection(0);
     }
 
     public void setCampos(int id, String data) {
