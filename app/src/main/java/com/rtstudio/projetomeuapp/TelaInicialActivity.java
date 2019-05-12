@@ -139,7 +139,7 @@ public class TelaInicialActivity extends AppCompatActivity {
     }
 
     public void setNavigationDrawer() {
-        mToolbar = findViewById(R.id.telaInicial_Toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

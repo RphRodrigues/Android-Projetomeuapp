@@ -1,210 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/cadastrar_linearLayoutId"
+    <include
+        android:id="@+id/cadastrar_include"
+        layout="@layout/toolbar" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="15sp"
-        android:paddingTop="10dp"
-        android:paddingRight="15sp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5sp"
-            android:text="@string/dados_do_cliente" />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/cadastrar_edtNomeClienteId"
+        <LinearLayout
+            android:id="@+id/cadastrar_linearLayoutId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20sp"
-            app:errorEnabled="true">
+            android:orientation="vertical"
+            android:paddingLeft="15sp"
+            android:paddingTop="10dp"
+            android:paddingRight="15sp">
 
-            <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/nome_cliente"
-                android:inputType="textCapSentences|textAutoCorrect" />
-        </android.support.design.widget.TextInputLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25sp"
-            android:text="@string/endereco_servico" />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/cadastrar_edtRuaId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20sp"
-            app:errorEnabled="true">
-
-            <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/logradouro"
-                android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
-        </android.support.design.widget.TextInputLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/complementoIdLayout"
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/cadastrar_edtComplementoId"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/complemento"
-                    android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
-            </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+                android:text="@string/dados_do_cliente" />
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/cadastrar_edtBairroId"
+                android:id="@+id/cadastrar_edtNomeClienteId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/complementoIdLayout"
-                android:layout_toRightOf="@id/complementoIdLayout"
+                android:layout_marginTop="20sp"
                 app:errorEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/bairro"
-                    android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
-            </android.support.design.widget.TextInputLayout>
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/cadastrar_edtCepId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true">
-
-                <android.support.design.widget.TextInputEditText
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/cep"
-                    android:inputType="number"
-                    android:maxLength="9" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/cadastrar_edtNumeroId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/cadastrar_edtCepId"
-                android:layout_toRightOf="@id/cadastrar_edtCepId"
-                app:errorEnabled="true">
-
-                <android.support.design.widget.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/numero"
-                    android:inputType="number" />
-            </android.support.design.widget.TextInputLayout>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/cadastrar_edtCidadeId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true">
-
-                <android.support.design.widget.TextInputEditText
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/localidade"
-                    android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
+                    android:hint="@string/nome_cliente"
+                    android:inputType="textCapSentences|textAutoCorrect" />
             </android.support.design.widget.TextInputLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/cadastrar_edtCidadeId"
-                android:layout_toRightOf="@id/cadastrar_edtCidadeId"
-                android:paddingStart="3dp"
-                android:paddingLeft="3dp"
-                android:text="@string/uf" />
+                android:layout_marginTop="25sp"
+                android:text="@string/endereco_servico" />
 
-            <Spinner
-                android:id="@+id/cadastrar_spinnerEstados"
-                android:layout_width="100dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="20dp"
-                android:layout_toEndOf="@id/cadastrar_edtCidadeId"
-                android:layout_toRightOf="@id/cadastrar_edtCidadeId"
-                android:entries="@array/estados" />
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25sp"
-            android:text="@string/informacoes_do_servico" />
-
-        <Spinner
-            android:id="@+id/cadastrar_spinnerTipoServico"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15sp"
-            android:background="@color/dividerColor"
-            android:entries="@array/lista_servico" />
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5sp">
-
-            <EditText
-                android:id="@+id/cadastrar_edtDescricaoServicosId"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/cadastrar_edtRuaId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/descricao_do_servico"
-                android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginTop="20sp"
+                app:errorEnabled="true">
 
-        <Button
-            android:id="@+id/cadastrar_btnLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15sp"
-            android:text="@string/localizar" />
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/logradouro"
+                    android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
+            </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/cadastrar_btnCriarOSId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15sp"
-            android:text="@string/cadastrar_servico" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/cadastrar_ivBitmap"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center" />
-    </LinearLayout>
-</ScrollView>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/complementoIdLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/cadastrar_edtComplementoId"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/complemento"
+                        android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/cadastrar_edtBairroId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/complementoIdLayout"
+                    android:layout_toRightOf="@id/complementoIdLayout"
+                    app:errorEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/bairro"
+                        android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
+                </android.support.design.widget.TextInputLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/cadastrar_edtCepId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/cep"
+                        android:inputType="number"
+                        android:maxLength="9" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/cadastrar_edtNumeroId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/cadastrar_edtCepId"
+                    android:layout_toRightOf="@id/cadastrar_edtCepId"
+                    app:errorEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/numero"
+                        android:inputType="number" />
+                </android.support.design.widget.TextInputLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/cadastrar_edtCidadeId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/localidade"
+                        android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/cadastrar_edtCidadeId"
+                    android:layout_toRightOf="@id/cadastrar_edtCidadeId"
+                    android:paddingStart="3dp"
+                    android:paddingLeft="3dp"
+                    android:text="@string/uf" />
+
+                <Spinner
+                    android:id="@+id/cadastrar_spinnerEstados"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_toEndOf="@id/cadastrar_edtCidadeId"
+                    android:layout_toRightOf="@id/cadastrar_edtCidadeId"
+                    android:entries="@array/estados" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25sp"
+                android:text="@string/informacoes_do_servico" />
+
+            <Spinner
+                android:id="@+id/cadastrar_spinnerTipoServico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:background="@color/dividerColor"
+                android:entries="@array/lista_servico" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp">
+
+                <EditText
+                    android:id="@+id/cadastrar_edtDescricaoServicosId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/descricao_do_servico"
+                    android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/cadastrar_btnLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:text="@string/localizar" />
+
+            <Button
+                android:id="@+id/cadastrar_btnCriarOSId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:text="@string/cadastrar_servico" />
+
+            <ImageView
+                android:id="@+id/cadastrar_ivBitmap"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

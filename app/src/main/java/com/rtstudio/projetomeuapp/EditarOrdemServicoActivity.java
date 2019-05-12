@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,10 +25,12 @@ import com.rtstudio.projetomeuapp.server.WebServicePut;
 
 public class EditarOrdemServicoActivity extends AppCompatActivity {
 
-    private Utilitaria util;
     Cliente cliente = null;
     Endereco endereco = null;
     OrdemServico ordemServico = null;
+    private Utilitaria util;
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         PreferenciasUsuario.setTema(this);
@@ -35,6 +38,8 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_ordem_servico);
 
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ((Button) findViewById(R.id.cadastrar_btnCriarOSId)).setText("Salvar");
@@ -67,15 +72,15 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String nomeCliente = ((TextInputLayout) findViewById(R.id.cadastrar_edtNomeClienteId)).getEditText().getText().toString();
-                String rua         = ((TextInputLayout) findViewById(R.id.cadastrar_edtRuaId)).getEditText().getText().toString();
-                String complemento = ((EditText)        findViewById(R.id.cadastrar_edtComplementoId)).getText().toString();
-                String bairro      = ((TextInputLayout) findViewById(R.id.cadastrar_edtBairroId)).getEditText().getText().toString();
-                String cep         = ((TextInputLayout) findViewById(R.id.cadastrar_edtCepId)).getEditText().getText().toString();
-                String numero      = ((TextInputLayout) findViewById(R.id.cadastrar_edtNumeroId)).getEditText().getText().toString();
-                String cidade      = ((TextInputLayout) findViewById(R.id.cadastrar_edtCidadeId)).getEditText().getText().toString();
-                String descrisao   = ((EditText)        findViewById(R.id.cadastrar_edtDescricaoServicosId)).getText().toString();
-                String estado      = ((Spinner)         findViewById(R.id.cadastrar_spinnerEstados)).getSelectedItem().toString();
-                String tipoServico = ((Spinner)         findViewById(R.id.cadastrar_spinnerTipoServico)).getSelectedItem().toString();
+                String rua = ((TextInputLayout) findViewById(R.id.cadastrar_edtRuaId)).getEditText().getText().toString();
+                String complemento = ((EditText) findViewById(R.id.cadastrar_edtComplementoId)).getText().toString();
+                String bairro = ((TextInputLayout) findViewById(R.id.cadastrar_edtBairroId)).getEditText().getText().toString();
+                String cep = ((TextInputLayout) findViewById(R.id.cadastrar_edtCepId)).getEditText().getText().toString();
+                String numero = ((TextInputLayout) findViewById(R.id.cadastrar_edtNumeroId)).getEditText().getText().toString();
+                String cidade = ((TextInputLayout) findViewById(R.id.cadastrar_edtCidadeId)).getEditText().getText().toString();
+                String descrisao = ((EditText) findViewById(R.id.cadastrar_edtDescricaoServicosId)).getText().toString();
+                String estado = ((Spinner) findViewById(R.id.cadastrar_spinnerEstados)).getSelectedItem().toString();
+                String tipoServico = ((Spinner) findViewById(R.id.cadastrar_spinnerTipoServico)).getSelectedItem().toString();
 
                 cliente.setNome(nomeCliente);
                 cliente.setCodigoCliente(nomeCliente.substring(0, 3));
