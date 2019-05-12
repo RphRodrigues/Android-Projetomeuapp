@@ -1,37 +1,51 @@
 package com.rtstudio.projetomeuapp.classes;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.rtstudio.projetomeuapp.R;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 /**
  * Created by Raphael Rodrigues on 29/04/2019.
  */
 public class Utilitaria {
     private Activity activity;
-    private int[] ids;
 
     public Utilitaria(Activity activity) {
         this.activity = activity;
     }
 
-    public Utilitaria(Activity activity, int... ids) {
-        this.activity = activity;
-        this.ids = ids;
-    }
 
-    public void bloquearCampos(boolean isBloquear, int...ids) {
+    public void bloquearCampos(boolean isBloquear, int... ids) {
         for (int id : ids) {
             setBloquearCampos(id, isBloquear);
         }
@@ -144,62 +158,165 @@ public class Utilitaria {
 
     private boolean checkCampo(int id) {
 
-            switch (id) {
-                case R.id.cadastrar_edtNomeClienteId:
-                    if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
-                        ((TextInputLayout) activity.findViewById(id)).setError("Digite o nome do cliente");
-                        return false;
-                    } else {
-                        ((TextInputLayout) activity.findViewById(id)).setError(null);
-                        ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
-                        return true;
-                    }
-                case R.id.cadastrar_edtRuaId:
-                    if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
-                        ((TextInputLayout) activity.findViewById(id)).setError("Digite o nome da rua");
-                        return false;
-                    } else {
-                        ((TextInputLayout) activity.findViewById(id)).setError(null);
-                        ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
-                        return true;
-                    }
-                case R.id.cadastrar_edtBairroId:
-                    if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
-                        ((TextInputLayout) activity.findViewById(id)).setError("Informe o bairro");
-                        return false;
-                    } else {
-                        ((TextInputLayout) activity.findViewById(id)).setError(null);
-                        ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
-                        return true;
-                    }
-                case R.id.cadastrar_edtCepId:
-                    if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
-                        ((TextInputLayout) activity.findViewById(id)).setError("Digite o cep");
-                        return false;
-                    } else {
-                        ((TextInputLayout) activity.findViewById(id)).setError(null);
-                        ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
-                        return true;
-                    }
-                case R.id.cadastrar_edtNumeroId:
-                    if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
-                        ((TextInputLayout) activity.findViewById(id)).setError("Digite o número");
-                        return false;
-                    } else {
-                        ((TextInputLayout) activity.findViewById(id)).setError(null);
-                        ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
-                        return true;
-                    }
-                case R.id.cadastrar_edtCidadeId:
-                    if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
-                        ((TextInputLayout) activity.findViewById(id)).setError("Informe a cidade");
-                        return false;
-                    } else {
-                        ((TextInputLayout) activity.findViewById(id)).setError(null);
-                        ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
-                        return true;
-                    }
-            }
+        switch (id) {
+            case R.id.cadastrar_edtNomeClienteId:
+                if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                    ((TextInputLayout) activity.findViewById(id)).setError("Digite o nome do cliente");
+                    return false;
+                } else {
+                    ((TextInputLayout) activity.findViewById(id)).setError(null);
+                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
+                    return true;
+                }
+            case R.id.cadastrar_edtRuaId:
+                if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                    ((TextInputLayout) activity.findViewById(id)).setError("Digite o nome da rua");
+                    return false;
+                } else {
+                    ((TextInputLayout) activity.findViewById(id)).setError(null);
+                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
+                    return true;
+                }
+            case R.id.cadastrar_edtBairroId:
+                if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                    ((TextInputLayout) activity.findViewById(id)).setError("Informe o bairro");
+                    return false;
+                } else {
+                    ((TextInputLayout) activity.findViewById(id)).setError(null);
+                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
+                    return true;
+                }
+            case R.id.cadastrar_edtCepId:
+                if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                    ((TextInputLayout) activity.findViewById(id)).setError("Digite o cep");
+                    return false;
+                } else {
+                    ((TextInputLayout) activity.findViewById(id)).setError(null);
+                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
+                    return true;
+                }
+            case R.id.cadastrar_edtNumeroId:
+                if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                    ((TextInputLayout) activity.findViewById(id)).setError("Digite o número");
+                    return false;
+                } else {
+                    ((TextInputLayout) activity.findViewById(id)).setError(null);
+                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
+                    return true;
+                }
+            case R.id.cadastrar_edtCidadeId:
+                if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                    ((TextInputLayout) activity.findViewById(id)).setError("Informe a cidade");
+                    return false;
+                } else {
+                    ((TextInputLayout) activity.findViewById(id)).setError(null);
+                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
+                    return true;
+                }
+        }
         return true;
+    }
+
+    @SuppressLint("MissingPermission")
+    public void getLocalizacaoGPS() {
+        Log.v("GPS", "getLocalizacaoGPS");
+
+        LocationManager locationManager = (LocationManager) activity.getSystemService(LOCATION_SERVICE);
+
+        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                geoReferenciamento(location);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        }, null);
+    }
+
+
+    @SuppressLint("MissingPermission")
+    public void getLocalizacao() {
+        Log.v("GPS", "getLocalizacao");
+
+        LocationManager locationManager = (LocationManager) activity.getSystemService(LOCATION_SERVICE);
+        boolean ativado = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        if (!ativado) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            activity.startActivity(intent);
+            return;
+        }
+
+        FusedLocationProviderClient flpc = LocationServices.getFusedLocationProviderClient(activity.getApplicationContext());
+
+        flpc.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                geoReferenciamento(location);
+            }
+        });
+    }
+
+    private void geoReferenciamento(Location location) {
+        Log.v("GPS", "geoReferenciamento");
+
+        Geocoder geo = new Geocoder(activity.getApplicationContext(), Locale.getDefault());
+        try {
+            List<Address> enderecos = geo.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+
+            if ((enderecos != null) && (enderecos.size() > 0)) {
+                Address address = enderecos.get(0);
+
+                //Rua
+                ((TextInputLayout) activity.findViewById(R.id.cadastrar_edtRuaId)).getEditText().setText(address.getThoroughfare());
+
+                //Número
+                if (address.getFeatureName().contains("-")) {
+                    ((TextInputLayout) activity.findViewById(R.id.cadastrar_edtNumeroId)).setTag(address.getFeatureName().substring(0, address.getFeatureName().indexOf("-")));
+                } else {
+                    ((TextInputLayout) activity.findViewById(R.id.cadastrar_edtNumeroId)).getEditText().setText(address.getFeatureName());
+                }
+
+                //Bairro
+                ((TextInputLayout) activity.findViewById(R.id.cadastrar_edtBairroId)).getEditText().setText(address.getSubLocality());
+
+                //Cidade
+                ((TextInputLayout) activity.findViewById(R.id.cadastrar_edtCidadeId)).getEditText().setText(address.getSubAdminArea());
+
+                //Cep
+                ((TextInputLayout) activity.findViewById(R.id.cadastrar_edtCepId)).getEditText().setText(address.getPostalCode());
+
+                //Estado
+                address.getAdminArea();
+
+                //Pais
+                address.getCountryName();
+
+                //Código do pais
+                address.getCountryCode();
+
+                //Cultura
+                address.getLocale();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            Toast.makeText(activity, "Aguardando triangulação do gps", Toast.LENGTH_SHORT).show();
+        }
     }
 }

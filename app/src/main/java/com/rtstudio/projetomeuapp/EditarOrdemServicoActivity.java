@@ -115,14 +115,16 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
         findViewById(R.id.cadastrar_btnLocation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                util.getLocalizacao();
             }
         });
     }
+
     private boolean validarInputDoUsuario() {
         return util.validarCampos(R.id.cadastrar_edtNomeClienteId, R.id.cadastrar_edtRuaId, R.id.cadastrar_edtBairroId,
                 R.id.cadastrar_edtCepId, R.id.cadastrar_edtCidadeId, R.id.cadastrar_edtNumeroId, R.id.cadastrar_edtComplementoId);
     }
+
     public String getUriCep() {
         return "https://viacep.com.br/ws/" + ((TextInputLayout) findViewById(R.id.cadastrar_edtCepId)).getEditText().getText() + "/json/";
     }
