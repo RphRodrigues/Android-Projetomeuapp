@@ -69,7 +69,7 @@ public class Utilitaria {
         setCampos(R.id.cadastrar_edtNumeroId, endereco.getNumero());
         setCampos(R.id.cadastrar_edtBairroId, endereco.getBairro());
         setCampos(R.id.cadastrar_edtCidadeId, endereco.getLocalidade());
-//        setCampos(R.id.cadastrar_edtComplementoId, endereco.getComplemento());
+        setCampos(R.id.cadastrar_edtComplementoId, endereco.getComplemento());
         setSpinner(R.id.cadastrar_spinnerEstados, R.array.estados, endereco.getUf());
     }
 
@@ -125,20 +125,24 @@ public class Utilitaria {
 
     public boolean validarCampos(int... ids) {
 
-        boolean[] resultado = new boolean[ids.length];
-        for (int i = 0; i < ids.length; i++) {
-            resultado[i] = checkCampo(ids[i]);
-        }
-
-        for (boolean b : resultado) {
-            if (!b) {
-                return false;
+        if (ids.length > 0) {
+            boolean[] resultado = new boolean[ids.length];
+            for (int i = 0; i < ids.length; i++) {
+                resultado[i] = checkCampo(ids[i]);
             }
+
+            for (boolean b : resultado) {
+                if (!b) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 
-    public boolean checkCampo(int id) {
+    private boolean checkCampo(int id) {
 
             switch (id) {
                 case R.id.cadastrar_edtNomeClienteId:
