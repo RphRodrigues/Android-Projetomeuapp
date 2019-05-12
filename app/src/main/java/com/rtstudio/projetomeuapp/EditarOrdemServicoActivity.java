@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
@@ -62,7 +61,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
             util.setDadosOrdemServico(os);
 
             Bitmap img = BitmapFactory.decodeFile(os.getFilename());
-            ((ImageView) findViewById(R.id.cadastrar_ivBitmap)).setImageBitmap(img);
+//            ((ImageView) findViewById(R.id.cadastrar_ivBitmap)).setImageBitmap(img);
         }
 
         ((TextInputLayout) findViewById(R.id.cadastrar_edtCepId)).getEditText().addTextChangedListener(new CepListener(this));
@@ -71,6 +70,10 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
         findViewById(R.id.cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!validarInputDoUsuario()) {
+                    return;
+                }
+
                 String nomeCliente = ((TextInputLayout) findViewById(R.id.cadastrar_edtNomeClienteId)).getEditText().getText().toString();
                 String rua = ((TextInputLayout) findViewById(R.id.cadastrar_edtRuaId)).getEditText().getText().toString();
                 String complemento = ((EditText) findViewById(R.id.cadastrar_edtComplementoId)).getText().toString();
@@ -78,7 +81,6 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
                 String cep = ((TextInputLayout) findViewById(R.id.cadastrar_edtCepId)).getEditText().getText().toString();
                 String numero = ((TextInputLayout) findViewById(R.id.cadastrar_edtNumeroId)).getEditText().getText().toString();
                 String cidade = ((TextInputLayout) findViewById(R.id.cadastrar_edtCidadeId)).getEditText().getText().toString();
-                String descrisao = ((EditText) findViewById(R.id.cadastrar_edtDescricaoServicosId)).getText().toString();
                 String estado = ((Spinner) findViewById(R.id.cadastrar_spinnerEstados)).getSelectedItem().toString();
                 String tipoServico = ((Spinner) findViewById(R.id.cadastrar_spinnerTipoServico)).getSelectedItem().toString();
 
@@ -96,7 +98,6 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
                 ordemServico.setCliente(cliente);
                 ordemServico.setEndereco(endereco);
                 ordemServico.setTipoServico(tipoServico);
-                ordemServico.setDescricaoServico(descrisao);
 
                 if ((new OrdemServicoDAO(getBaseContext()).updateOS(ordemServico))) {
                     WebServicePut webServicePut = new WebServicePut();
@@ -115,7 +116,10 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
             }
         });
     }
-
+    private boolean validarInputDoUsuario() {
+        return util.validarCampos(R.id.cadastrar_edtNomeClienteId, R.id.cadastrar_edtRuaId, R.id.cadastrar_edtBairroId,
+                R.id.cadastrar_edtCepId, R.id.cadastrar_edtCidadeId, R.id.cadastrar_edtNumeroId, R.id.cadastrar_edtComplementoId);
+    }
     public String getUriCep() {
         return "https://viacep.com.br/ws/" + ((TextInputLayout) findViewById(R.id.cadastrar_edtCepId)).getEditText().getText() + "/json/";
     }
@@ -140,8 +144,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
                     R.id.cadastrar_edtBairroId,
                     R.id.cadastrar_edtCepId,
                     R.id.cadastrar_edtNumeroId,
-                    R.id.cadastrar_edtCidadeId,
-                    R.id.cadastrar_edtDescricaoServicosId
+                    R.id.cadastrar_edtCidadeId
             );
         } else if (id == R.id.menu_itemAjuda) {
             util.menuItemAjuda();

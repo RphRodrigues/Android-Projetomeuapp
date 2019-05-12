@@ -2,7 +2,6 @@ package com.rtstudio.projetomeuapp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,7 +10,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -94,20 +92,12 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
         cep.getEditText().addTextChangedListener(new CepListener(this));
 
-        util = new Utilitaria(this,
-                R.id.cadastrar_edtRuaId,
-                R.id.cadastrar_edtBairroId,
-                R.id.cadastrar_edtCepId,
-                R.id.cadastrar_edtCidadeId,
-                R.id.cadastrar_edtNumeroId,
-                R.id.cadastrar_edtComplementoId,
-                R.id.cadastrar_spinnerEstados
-        );
+        util = new Utilitaria(this);
 
         btnCriarOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validacao()) {
+                if (!validarInputDoUsuario()) {
                     return;
                 }
 
@@ -150,6 +140,11 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         });
     }
 
+    private boolean validarInputDoUsuario() {
+        return util.validarCampos(R.id.cadastrar_edtNomeClienteId, R.id.cadastrar_edtRuaId, R.id.cadastrar_edtBairroId,
+                R.id.cadastrar_edtCepId, R.id.cadastrar_edtCidadeId, R.id.cadastrar_edtNumeroId, R.id.cadastrar_edtComplementoId);
+    }
+
     private void inicilizarVariaveisDeClasse() {
         nomeCliente = findViewById(R.id.cadastrar_edtNomeClienteId);
         rua = findViewById(R.id.cadastrar_edtRuaId);
@@ -160,10 +155,8 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         complemento = findViewById(R.id.cadastrar_edtComplementoId);
         bairro = findViewById(R.id.cadastrar_edtBairroId);
         tipoServico = findViewById(R.id.cadastrar_spinnerTipoServico);
-        descricaoServico = findViewById(R.id.cadastrar_edtDescricaoServicosId);
         btnCriarOS = findViewById(R.id.cadastrar_btnCriarOSId);
         btnLocalizar = findViewById(R.id.cadastrar_btnLocation);
-        imgBitmap = findViewById(R.id.cadastrar_ivBitmap);
 
         //Inicializa o spinner de estados com RJ
         estado.setSelection(18);
@@ -181,7 +174,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         ordemServico = new OrdemServico(
                 cliente,
                 endereco,
-                descricaoServico.getText().toString(),
                 tipoServico.getSelectedItem().toString()
         );
     }
@@ -349,8 +341,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                     R.id.cadastrar_edtBairroId,
                     R.id.cadastrar_edtCepId,
                     R.id.cadastrar_edtNumeroId,
-                    R.id.cadastrar_edtCidadeId,
-                    R.id.cadastrar_edtDescricaoServicosId
+                    R.id.cadastrar_edtCidadeId
             );
         } else if (id == R.id.menu_itemAjuda) {
             util.menuItemAjuda();
@@ -363,41 +354,5 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    private Boolean validacao() {
-        //Validação para testar se o usuário inseriu os dados do cliente
-        if (nomeCliente.getEditText().getText().toString().trim().isEmpty()) {
-            nomeCliente.setError("Digite o nome do cliente");
-            return false;
-        }
-
-        //Validação para testar se o usuário inseriu o endereço do serviço
-        if (rua.getEditText().getText().toString().trim().isEmpty()) {
-            rua.setError("Digite o nome da rua");
-            return false;
-        } else if (bairro.getEditText().getText().toString().trim().isEmpty()) {
-            bairro.setError("Digite o bairro");
-            return false;
-        } else if (cep.getEditText().getText().toString().trim().isEmpty()) {
-            cep.setError("Digite o cep");
-            return false;
-        } else if (numero.getEditText().getText().toString().trim().isEmpty()) {
-            numero.setError("Digite o número");
-            return false;
-        } else if (cidade.getEditText().getText().toString().trim().isEmpty()) {
-            cidade.setError("Digite a cidade");
-            return false;
-        }
-
-        //Validação para testar se o usuário inseriu a descrição do serviço
-        if (descricaoServico.getText().toString().isEmpty()) {
-            Toast.makeText(CadastrarServicoActivity.this,
-                    getString(R.string.preencha_descricao_servico),
-                    Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
     }
 }

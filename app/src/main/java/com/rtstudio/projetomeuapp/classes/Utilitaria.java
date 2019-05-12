@@ -48,11 +48,11 @@ public class Utilitaria {
             }
         }
         ((Spinner) activity.findViewById(R.id.cadastrar_spinnerEstados)).setSelection(0);
-        ((Spinner) activity.findViewById(R.id.cadastrar_spinnerTipoServico)).setSelection(0);
+        ((Spinner) activity.findViewById(R.id.cadastrar_spinnerTipoServico)).setSelection(18);
     }
 
     public void setCampos(int id, String data) {
-        if (id == R.id.cadastrar_edtComplementoId || id == R.id.cadastrar_edtDescricaoServicosId) {
+        if (id == R.id.cadastrar_edtComplementoId) {
             ((EditText) activity.findViewById(id)).setText(data);
         } else {
             ((TextInputLayout) activity.findViewById(id)).getEditText().setText(data);
@@ -89,7 +89,6 @@ public class Utilitaria {
         setDadosCliente(os.getCliente());
         setDadosEndereco(os.getEndereco());
         setSpinner(R.id.cadastrar_spinnerTipoServico, R.array.lista_servico, os.getTipoServico());
-        ((EditText) activity.findViewById(R.id.cadastrar_edtDescricaoServicosId)).setText(os.getDescricaoServico());
         ((TextView) activity.findViewById(R.id.editar_tvNumOs)).append(" " + os.getOrdemServicoId());
     }
 
@@ -122,5 +121,81 @@ public class Utilitaria {
         ConnectivityManager connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
+    }
+
+    public boolean validarCampos(int... ids) {
+
+        boolean[] resultado = new boolean[ids.length];
+        for (int i = 0; i < ids.length; i++) {
+            resultado[i] = checkCampo(ids[i]);
+        }
+
+        for (boolean b : resultado) {
+            if (!b) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkCampo(int id) {
+
+            switch (id) {
+                case R.id.cadastrar_edtNomeClienteId:
+                    if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                        ((TextInputLayout) activity.findViewById(id)).setError("Digite o nome do cliente");
+                        return false;
+                    } else {
+                        ((TextInputLayout) activity.findViewById(id)).setError(null);
+                        ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
+                        return true;
+                    }
+                case R.id.cadastrar_edtRuaId:
+                    if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                        ((TextInputLayout) activity.findViewById(id)).setError("Digite o nome da rua");
+                        return false;
+                    } else {
+                        ((TextInputLayout) activity.findViewById(id)).setError(null);
+                        ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
+                        return true;
+                    }
+                case R.id.cadastrar_edtBairroId:
+                    if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                        ((TextInputLayout) activity.findViewById(id)).setError("Informe o bairro");
+                        return false;
+                    } else {
+                        ((TextInputLayout) activity.findViewById(id)).setError(null);
+                        ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
+                        return true;
+                    }
+                case R.id.cadastrar_edtCepId:
+                    if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                        ((TextInputLayout) activity.findViewById(id)).setError("Digite o cep");
+                        return false;
+                    } else {
+                        ((TextInputLayout) activity.findViewById(id)).setError(null);
+                        ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
+                        return true;
+                    }
+                case R.id.cadastrar_edtNumeroId:
+                    if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                        ((TextInputLayout) activity.findViewById(id)).setError("Digite o número");
+                        return false;
+                    } else {
+                        ((TextInputLayout) activity.findViewById(id)).setError(null);
+                        ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
+                        return true;
+                    }
+                case R.id.cadastrar_edtCidadeId:
+                    if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                        ((TextInputLayout) activity.findViewById(id)).setError("Informe a cidade");
+                        return false;
+                    } else {
+                        ((TextInputLayout) activity.findViewById(id)).setError(null);
+                        ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
+                        return true;
+                    }
+            }
+        return true;
     }
 }
