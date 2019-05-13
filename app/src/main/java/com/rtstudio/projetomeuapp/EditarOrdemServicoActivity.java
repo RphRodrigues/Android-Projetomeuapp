@@ -26,9 +26,9 @@ import com.rtstudio.projetomeuapp.server.WebServicePut;
 
 public class EditarOrdemServicoActivity extends AppCompatActivity {
 
-    Cliente cliente = null;
-    Endereco endereco = null;
-    OrdemServico ordemServico = null;
+    private Cliente cliente = null;
+    private Endereco endereco = null;
+    private OrdemServico ordemServico = null;
     private Utilitaria util;
     private Toolbar mToolbar;
 

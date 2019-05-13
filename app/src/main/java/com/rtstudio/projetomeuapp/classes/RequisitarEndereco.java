@@ -18,26 +18,24 @@ public class RequisitarEndereco extends AsyncTask<Void, Void, Endereco> {
     private WeakReference<CadastrarServicoActivity> cadastrarServicoActivityWeakReference;
     private WeakReference<EditarOrdemServicoActivity> editarOrdemServicoActivityWeakReference;
     private Activity activity;
+    private Utilitaria util;
 
     public RequisitarEndereco(CadastrarServicoActivity activity) {
         this.cadastrarServicoActivityWeakReference = new WeakReference<>(activity);
         this.activity = activity;
+        util = new Utilitaria(cadastrarServicoActivityWeakReference.get());
     }
 
     public RequisitarEndereco(EditarOrdemServicoActivity activity) {
         this.editarOrdemServicoActivityWeakReference = new WeakReference<>(activity);
         this.activity = activity;
+        util = new Utilitaria(editarOrdemServicoActivityWeakReference.get());
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
 
-        if (this.activity instanceof CadastrarServicoActivity) {
-            if (cadastrarServicoActivityWeakReference.get() != null) {
-                cadastrarServicoActivityWeakReference.get().bloquearCampos(true);
-            }
-        }
     }
 
     @Override
@@ -64,24 +62,26 @@ public class RequisitarEndereco extends AsyncTask<Void, Void, Endereco> {
     @Override
     protected void onPostExecute(Endereco endereco) {
         super.onPostExecute(endereco);
-        if (activity instanceof CadastrarServicoActivity) {
-            if (cadastrarServicoActivityWeakReference.get() != null) {
-                cadastrarServicoActivityWeakReference.get().bloquearCampos(false);
-
-                if (endereco.getCep() != null) {
-                    Utilitaria util = new Utilitaria(cadastrarServicoActivityWeakReference.get());
+        if (!util.checkConnection()) {
+            Toast.makeText(activity, "Sem internet", Toast.LENGTH_SHORT).show();
+        }
+        if (endereco != null) {
+            if (activity instanceof CadastrarServicoActivity) {
+                if (endereco.getCep() != null && cadastrarServicoActivityWeakReference.get() != null) {
+                    util.bloquearCampos(false);
+                    util.setDadosEndereco(endereco);
+                } else {
+                    Toast.makeText(activity, "Cep inválido", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                if (endereco.getCep() != null && editarOrdemServicoActivityWeakReference.get() != null) {
+                    util.bloquearCampos(false);
                     util.setDadosEndereco(endereco);
                 } else {
                     Toast.makeText(activity, "Cep inválido", Toast.LENGTH_SHORT).show();
                 }
             }
-        } else {
-            if (editarOrdemServicoActivityWeakReference.get() != null && endereco.getCep() != null) {
-                Utilitaria util = new Utilitaria(editarOrdemServicoActivityWeakReference.get());
-                util.setDadosEndereco(endereco);
-            } else {
-                Toast.makeText(activity, "Cep inválido", Toast.LENGTH_SHORT).show();
-            }
         }
+        util.bloquearCampos(false);
     }
 }

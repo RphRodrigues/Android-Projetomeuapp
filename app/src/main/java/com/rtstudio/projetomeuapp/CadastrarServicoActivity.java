@@ -166,17 +166,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         return "https://viacep.com.br/ws/" + cep.getEditText().getText() + "/json/";
     }
 
-    public void bloquearCampos(boolean isBloquear) {
-        util.bloquearCampos(isBloquear,
-                R.id.cadastrar_edtRuaId,
-                R.id.cadastrar_edtComplementoId,
-                R.id.cadastrar_edtBairroId,
-                R.id.cadastrar_edtCepId,
-                R.id.cadastrar_edtNumeroId,
-                R.id.cadastrar_edtCidadeId
-        );
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 

@@ -45,7 +45,10 @@ public class Utilitaria {
     }
 
 
-    public void bloquearCampos(boolean isBloquear, int... ids) {
+    public void bloquearCampos(boolean isBloquear) {
+        int[] ids = {R.id.cadastrar_edtRuaId, R.id.cadastrar_edtCepId, R.id.cadastrar_edtComplementoId,
+                R.id.cadastrar_edtBairroId, R.id.cadastrar_edtCidadeId, R.id.cadastrar_edtNumeroId};
+
         for (int id : ids) {
             setBloquearCampos(id, isBloquear);
         }
