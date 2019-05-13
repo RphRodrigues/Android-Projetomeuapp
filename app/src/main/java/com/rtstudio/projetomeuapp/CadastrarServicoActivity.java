@@ -49,8 +49,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferenciasUsuario.setTema(this);
-//        PreferenciasUsuari.Companion.setTema(this);
+        PreferenciasUsuario.Companion.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_servico);
 

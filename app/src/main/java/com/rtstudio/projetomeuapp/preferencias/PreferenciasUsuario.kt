@@ -4,7 +4,7 @@ import android.content.Context
 import com.rtstudio.projetomeuapp.R
 import com.rtstudio.projetomeuapp.TelaInicialActivity
 
-class PreferenciasUsuari {
+class PreferenciasUsuario {
     companion object {
         val TEMA = "TEMA"
 

@@ -34,8 +34,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferenciasUsuario.setTema(this);
-//        PreferenciasUsuari.Companion.setTema(this);
+        PreferenciasUsuario.Companion.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_ordem_servico);
 

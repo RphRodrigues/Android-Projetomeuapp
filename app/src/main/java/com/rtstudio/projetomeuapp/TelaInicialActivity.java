@@ -69,8 +69,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PreferenciasUsuario.setTema(this);
-//        PreferenciasUsuari.Companion.setTema(this);
+        PreferenciasUsuario.Companion.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
 
@@ -338,8 +337,7 @@ public class TelaInicialActivity extends AppCompatActivity {
             }
         });
 
-//        String tema = PreferenciasUsuari.Companion.getPreferenciaTema(TelaInicialActivity.this);
-        String tema = PreferenciasUsuario.getPreferenciaTema(TelaInicialActivity.this);
+        String tema = PreferenciasUsuario.Companion.getPreferenciaTema(TelaInicialActivity.this);
         if (tema.equals(TEMA_NOTURNO)) {
             menu.findItem(R.id.app_bar_checkbox).setChecked(true);
         }
@@ -368,12 +366,10 @@ public class TelaInicialActivity extends AppCompatActivity {
             item.setChecked(isChecked);
 
             if (item.isChecked()) {
-//                PreferenciasUsuari.Companion.setPreferenciaTema(TelaInicialActivity.this, TEMA_NOTURNO);
-                PreferenciasUsuario.setPreferenciaTema(TelaInicialActivity.this, TEMA_NOTURNO);
+                PreferenciasUsuario.Companion.setPreferenciaTema(TelaInicialActivity.this, TEMA_NOTURNO);
                 recreate();
             } else {
-//                PreferenciasUsuari.Companion.setPreferenciaTema(TelaInicialActivity.this, TEMA_PADRAO);
-                PreferenciasUsuario.setPreferenciaTema(TelaInicialActivity.this, TEMA_PADRAO);
+                PreferenciasUsuario.Companion.setPreferenciaTema(TelaInicialActivity.this, TEMA_PADRAO);
                 recreate();
             }
         } else if (id == R.id.menu_sicronizar) {
