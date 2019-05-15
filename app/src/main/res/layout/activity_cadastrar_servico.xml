@@ -56,11 +56,20 @@
                 app:errorEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
-                    android:layout_width="match_parent"
+                    android:layout_width="280dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/logradouro"
                     android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
+
+                <Button
+                    android:id="@+id/cadastrar_btnLocation"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ic_add_location_black_24dp"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="-75dp" />
             </android.support.design.widget.TextInputLayout>
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -183,12 +192,12 @@
                 android:background="@color/dividerColor"
                 android:entries="@array/lista_servico" />
 
-            <Button
-                android:id="@+id/cadastrar_btnLocation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15sp"
-                android:text="@string/localizar" />
+            <!--<Button-->
+                <!--android:id="@+id/cadastrar_btnLocation"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="15sp"-->
+                <!--android:text="@string/localizar" />-->
 
             <Button
                 android:id="@+id/cadastrar_btnCriarOSId"
