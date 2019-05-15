@@ -141,7 +141,6 @@ public class TelaInicialActivity extends AppCompatActivity {
     public void setNavigationDrawer() {
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final NavigationView navigationView = findViewById(R.id.telaInicial_navigationView);
 
@@ -162,7 +161,9 @@ public class TelaInicialActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 mDrawerLayout.closeDrawer(navigationView);
-                if (id == R.id.drawer_sair) {
+                if (id == R.id.drawer_ajuda) {
+                    util.menuItemAjuda();
+                } else if (id == R.id.drawer_sair) {
                     onBackPressed();
                 }
                 return false;
@@ -189,8 +190,8 @@ public class TelaInicialActivity extends AppCompatActivity {
                 OrdemServico ordemServico = new Gson().fromJson(data.getStringExtra("ORDEM_SERVICO_CRIADA"), OrdemServico.class);
                 ordemServicoList.add(ordemServico);
 
-//                new OrdemServicoDAO(this).insertOrdemServico(ordemServico);
                 new Notificacao().notificacaoSimples(this, ordemServico.getEndereco().getBairro());
+
                 atualizaRecyclerView(ordemServicoList);
 
             } else if (requestCode == REQUEST_CODE_EDITAR && resultCode == RESULT_OK) {
@@ -200,7 +201,6 @@ public class TelaInicialActivity extends AppCompatActivity {
 
                 atualizaRecyclerView(ordemServicoList);
             }
-
         }
 
         if (requestCode == REQUEST_CODE_GALERIA && resultCode == RESULT_OK) {
