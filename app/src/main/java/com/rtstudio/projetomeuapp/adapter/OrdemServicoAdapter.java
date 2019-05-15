@@ -28,6 +28,7 @@ import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.TelaInicialActivity;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.notificacao.Notificacao;
+import com.rtstudio.projetomeuapp.server.WebServiceDelete;
 
 import java.io.File;
 import java.io.IOException;
@@ -173,12 +174,16 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                int ordemServicoId = ordemServicoList.get(position).getOrdemServicoId();
 
                                 new Notificacao().notificacaoBotao(activity, ordemServicoList.get(position));
 
-                                new OrdemServicoDAO(activity).deleteOrdemServico(ordemServicoList.get(position).getOrdemServicoId());
+                                new OrdemServicoDAO(activity).deleteOrdemServico(ordemServicoId);
                                 ordemServicoList.remove(position);
                                 notifyDataSetChanged();
+
+                                WebServiceDelete webServiceDelete = new WebServiceDelete();
+                                webServiceDelete.execute(ordemServicoId);
                             }
                         })
                         .setNegativeButton("Cancelar", null)
