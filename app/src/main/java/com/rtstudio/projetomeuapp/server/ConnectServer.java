@@ -24,7 +24,7 @@ public class ConnectServer {
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     public static boolean post(OrdemServico ordemServico) {
-        String url_post = "http://192.168.0.5:8080/ProjetoWebService/webresources/inserirOS";
+        String url_post = "http://ec2-18-221-156-122.us-east-2.compute.amazonaws.com:8080/sinapse-ws/webresources/android/inserirOS";
 
         OkHttpClient client = new OkHttpClient();
 
@@ -52,7 +52,7 @@ public class ConnectServer {
     }
 
     public static List<OrdemServico> get() {
-        String url_get = "http://192.168.0.5:8080/ProjetoWebService/webresources/getListaOS";
+        String url_get = "http://ec2-18-221-156-122.us-east-2.compute.amazonaws.com:8080/sinapse-ws/webresources/android/getListaOS";
 
         OkHttpClient client = new OkHttpClient();
 
@@ -80,7 +80,7 @@ public class ConnectServer {
     }
 
     public static void put(OrdemServico ordemServico) {
-        String url_post = "http://192.168.0.5:8080/ProjetoWebService/webresources/atualizarOS/" + ordemServico.getOrdemServicoId();
+        String url_post = "http://ec2-18-221-156-122.us-east-2.compute.amazonaws.com:8080/sinapse-ws/webresources/android/atualizarOS/";
 
         OkHttpClient client = new OkHttpClient();
 
@@ -105,7 +105,7 @@ public class ConnectServer {
     }
 
     public static void delete(int ordemServicoId) {
-        String url_post = "http://192.168.0.5:8080/ProjetoWebService/webresources/DeletarOS/" + ordemServicoId;
+        String url_post = "http://ec2-18-221-156-122.us-east-2.compute.amazonaws.com:8080/sinapse-ws/webresources/android/DeletarOS/" + ordemServicoId;
 
         OkHttpClient client = new OkHttpClient();
 
