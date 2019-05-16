@@ -59,9 +59,10 @@
                 <action android:name="TESTE"/>
             </intent-filter>
         </service>
-        <receiver android:name=".broadcast.MyBroadcast">
+
+        <receiver android:name=".broadcast.MonitoraRedeReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name=""/>
             </intent-filter>
         </receiver>
         <!--<service android:name=".notificacao.IntentServiceNotificacao"/>-->

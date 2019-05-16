@@ -38,13 +38,20 @@
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:id="@+id/card_image_status"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="3dp" />
+
+
             <TextView
                 android:id="@+id/card_tvNumOs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/card_tvOrdemServico"
                 android:layout_marginStart="200dp"
-                android:layout_marginLeft="0dp"
                 android:layout_marginTop="10dp"
                 android:text=""
                 android:textColor="@color/colorAccent"
@@ -56,7 +63,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/card_tvNumOs"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:src="@drawable/ic_my_location_24dp" />
 
             <TextView
@@ -64,10 +70,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="75dp"
                 android:layout_toEndOf="@+id/card_ivMyLocation"
-                android:layout_toRightOf="@+id/card_ivMyLocation"
                 android:text=""
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -78,10 +82,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/card_tvTipoServico"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_toEndOf="@+id/card_ivMyLocation"
-                android:layout_toRightOf="@+id/card_ivMyLocation"
                 android:text=""
                 android:textSize="16sp"
                 android:textStyle="bold" />

@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -80,6 +81,12 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         Log.v("LOG", "onBindViewHolder");
 
         final OrdemServico ordemServico = ordemServicoList.get(position);
+
+        if (ordemServico.getSyncStatus() == OrdemServico.SYNC_STATUS_TRUE) {
+            holder.imageStatus.setImageDrawable(activity.getDrawable(R.drawable.ic_cloud_done_black_24dp));
+        } else {
+            holder.imageStatus.setImageDrawable(activity.getDrawable(R.drawable.ic_sync_black_24dp));
+        }
 
         holder.numOS.setText(String.valueOf(ordemServico.getOrdemServicoId()));
 
@@ -245,6 +252,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         private TextView bairro;
         private ImageButton imageMap;
         private ImageButton imageCam;
+        private ImageView imageStatus;
         private View view;
 
         MyViewHolder(@NonNull View itemView) {
@@ -255,6 +263,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
             bairro = itemView.findViewById(R.id.card_tvBairro);
             imageMap = itemView.findViewById(R.id.card_ibMap);
             imageCam = itemView.findViewById(R.id.card_ibCamera);
+            imageStatus = itemView.findViewById(R.id.card_image_status);
             view = itemView;
         }
     }

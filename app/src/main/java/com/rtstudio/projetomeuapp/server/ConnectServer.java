@@ -41,7 +41,7 @@ public class ConnectServer {
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-                ordemServico.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
+
                 Log.i("Response", "post: " + response.toString() + " -> " + response.body().string());
                 return true;
             }
@@ -70,8 +70,8 @@ public class ConnectServer {
                 jsonRetorno = response.body().string();
 
                 OrdemServico[] arrayOS = gson.fromJson(jsonRetorno, OrdemServico[].class);
-                List<OrdemServico> listOS = new ArrayList<>(Arrays.asList(arrayOS));
-                return listOS;
+
+                return new ArrayList<>(Arrays.asList(arrayOS));
             }
         } catch (IOException e) {
             e.printStackTrace();

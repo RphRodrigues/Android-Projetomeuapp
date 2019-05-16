@@ -57,6 +57,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
             endereco.setEnderecoId(os.getEndereco().getEnderecoId());
             ordemServico.setOrdemServicoId(os.getOrdemServicoId());
             ordemServico.setFilename(os.getFilename());
+            ordemServico.setSyncStatus(os.getSyncStatus());
 
             util.setDadosOrdemServico(os);
 
@@ -99,11 +100,10 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
                 ordemServico.setEndereco(endereco);
                 ordemServico.setTipoServico(tipoServico);
 
+                updateServer();
+
                 if ((new OrdemServicoDAO(getBaseContext()).updateOS(ordemServico))) {
                     setResult(RESULT_OK, new Intent().putExtra("ORDEM_SERVICO_EDITADA", new Gson().toJson(ordemServico)));
-
-                    WebServicePut webServicePut = new WebServicePut();
-                    webServicePut.execute(ordemServico);
                     util.alertDialog("Aviso", "O.S. Editada com sucesso", false);
                 } else {
                     util.alertDialog("Aviso", "Não foi possível editar O.S.", false);
@@ -117,6 +117,18 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
                 util.getLocalizacao();
             }
         });
+    }
+
+    private boolean updateServer() {
+        if (util.checkConnection()) {
+            WebServicePut webServicePut = new WebServicePut();
+            webServicePut.execute(ordemServico);
+            ordemServico.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
+            return true;
+        } else {
+            ordemServico.setSyncStatus(OrdemServico.SYNC_STATUS_FALSE);
+            return false;
+        }
     }
 
     private boolean validarInputDoUsuario() {

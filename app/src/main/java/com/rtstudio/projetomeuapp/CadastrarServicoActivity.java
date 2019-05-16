@@ -26,6 +26,7 @@ import com.rtstudio.projetomeuapp.classes.Endereco;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
+import com.rtstudio.projetomeuapp.server.WebServicePost;
 
 public class CadastrarServicoActivity extends AppCompatActivity {
 
@@ -83,6 +84,10 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
                 createOrdemServico();
 
+                if (uploadServer(mOrdemServico)) {
+                    mOrdemServico.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
+                }
+
                 if (salvarOrdemServicoNoBancoDeDados()) {
                     setResult(RESULT_OK, new Intent().putExtra("ORDEM_SERVICO_CRIADA", new Gson().toJson(mOrdemServico)));
                     util.alertDialog("Aviso", getString(R.string.os_gerada_sucesso), false);
@@ -127,6 +132,16 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
         //Inicializa o spinner de estados com RJ
         estado.setSelection(18);
+    }
+
+    private boolean uploadServer(OrdemServico ordemServico) {
+        if (util.checkConnection()) {
+            WebServicePost webServicePost = new WebServicePost();
+            webServicePost.execute(ordemServico);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private boolean salvarOrdemServicoNoBancoDeDados() {

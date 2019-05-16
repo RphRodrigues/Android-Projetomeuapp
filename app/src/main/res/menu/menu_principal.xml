@@ -17,7 +17,4 @@
         android:checkable="true"
         android:title="Modo noturno" />
 
-    <item
-        android:id="@+id/menu_sicronizar"
-        android:title="Sicronizar banco de dados" />
 </menu>

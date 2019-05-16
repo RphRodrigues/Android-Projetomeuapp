@@ -89,20 +89,20 @@ public class TelaInicialActivity extends AppCompatActivity {
 
         //Recupera as O.S salvas em arquivo e carrega no recyclerView
         if (ordemServicoList == null) {
-//            try {
+            try {
             ordemServicoList = new ArrayList<>();
-//
-//                ordemServicoList = new OrdemServicoDAO(this).getAll();
-//
-//                if (!ordemServicoList.isEmpty()) {
-//                    atualizaRecyclerView(ordemServicoList);
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-        }
 
-        getOrdemServicoFromServer();
+                getOrdemServicoFromServer();
+
+                ordemServicoList = new OrdemServicoDAO(this).getAll();
+
+                if (!ordemServicoList.isEmpty()) {
+                    atualizaRecyclerView(ordemServicoList);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -176,8 +176,6 @@ public class TelaInicialActivity extends AppCompatActivity {
         if (util.checkConnection()) {
             WebServiceGet webServiceGet = new WebServiceGet(this);
             webServiceGet.execute();
-//            Toast.makeText(TelaInicialActivity.this, "Atualizado " + ordemServicoList.size(), Toast.LENGTH_SHORT).show();
-            atualizaRecyclerView(ordemServicoList);
         }
     }
 
@@ -249,6 +247,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         for (OrdemServico ordemServico : ordensJson) {
             for (int i = 0; i < ordemServicoList.size(); i++) {
                 if (ordemServicoList.get(i).getOrdemServicoId() == ordemServico.getOrdemServicoId()) {
+                    ordemServicoList.get(i).setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
                     ordensAUX.remove(ordemServico);
                 }
             }
@@ -371,14 +370,6 @@ public class TelaInicialActivity extends AppCompatActivity {
             } else {
                 PreferenciasUsuario.Companion.setPreferenciaTema(TelaInicialActivity.this, TEMA_PADRAO);
                 recreate();
-            }
-        } else if (id == R.id.menu_sicronizar) {
-            startService(new Intent(this, Service.class));
-            if (util.checkConnection()) {
-                WebServicePost webServicePost = new WebServicePost();
-                webServicePost.execute(ordemServicoList);
-            } else {
-                Toast.makeText(this, "Sem acesso internet, não é possível buscar OS", Toast.LENGTH_SHORT).show();
             }
         }
 
