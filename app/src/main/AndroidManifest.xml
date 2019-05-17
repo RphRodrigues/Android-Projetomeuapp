@@ -60,11 +60,11 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".broadcast.MonitoraRedeReceiver">
-            <intent-filter>
-                <action android:name=""/>
-            </intent-filter>
-        </receiver>
+        <!--<receiver android:name=".broadcast.MonitoraRedeReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name=""/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
         <!--<service android:name=".notificacao.IntentServiceNotificacao"/>-->
     </application>
 

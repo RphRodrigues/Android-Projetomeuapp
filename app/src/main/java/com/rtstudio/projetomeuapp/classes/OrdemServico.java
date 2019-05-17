@@ -5,8 +5,9 @@ import java.util.Random;
 
 public class OrdemServico implements Serializable {
 
-    public static final int SYNC_STATUS_TRUE = 1;
-    public static final int SYNC_STATUS_FALSE = 0;
+    public static final int SYNC_STATUS_TRUE   = 1;
+    public static final int SYNC_STATUS_FALSE  = 0;
+    public static final int SYNC_STATUS_EDITED = 2;
 
     private int ordemServicoId;
     private Cliente cliente;

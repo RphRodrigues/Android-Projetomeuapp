@@ -164,11 +164,11 @@ public class OrdemServicoDAO {
         return banco.update(TABELA_ORDEM_SERVICO, valuesOS, "ORDEM_SERVICO_ID = ?", args) == 1;
     }
 
-    public boolean updateStatusOS(OrdemServico ordemServico, int syncStatus) {
+    public boolean updateStatusOS(OrdemServico ordemServico) {
         SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
 
         ContentValues valuesOS = new ContentValues();
-        valuesOS.put("SYNC_STATUS", syncStatus);
+        valuesOS.put("SYNC_STATUS", ordemServico.getSyncStatus());
 
         String[] args = {String.valueOf(ordemServico.getOrdemServicoId())};
         return banco.update(TABELA_ORDEM_SERVICO, valuesOS, "ORDEM_SERVICO_ID = ?", args) == 1;
