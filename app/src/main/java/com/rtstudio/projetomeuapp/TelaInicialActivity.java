@@ -163,6 +163,10 @@ public class TelaInicialActivity extends AppCompatActivity {
                 mDrawerLayout.closeDrawer(navigationView);
                 if (id == R.id.drawer_ajuda) {
                     util.menuItemAjuda();
+                } else if (id == R.id.drawer_sync) {
+                    if (mRepositorio.sicronizar(ordemServicoList)) {
+                        atualizaRecyclerView(ordemServicoList);
+                    }
                 } else if (id == R.id.drawer_sair) {
                     onBackPressed();
                 }

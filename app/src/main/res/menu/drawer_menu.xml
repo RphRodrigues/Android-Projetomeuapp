@@ -5,13 +5,13 @@
         android:icon="@drawable/ic_home_black_24dp"
         android:title="Home" />
     <item
+        android:id="@+id/drawer_sync"
+        android:icon="@drawable/ic_cloud_done_black_24dp"
+        android:title="Sicronizar" />
+    <item
         android:id="@+id/drawer_ajuda"
         android:icon="@drawable/ic_help_black_24dp"
         android:title="Ajuda" />
-    <item
-        android:id="@+id/drawer_config"
-        android:icon="@drawable/ic_settings_black_24dp"
-        android:title="Configuração" />
     <item
         android:id="@+id/drawer_sair"
         android:icon="@drawable/ic_exit_to_app_black_24dp"
