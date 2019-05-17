@@ -38,8 +38,8 @@ import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
 import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
+import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 import com.rtstudio.projetomeuapp.server.WebServiceGet;
-import com.rtstudio.projetomeuapp.server.WebServicePost;
 import com.rtstudio.projetomeuapp.service.Service;
 
 import java.util.ArrayList;
@@ -66,6 +66,7 @@ public class TelaInicialActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private Repositorio mRepositorio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,8 @@ public class TelaInicialActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tela_inicial);
 
         setNavigationDrawer();
+
+        mRepositorio = new Repositorio(this);
 
         util = new Utilitaria(this);
 
@@ -90,11 +93,11 @@ public class TelaInicialActivity extends AppCompatActivity {
         //Recupera as O.S salvas em arquivo e carrega no recyclerView
         if (ordemServicoList == null) {
             try {
-            ordemServicoList = new ArrayList<>();
-
-                getOrdemServicoFromServer();
+                ordemServicoList = new ArrayList<>();
 
                 ordemServicoList = new OrdemServicoDAO(this).getAll();
+
+                getOrdemServicoFromServer();
 
                 if (!ordemServicoList.isEmpty()) {
                     atualizaRecyclerView(ordemServicoList);
@@ -177,7 +180,7 @@ public class TelaInicialActivity extends AppCompatActivity {
     }
 
     public void getOrdemServicoFromServer() {
-        if (util.checkConnection()) {
+        if (mRepositorio.checkConnection()) {
             WebServiceGet webServiceGet = new WebServiceGet(this);
             webServiceGet.execute();
         }
@@ -248,18 +251,20 @@ public class TelaInicialActivity extends AppCompatActivity {
 
     public void addList(List<OrdemServico> ordensJson) {
         List<OrdemServico> ordensAUX = new ArrayList<>(ordensJson);
-        for (OrdemServico ordemServico : ordensJson) {
+        for (OrdemServico OSJson : ordensJson) {
             for (int i = 0; i < ordemServicoList.size(); i++) {
-                if (ordemServicoList.get(i).getOrdemServicoId() == ordemServico.getOrdemServicoId()) {
-                    ordemServicoList.get(i).setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
-                    ordensAUX.remove(ordemServico);
+                if (ordemServicoList.get(i).getOrdemServicoId() == OSJson.getOrdemServicoId()) {
+                    ordensAUX.remove(OSJson);
                 }
             }
         }
 
-        if (ordensAUX.size() == 0) {
+        if (ordensAUX.isEmpty()) {
             Toast.makeText(this, "Lista atualizada", Toast.LENGTH_SHORT).show();
         } else {
+            for (OrdemServico os : ordensAUX) {
+                os.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
+            }
             ordemServicoList.addAll(ordensAUX);
         }
         atualizaRecyclerView(ordemServicoList);

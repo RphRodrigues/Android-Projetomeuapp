@@ -19,14 +19,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.classes.CepListener;
 import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
-import com.rtstudio.projetomeuapp.server.WebServicePost;
+import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 
 public class CadastrarServicoActivity extends AppCompatActivity {
 
@@ -47,6 +46,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private Spinner tipoServico;
     private Utilitaria util;
     private Toolbar mToolbar;
+    private Repositorio mRepositorio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,8 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mRepositorio = new Repositorio(this);
 
         inicilizarVariaveisDeClasse();
 
@@ -84,11 +86,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
                 createOrdemServico();
 
-                if (uploadServer(mOrdemServico)) {
-                    mOrdemServico.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
-                }
-
-                if (salvarOrdemServicoNoBancoDeDados()) {
+                if (mRepositorio.adicionar(mOrdemServico)) {
                     setResult(RESULT_OK, new Intent().putExtra("ORDEM_SERVICO_CRIADA", new Gson().toJson(mOrdemServico)));
                     util.alertDialog("Aviso", getString(R.string.os_gerada_sucesso), false);
                 } else {
@@ -132,24 +130,6 @@ public class CadastrarServicoActivity extends AppCompatActivity {
 
         //Inicializa o spinner de estados com RJ
         estado.setSelection(18);
-    }
-
-    private boolean uploadServer(OrdemServico ordemServico) {
-        if (util.checkConnection()) {
-            WebServicePost webServicePost = new WebServicePost();
-            webServicePost.execute(ordemServico);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean salvarOrdemServicoNoBancoDeDados() {
-        return new OrdemServicoDAO(CadastrarServicoActivity.this).insertOrdemServico(mOrdemServico);
-    }
-
-    private boolean atualizarOrdemServicoNoBancoDeDados() {
-        return new OrdemServicoDAO(CadastrarServicoActivity.this).updateOS(mOrdemServico);
     }
 
     private void createOrdemServico() {

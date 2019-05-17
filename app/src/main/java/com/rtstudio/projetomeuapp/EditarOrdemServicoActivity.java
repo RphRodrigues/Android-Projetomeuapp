@@ -22,7 +22,7 @@ import com.rtstudio.projetomeuapp.classes.Endereco;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
-import com.rtstudio.projetomeuapp.server.WebServicePut;
+import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 
 public class EditarOrdemServicoActivity extends AppCompatActivity {
 
@@ -31,12 +31,15 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
     private OrdemServico ordemServico = null;
     private Utilitaria util;
     private Toolbar mToolbar;
+    private Repositorio mRepositorio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         PreferenciasUsuario.Companion.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_ordem_servico);
+
+        mRepositorio = new Repositorio(this);
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -119,16 +122,8 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
         });
     }
 
-    private boolean updateServer() {
-        if (util.checkConnection()) {
-            WebServicePut webServicePut = new WebServicePut();
-            webServicePut.execute(ordemServico);
-            ordemServico.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
-            return true;
-        } else {
-            ordemServico.setSyncStatus(OrdemServico.SYNC_STATUS_FALSE);
-            return false;
-        }
+    private void updateServer() {
+        mRepositorio.sicronizarEdicao(ordemServico);
     }
 
     private boolean validarInputDoUsuario() {
