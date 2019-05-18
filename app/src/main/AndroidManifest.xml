@@ -2,16 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rtstudio.projetomeuapp">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -21,14 +19,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
 
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.rtstudio.projetomeuapp.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider" />
@@ -42,34 +40,44 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
 
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.sinapseinformatica.com.br"
+                    android:pathPattern="/anieltouch"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".TelaInicialActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EditarOrdemServicoActivity"
             android:label="@string/ediatar_ordem_servico"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".CadastrarServicoActivity"
             android:label="@string/cadastrar_servico"
             android:screenOrientation="portrait" />
 
-        <service android:name=".service.Service" >
+        <receiver android:exported="true" android:name=".broadcast.MonitoraRedeReceiver">
             <intent-filter>
-                <action android:name="TESTE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android" />
             </intent-filter>
-        </service>
+        </receiver>
 
-        <!--<receiver android:name=".broadcast.MonitoraRedeReceiver">-->
+
+        <!--<service android:name=".service.Service">-->
             <!--<intent-filter>-->
-                <!--<action android:name=""/>-->
+                <!--<action android:name="" />-->
             <!--</intent-filter>-->
-        <!--</receiver>-->
-        <!--<service android:name=".notificacao.IntentServiceNotificacao"/>-->
+        <!--</service>-->
     </application>
 
 </manifest>
