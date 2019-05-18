@@ -25,7 +25,8 @@ public class Repositorio {
     private WebServicePut mWebServicePut = new WebServicePut();
     private WebServiceDelete mWebServiceDelete = new WebServiceDelete();
     private WebServiceGet mWebServiceGet;
-    private List<OrdemServico> listaOrdensServico;
+    private List<OrdemServico> listaOrdensBanco = new ArrayList<>();
+    private List<OrdemServico> listaOrdensServico = new ArrayList<>();
 
     public Repositorio(Context context) {
         this.mContext = context;
@@ -84,27 +85,48 @@ public class Repositorio {
         return listaOrdensServico;
     }
 
-    public void atualizaLista(List<OrdemServico> listaOrdemServicoServidor) {
+    public void retornoDoServidor(List<OrdemServico> listaOrdemServicoServidor) {
 
         List<OrdemServico> listaOrdemServicoServidorAux = new ArrayList<>(listaOrdemServicoServidor);
+        List<OrdemServico> listaOrdemServicoBancoDedados = recuperarOrdemServicoDoBancoDeDados();
 
         for (OrdemServico OSServidor : listaOrdemServicoServidor) {
-            for (int i = 0; i < listaOrdensServico.size(); i++) {
-                if (listaOrdensServico.get(i).getOrdemServicoId() == OSServidor.getOrdemServicoId()) {
+            for (int i = 0; i < listaOrdemServicoBancoDedados.size(); i++) {
+                if (listaOrdemServicoBancoDedados.get(i).getOrdemServicoId() == OSServidor.getOrdemServicoId()) {
                     listaOrdemServicoServidorAux.remove(OSServidor);
                 }
             }
         }
 
-        if (listaOrdemServicoServidorAux.isEmpty()) {
-            Toast.makeText(mContext, "Lista atualizada", Toast.LENGTH_SHORT).show();
-        } else {
+        if (!listaOrdemServicoServidorAux.isEmpty()) {
             for (OrdemServico os : listaOrdemServicoServidorAux) {
                 os.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
+                salvarOrdemServicoNoBancoDeDados(os);
             }
-            listaOrdensServico.addAll(listaOrdemServicoServidorAux);
         }
     }
+
+//    public void atualizaLista(List<OrdemServico> listaOrdemServicoServidor) {
+//
+//        List<OrdemServico> listaOrdemServicoServidorAux = new ArrayList<>(listaOrdemServicoServidor);
+//
+//        for (OrdemServico OSServidor : listaOrdemServicoServidor) {
+//            for (int i = 0; i < listaOrdensServico.size(); i++) {
+//                if (listaOrdensServico.get(i).getOrdemServicoId() == OSServidor.getOrdemServicoId()) {
+//                    listaOrdemServicoServidorAux.remove(OSServidor);
+//                }
+//            }
+//        }
+//
+//        if (listaOrdemServicoServidorAux.isEmpty()) {
+//            Toast.makeText(mContext, "Lista atualizada", Toast.LENGTH_SHORT).show();
+//        } else {
+//            for (OrdemServico os : listaOrdemServicoServidorAux) {
+//                os.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
+//            }
+//            listaOrdensServico.addAll(listaOrdemServicoServidorAux);
+//        }
+//    }
 
     private boolean salvarOrdemServicoNoServidor(OrdemServico ordemServico) {
         if (checkConnection()) {
@@ -136,6 +158,12 @@ public class Repositorio {
     private boolean recuperarOrdemServicoDoServidor() {
         if (checkConnection()) {
             mWebServiceGet = new WebServiceGet(this);
+//            mWebServiceGet.setTeste(new WebServiceGet.Do() {
+//                @Override
+//                public void atualizar(List<OrdemServico> ordemServicoList) {
+//
+//                }
+//            });
             mWebServiceGet.execute();
             return true;
         }

@@ -10,6 +10,12 @@ import java.util.List;
 
 public class WebServiceGet extends AsyncTask<Void, Void, List<OrdemServico>> {
 
+    private Do teste = null;
+
+    public void setTeste(Do value) {
+        this.teste = value;
+    }
+
     private WeakReference<Repositorio> repositorioWeakReference;
 
     public WebServiceGet(Repositorio repositorioWeakReference) {
@@ -24,12 +30,20 @@ public class WebServiceGet extends AsyncTask<Void, Void, List<OrdemServico>> {
 
     @Override
     protected void onPostExecute(List<OrdemServico> ordemServicos) {
-        super.onPostExecute(ordemServicos);
-        if (ordemServicos != null) {
-            for (int i = 0; i < ordemServicos.size(); i++) {
-                ordemServicos.get(i).setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
-            }
-            repositorioWeakReference.get().atualizaLista(ordemServicos);
+                super.onPostExecute(ordemServicos);
+                if (ordemServicos != null) {
+                    for (int i = 0; i < ordemServicos.size(); i++) {
+                        ordemServicos.get(i).setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
+                    }
+                    if (teste != null) {
+                        teste.atualizar(ordemServicos);
+                    }
+                    repositorioWeakReference.get().retornoDoServidor(ordemServicos);
         }
     }
+
+    public interface Do {
+        void atualizar(List<OrdemServico> ordemServicoList);
 }
+}
+
