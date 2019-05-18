@@ -23,13 +23,12 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.EditarOrdemServicoActivity;
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.TelaInicialActivity;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.notificacao.Notificacao;
-import com.rtstudio.projetomeuapp.server.WebServiceDelete;
+import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 
 import java.io.File;
 import java.io.IOException;
@@ -185,12 +184,10 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
                                 new Notificacao().notificacaoBotao(activity, ordemServicoList.get(position));
 
-                                new OrdemServicoDAO(activity).deleteOrdemServico(ordemServicoId);
+                                new Repositorio(activity).deletar(ordemServicoId);
+
                                 ordemServicoList.remove(position);
                                 notifyDataSetChanged();
-
-                                WebServiceDelete webServiceDelete = new WebServiceDelete();
-                                webServiceDelete.execute(ordemServicoId);
                             }
                         })
                         .setNegativeButton("Cancelar", null)

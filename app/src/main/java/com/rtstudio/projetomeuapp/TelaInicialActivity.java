@@ -39,7 +39,6 @@ import com.rtstudio.projetomeuapp.classes.Utilitaria;
 import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
-import com.rtstudio.projetomeuapp.server.WebServiceGet;
 import com.rtstudio.projetomeuapp.service.Service;
 
 import java.util.ArrayList;
@@ -95,9 +94,7 @@ public class TelaInicialActivity extends AppCompatActivity {
             try {
                 ordemServicoList = new ArrayList<>();
 
-                ordemServicoList = new OrdemServicoDAO(this).getAll();
-
-                getOrdemServicoFromServer();
+                ordemServicoList = mRepositorio.buscar();
 
                 if (!ordemServicoList.isEmpty()) {
                     atualizaRecyclerView(ordemServicoList);
@@ -135,7 +132,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getOrdemServicoFromServer();
+                atualizaRecyclerView(mRepositorio.buscar());
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -177,13 +174,6 @@ public class TelaInicialActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    public void getOrdemServicoFromServer() {
-        if (mRepositorio.checkConnection()) {
-            WebServiceGet webServiceGet = new WebServiceGet(this);
-            webServiceGet.execute();
-        }
     }
 
     @Override
@@ -247,27 +237,6 @@ public class TelaInicialActivity extends AppCompatActivity {
                 atualizaRecyclerView(ordemServicoList);
             }
         }
-    }
-
-    public void addList(List<OrdemServico> ordensJson) {
-        List<OrdemServico> ordensAUX = new ArrayList<>(ordensJson);
-        for (OrdemServico OSJson : ordensJson) {
-            for (int i = 0; i < ordemServicoList.size(); i++) {
-                if (ordemServicoList.get(i).getOrdemServicoId() == OSJson.getOrdemServicoId()) {
-                    ordensAUX.remove(OSJson);
-                }
-            }
-        }
-
-        if (ordensAUX.isEmpty()) {
-            Toast.makeText(this, "Lista atualizada", Toast.LENGTH_SHORT).show();
-        } else {
-            for (OrdemServico os : ordensAUX) {
-                os.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
-            }
-            ordemServicoList.addAll(ordensAUX);
-        }
-        atualizaRecyclerView(ordemServicoList);
     }
 
     @Override

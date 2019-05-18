@@ -2,18 +2,18 @@ package com.rtstudio.projetomeuapp.server;
 
 import android.os.AsyncTask;
 
-import com.rtstudio.projetomeuapp.TelaInicialActivity;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class WebServiceGet extends AsyncTask<Void, Void, List<OrdemServico>> {
 
-    WeakReference<TelaInicialActivity> telaInicialActivityWeakReference;
+    private WeakReference<Repositorio> repositorioWeakReference;
 
-    public WebServiceGet(TelaInicialActivity telaInicialActivityWeakReference) {
-        this.telaInicialActivityWeakReference = new WeakReference<>(telaInicialActivityWeakReference);
+    public WebServiceGet(Repositorio repositorioWeakReference) {
+        this.repositorioWeakReference = new WeakReference<>(repositorioWeakReference);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class WebServiceGet extends AsyncTask<Void, Void, List<OrdemServico>> {
             for (int i = 0; i < ordemServicos.size(); i++) {
                 ordemServicos.get(i).setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
             }
-            telaInicialActivityWeakReference.get().addList(ordemServicos);
+            repositorioWeakReference.get().atualizaLista(ordemServicos);
         }
     }
 }

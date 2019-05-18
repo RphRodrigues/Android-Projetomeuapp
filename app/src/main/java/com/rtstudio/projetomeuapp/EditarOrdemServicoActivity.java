@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.gson.Gson;
-import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.classes.CepListener;
 import com.rtstudio.projetomeuapp.classes.Cliente;
 import com.rtstudio.projetomeuapp.classes.Endereco;
@@ -103,9 +102,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
                 ordemServico.setEndereco(endereco);
                 ordemServico.setTipoServico(tipoServico);
 
-                updateServer();
-
-                if ((new OrdemServicoDAO(getBaseContext()).updateOS(ordemServico))) {
+                if (mRepositorio.atualizar(ordemServico)) {
                     setResult(RESULT_OK, new Intent().putExtra("ORDEM_SERVICO_EDITADA", new Gson().toJson(ordemServico)));
                     util.alertDialog("Aviso", "O.S. Editada com sucesso", false);
                 } else {
@@ -120,10 +117,6 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
                 util.getLocalizacao();
             }
         });
-    }
-
-    private void updateServer() {
-        mRepositorio.sicronizarEdicao(ordemServico);
     }
 
     private boolean validarInputDoUsuario() {
