@@ -56,24 +56,33 @@
                 app:errorEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
-                    android:layout_width="280dp"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/logradouro"
                     android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
-
-                <Button
-                    android:id="@+id/cadastrar_btnLocation"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/ic_add_location_black_24dp"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="-75dp" />
             </android.support.design.widget.TextInputLayout>
 
+            <Button
+                android:id="@+id/cadastrar_btnLocation"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="-75dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ic_location_on_black_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/localizar">
+
+            </TextView>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/complementoIdLayout"
@@ -108,7 +117,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/cadastrar_edtCepId"
@@ -144,7 +154,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/cadastrar_edtCidadeId"
@@ -163,9 +174,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/cadastrar_edtCidadeId"
-                    android:layout_toRightOf="@id/cadastrar_edtCidadeId"
                     android:paddingStart="3dp"
-                    android:paddingLeft="3dp"
                     android:text="@string/uf" />
 
                 <Spinner
@@ -174,7 +183,6 @@
                     android:layout_height="35dp"
                     android:layout_marginTop="20dp"
                     android:layout_toEndOf="@id/cadastrar_edtCidadeId"
-                    android:layout_toRightOf="@id/cadastrar_edtCidadeId"
                     android:entries="@array/estados" />
             </RelativeLayout>
 
@@ -188,22 +196,16 @@
                 android:id="@+id/cadastrar_spinnerTipoServico"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5sp"
+                android:layout_marginTop="10sp"
                 android:background="@color/dividerColor"
-                android:entries="@array/lista_servico" />
-
-            <!--<Button-->
-                <!--android:id="@+id/cadastrar_btnLocation"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="15sp"-->
-                <!--android:text="@string/localizar" />-->
+                android:entries="@array/lista_servico"
+                android:prompt="@string/tipo_servico" />
 
             <Button
                 android:id="@+id/cadastrar_btnCriarOSId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15sp"
+                android:layout_marginTop="20sp"
                 android:text="@string/cadastrar_servico" />
 
         </LinearLayout>
