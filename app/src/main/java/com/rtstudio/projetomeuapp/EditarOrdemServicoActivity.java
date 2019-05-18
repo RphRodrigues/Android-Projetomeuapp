@@ -43,6 +43,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white));
 
         ((Button) findViewById(R.id.cadastrar_btnCriarOSId)).setText("Salvar");
 

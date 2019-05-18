@@ -57,6 +57,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white));
 
         mRepositorio = new Repositorio(this);
 

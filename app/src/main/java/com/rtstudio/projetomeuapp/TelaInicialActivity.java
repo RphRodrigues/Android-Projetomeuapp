@@ -141,6 +141,7 @@ public class TelaInicialActivity extends AppCompatActivity {
     public void setNavigationDrawer() {
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        mToolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white));
 
         final NavigationView navigationView = findViewById(R.id.telaInicial_navigationView);
 
@@ -148,6 +149,8 @@ public class TelaInicialActivity extends AppCompatActivity {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, 0, 0);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.isDrawerIndicatorEnabled();
+        
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_menu_white_24dp));
         mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
