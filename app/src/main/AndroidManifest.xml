@@ -44,15 +44,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".TelaInicialActivity" />
+        <activity
+            android:name=".TelaInicialActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".EditarOrdemServicoActivity"
-            android:label="@string/ediatar_ordem_servico"/>
+            android:label="@string/ediatar_ordem_servico"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".CadastrarServicoActivity"
-            android:label="@string/cadastrar_servico" />
+            android:label="@string/cadastrar_servico"
+            android:screenOrientation="portrait" />
 
         <service android:name=".service.Service" >
             <intent-filter>
