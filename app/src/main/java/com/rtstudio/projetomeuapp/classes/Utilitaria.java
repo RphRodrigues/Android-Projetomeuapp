@@ -90,7 +90,7 @@ public class Utilitaria {
         setSpinner(R.id.cadastrar_spinnerEstados, R.array.estados, endereco.getUf());
     }
 
-    public void setSpinner(int id, int arrayId, String data) {
+    private void setSpinner(int id, int arrayId, String data) {
         String[] arraySpinner = activity.getResources().getStringArray(arrayId);
 
         for (int i = 0; i < arraySpinner.length; i++) {

@@ -48,25 +48,25 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     public static final int REQUEST_CODE_CAMERA = 3;
     public static final int REQUEST_CODE_GALERIA = 4;
 
-    private Fragment fragment;
+    private Activity mActivity;
     private List<OrdemServico> ordemServicoList;
     private File fileFoto;
     private int posicaoAtualDoClick;
 
-    public OrdemServicoAdapter(Fragment fragment) {
-        this.fragment = fragment;
+    public OrdemServicoAdapter(Activity activity) {
+        this.mActivity = activity;
     }
 
-    public OrdemServicoAdapter(Fragment fragment, List<OrdemServico> list) {
+    public OrdemServicoAdapter(Activity activity, List<OrdemServico> list) {
         this.ordemServicoList = list;
-        this.fragment = fragment;
+        this.mActivity = activity;
     }
 
     public int getPosicaoAtualDoClick() {
         return posicaoAtualDoClick;
     }
 
-    public void setPosicaoAtualDoClick(int posicaoAtualDoClick) {
+    private void setPosicaoAtualDoClick(int posicaoAtualDoClick) {
         this.posicaoAtualDoClick = posicaoAtualDoClick;
     }
 
@@ -76,7 +76,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
         Log.v("LOG", "onCreateViewHolder");
 
-        LayoutInflater LayoutInflater = android.view.LayoutInflater.from(fragment.getContext().getApplicationContext());
+        LayoutInflater LayoutInflater = android.view.LayoutInflater.from(mActivity.getApplicationContext());
 
         View view = LayoutInflater.inflate(R.layout.os_card_item, null);
 
@@ -91,9 +91,9 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         final OrdemServico ordemServico = ordemServicoList.get(position);
 
         if (ordemServico.getSyncStatus() == OrdemServico.SYNC_STATUS_TRUE) {
-            holder.imageStatus.setImageDrawable(fragment.getContext().getDrawable(R.drawable.ic_cloud_done_black_24dp));
+            holder.imageStatus.setImageDrawable(mActivity.getDrawable(R.drawable.ic_cloud_done_black_24dp));
         } else {
-            holder.imageStatus.setImageDrawable(fragment.getContext().getDrawable(R.drawable.ic_sync_black_24dp));
+            holder.imageStatus.setImageDrawable(mActivity.getDrawable(R.drawable.ic_sync_black_24dp));
         }
 
         holder.numOS.setText(String.valueOf(ordemServico.getOrdemServicoId()));
@@ -114,8 +114,8 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapUri);
 
-                if (mapIntent.resolveActivity(fragment.getContext().getPackageManager()) != null) {
-                    fragment.getContext().startActivity(mapIntent);
+                if (mapIntent.resolveActivity(mActivity.getPackageManager()) != null) {
+                    mActivity.startActivity(mapIntent);
                 }
             }
         });
@@ -124,7 +124,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
             @Override
             public void onClick(View v) {
 
-                PopupMenu popup = new PopupMenu(fragment.getContext(), holder.imageCam);
+                PopupMenu popup = new PopupMenu(mActivity, holder.imageCam);
 
                 popup.inflate(R.menu.popup_menu);
 
@@ -133,9 +133,9 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.floating_context_menu_camera:
-                                if (checkSelfPermission(fragment.getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                                if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
-                                   fragment.requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
+                                   ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
 
                                     return false;
                                 }
@@ -146,9 +146,9 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
                             case R.id.floating_context_menu_galeria:
                                 posicaoAtualDoClick = ordemServicoList.get(position).getOrdemServicoId();
-                                if (checkSelfPermission(fragment.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                                    fragment.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALERIA);
+                                    ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALERIA);
 
                                     return false;
                                 }
@@ -170,12 +170,12 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentEditar = new Intent(fragment.getContext(), EditarOrdemServicoActivity.class);
+                Intent intentEditar = new Intent(mActivity, EditarOrdemServicoActivity.class);
                 intentEditar.putExtra("ORDEM_SERVICO", new Gson().toJson(ordemServico));
                 setPosicaoAtualDoClick(position);
 
-                fragment.getActivity().setResult(Activity.RESULT_OK);
-                fragment.getActivity().startActivityForResult(intentEditar, REQUEST_CODE_EDITAR);
+                mActivity.setResult(Activity.RESULT_OK);
+                mActivity.startActivityForResult(intentEditar, REQUEST_CODE_EDITAR);
             }
         });
 
@@ -183,7 +183,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
             @Override
             public boolean onLongClick(View v) {
 
-                new AlertDialog.Builder(fragment.getContext())
+                new AlertDialog.Builder(mActivity)
                         .setTitle("Aviso")
                         .setMessage("Deseja realmente excluir a OS número " + ordemServicoList.get(position).getOrdemServicoId())
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -191,9 +191,9 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                             public void onClick(DialogInterface dialog, int which) {
                                 int ordemServicoId = ordemServicoList.get(position).getOrdemServicoId();
 
-                                new Notificacao().notificacaoBotao(fragment.getContext(), ordemServicoList.get(position));
+                                new Notificacao().notificacaoBotao(mActivity, ordemServicoList.get(position));
 
-                                new Repositorio(fragment.getContext()).deletar(ordemServicoId);
+                                new Repositorio(mActivity).deletar(ordemServicoId);
 
                                 ordemServicoList.remove(position);
                                 notifyDataSetChanged();
@@ -210,7 +210,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
     public void abrirGaleria() {
         Intent intentGaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        fragment.getActivity().startActivityForResult(intentGaleria, REQUEST_CODE_GALERIA);
+        mActivity.startActivityForResult(intentGaleria, REQUEST_CODE_GALERIA);
     }
 
     public File getFileFoto() {
@@ -222,13 +222,13 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         try {
             fileFoto = createImageFile(posicaoAtualDoClick);
 
-            Uri uriFile = FileProvider.getUriForFile(fragment.getContext(), "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
+            Uri uriFile = FileProvider.getUriForFile(mActivity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
 
             Intent intentFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
             intentFoto.putExtra(MediaStore.EXTRA_OUTPUT, uriFile);
 
-            fragment.getActivity().startActivityForResult(intentFoto, REQUEST_CODE_CAMERA);
+            mActivity.startActivityForResult(intentFoto, REQUEST_CODE_CAMERA);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -242,7 +242,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
         //File caminhaDaPasta = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-        File caminhaDaPasta = fragment.getContext().getCacheDir().getAbsoluteFile();
+        File caminhaDaPasta = mActivity.getCacheDir().getAbsoluteFile();
 
         return File.createTempFile(imageName, ".jpg", caminhaDaPasta);
     }

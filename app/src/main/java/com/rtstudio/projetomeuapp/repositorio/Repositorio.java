@@ -101,7 +101,7 @@ public class Repositorio {
         if (!listaOrdemServicoServidorAux.isEmpty()) {
             for (OrdemServico os : listaOrdemServicoServidorAux) {
                 os.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
-                salvarOrdemServicoNoBancoDeDados(os);
+//                salvarOrdemServicoNoBancoDeDados(os);
             }
         }
     }
