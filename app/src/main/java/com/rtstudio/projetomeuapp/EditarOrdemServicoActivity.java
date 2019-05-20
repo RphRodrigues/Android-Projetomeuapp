@@ -47,7 +47,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
 
         ((Button) findViewById(R.id.cadastrar_btnCriarOSId)).setText("Salvar");
 
-        util = new Utilitaria(this);
+//        util = new Utilitaria(this);
 
         final OrdemServico os = new Gson().fromJson(getIntent().getStringExtra("ORDEM_SERVICO"), OrdemServico.class);
 

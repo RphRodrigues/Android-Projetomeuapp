@@ -5,9 +5,9 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/cadastrar_include"
-        layout="@layout/toolbar" />
+    <!--<include-->
+        <!--android:id="@+id/cadastrar_include"-->
+        <!--layout="@layout/toolbar" />-->
 
     <ScrollView
         android:layout_width="match_parent"

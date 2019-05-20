@@ -65,12 +65,12 @@
             android:label="@string/cadastrar_servico"
             android:screenOrientation="portrait" />
 
-        <receiver android:exported="true" android:name=".broadcast.MonitoraRedeReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android" />
-            </intent-filter>
-        </receiver>
+        <!--<receiver android:exported="true" android:name=".broadcast.MonitoraRedeReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
+                <!--<action android:name="android" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
 
         <!--<service android:name=".service.Service">-->

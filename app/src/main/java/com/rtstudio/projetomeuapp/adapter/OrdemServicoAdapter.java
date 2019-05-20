@@ -3,14 +3,13 @@ package com.rtstudio.projetomeuapp.adapter;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
@@ -25,10 +24,9 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.rtstudio.projetomeuapp.EditarOrdemServicoActivity;
 import com.rtstudio.projetomeuapp.R;
-import com.rtstudio.projetomeuapp.TelaInicialActivity;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.fragment.EditarFragment;
 import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 
@@ -48,6 +46,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     public static final int REQUEST_CODE_CAMERA = 3;
     public static final int REQUEST_CODE_GALERIA = 4;
 
+    private Activity activity;
     private Fragment fragment;
     private List<OrdemServico> ordemServicoList;
     private File fileFoto;
@@ -62,11 +61,16 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         this.fragment = fragment;
     }
 
+    public OrdemServicoAdapter(Activity activity, List<OrdemServico> list) {
+        this.ordemServicoList = list;
+        this.activity = activity;
+    }
+
     public int getPosicaoAtualDoClick() {
         return posicaoAtualDoClick;
     }
 
-    public void setPosicaoAtualDoClick(int posicaoAtualDoClick) {
+    private void setPosicaoAtualDoClick(int posicaoAtualDoClick) {
         this.posicaoAtualDoClick = posicaoAtualDoClick;
     }
 
@@ -135,17 +139,17 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                             case R.id.floating_context_menu_camera:
                                 if (checkSelfPermission(fragment.getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
-                                   fragment.requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
+                                    fragment.requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
 
                                     return false;
                                 }
-                                posicaoAtualDoClick = position;
+                                setPosicaoAtualDoClick(position);
                                 tirarFoto();
 
                                 break;
 
                             case R.id.floating_context_menu_galeria:
-                                posicaoAtualDoClick = ordemServicoList.get(position).getOrdemServicoId();
+                                setPosicaoAtualDoClick(ordemServicoList.get(position).getOrdemServicoId());
                                 if (checkSelfPermission(fragment.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
                                     fragment.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALERIA);
@@ -170,12 +174,27 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentEditar = new Intent(fragment.getContext(), EditarOrdemServicoActivity.class);
-                intentEditar.putExtra("ORDEM_SERVICO", new Gson().toJson(ordemServico));
-                setPosicaoAtualDoClick(position);
 
-                fragment.getActivity().setResult(Activity.RESULT_OK);
-                fragment.getActivity().startActivityForResult(intentEditar, REQUEST_CODE_EDITAR);
+                if (fragment.getFragmentManager() != null) {
+                    EditarFragment editarFragment = new EditarFragment();
+
+                    Bundle bundle = new Bundle();
+
+                    bundle.putString("ORDEM_SERVICO", new Gson().toJson(ordemServico));
+
+                    editarFragment.setArguments(bundle);
+
+                    fragment.getFragmentManager().beginTransaction()
+                            .addToBackStack("INICIO")
+                            .replace(R.id.activity_tela_inicial_fragment_area, editarFragment, "EDITAR")
+                            .commit();
+                }
+
+//                Intent intentEditar = new Intent(fragment.getContext(), EditarOrdemServicoActivity.class);
+//                intentEditar.putExtra("ORDEM_SERVICO", new Gson().toJson(ordemServico));
+//                setPosicaoAtualDoClick(position);
+//                fragment.getActivity().setResult(Activity.RESULT_OK);
+//                fragment.getActivity().startActivityForResult(intentEditar, REQUEST_CODE_EDITAR);
             }
         });
 
@@ -220,7 +239,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     public void tirarFoto() {
 
         try {
-            fileFoto = createImageFile(posicaoAtualDoClick);
+            fileFoto = createImageFile(getPosicaoAtualDoClick());
 
             Uri uriFile = FileProvider.getUriForFile(fragment.getContext(), "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
 

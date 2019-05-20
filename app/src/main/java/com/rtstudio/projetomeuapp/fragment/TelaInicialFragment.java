@@ -62,8 +62,7 @@ public class TelaInicialFragment extends Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         setHasOptionsMenu(true);
 
@@ -115,11 +114,13 @@ public class TelaInicialFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                getChildFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.activity_tela_inicial_fragment_area, new CadastrarFragment())
-                        .commit();
-
+                if (getFragmentManager() != null) {
+                    getFragmentManager()
+                            .beginTransaction()
+                            .addToBackStack("INICIO")
+                            .replace(R.id.activity_tela_inicial_fragment_area, new CadastrarFragment(), "CADASTRAR")
+                            .commit();
+                }
 
 //                Intent intent = new Intent(TelaInicialActivity.this, CadastrarServicoActivity.class);
 //                startActivityForResult(intent, 1);
@@ -145,7 +146,7 @@ public class TelaInicialFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.menu_itemAjuda) {
 //            stopService(new Intent(this, Service.class));
-            new Utilitaria(getActivity()).menuItemAjuda();
+            new Utilitaria(this).menuItemAjuda();
         } else if (id == R.id.app_bar_checkbox) {
             boolean isChecked = !item.isChecked();
             item.setChecked(isChecked);

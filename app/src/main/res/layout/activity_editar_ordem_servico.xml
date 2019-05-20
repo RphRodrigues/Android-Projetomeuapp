@@ -6,7 +6,7 @@
     tools:context=".EditarOrdemServicoActivity">
 
     <include
-        android:id="@+id/include_activity_cadastrar_servico"
+        android:id="@+id/include_fragment_cadastrar"
         layout="@layout/activity_cadastrar_servico" />
 
     <TextView

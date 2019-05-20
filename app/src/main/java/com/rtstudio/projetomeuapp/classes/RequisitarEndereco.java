@@ -23,13 +23,13 @@ public class RequisitarEndereco extends AsyncTask<Void, Void, Endereco> {
     public RequisitarEndereco(CadastrarServicoActivity activity) {
         this.cadastrarServicoActivityWeakReference = new WeakReference<>(activity);
         this.activity = activity;
-        util = new Utilitaria(cadastrarServicoActivityWeakReference.get());
+//        util = new Utilitaria(cadastrarServicoActivityWeakReference.get());
     }
 
     public RequisitarEndereco(EditarOrdemServicoActivity activity) {
         this.editarOrdemServicoActivityWeakReference = new WeakReference<>(activity);
         this.activity = activity;
-        util = new Utilitaria(editarOrdemServicoActivityWeakReference.get());
+//        util = new Utilitaria(editarOrdemServicoActivityWeakReference.get());
     }
 
     @Override
