@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include
@@ -82,7 +82,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="10dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/complementoIdLayout"
@@ -118,7 +118,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="10dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/cadastrar_edtCepId"
@@ -140,7 +140,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/cadastrar_edtCepId"
-                    android:layout_toRightOf="@id/cadastrar_edtCepId"
                     app:errorEnabled="true">
 
                     <android.support.design.widget.TextInputEditText
@@ -155,7 +154,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="10dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/cadastrar_edtCidadeId"
@@ -166,6 +165,8 @@
                     <android.support.design.widget.TextInputEditText
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/cadastrar_edtCidadeId"
+                        android:layout_alignStart="@+id/cadastrar_edtCidadeId"
                         android:hint="@string/localidade"
                         android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
                 </android.support.design.widget.TextInputLayout>
@@ -174,32 +175,70 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/cadastrar_edtCidadeId"
-                    android:paddingStart="3dp"
                     android:text="@string/uf" />
 
                 <Spinner
                     android:id="@+id/cadastrar_spinnerEstados"
-                    android:layout_width="100dp"
+                    android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginTop="20dp"
                     android:layout_toEndOf="@id/cadastrar_edtCidadeId"
                     android:entries="@array/estados" />
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text="@string/informacoes_do_servico" />
-
-            <Spinner
-                android:id="@+id/cadastrar_spinnerTipoServico"
+            <RelativeLayout
+                android:id="@+id/cadastrar_llSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:background="@color/dividerColor"
-                android:entries="@array/lista_servico"
-                android:prompt="@string/tipo_servico" />
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/cadastrar_layout_servico"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/cadastrar_tvServico"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:text="@string/informacoes_do_servico" />
+
+                    <Spinner
+                        android:id="@+id/cadastrar_spinnerTipoServico"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:entries="@array/lista_servico" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/cadastrar_layout_servico"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/cadastrar_tvEscolha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:textColor="@color/red"
+                        android:visibility="invisible"
+                        android:text="@string/escolha_o_produto"/>
+
+                    <Button
+                        android:id="@+id/cadastrar_btnProduto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:textStyle="normal"
+                        android:text="@string/produto" />
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/cadastrar_btnCriarOSId"

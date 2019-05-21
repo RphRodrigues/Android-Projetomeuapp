@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -15,6 +16,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -47,6 +50,8 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private Utilitaria util;
     private Toolbar mToolbar;
     private Repositorio mRepositorio;
+    private String mOpcaoProduto;
+    private AlertDialog mAlertProduro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +82,11 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         findViewById(R.id.cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!validarRadioButton()) {
+                    findViewById(R.id.cadastrar_tvEscolha).setVisibility(View.VISIBLE);
+                    return;
+                }
+
                 if (!validarInputDoUsuario()) {
                     return;
                 }
@@ -111,11 +121,38 @@ public class CadastrarServicoActivity extends AppCompatActivity {
                 util.getLocalizacao();
             }
         });
+
+        findViewById(R.id.cadastrar_btnProduto).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.cadastrar_tvEscolha).setVisibility(View.INVISIBLE);
+
+                View view = getLayoutInflater().inflate(R.layout.alerta_dialog_produto, null);
+
+                view.findViewById(R.id.alerta_produto_btnOk).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        RadioGroup radioGroup = view.findViewById(R.id.alerta_produto_radioGroup);
+                        RadioButton radioButton = view.findViewById(radioGroup.getCheckedRadioButtonId());
+                        mOpcaoProduto = radioButton.getText().toString();
+
+                        mAlertProduro.dismiss();
+                    }
+                });
+
+                mAlertProduro = util.alertDialogView(view);
+                mAlertProduro.show();
+            }
+        });
     }
 
     private boolean validarInputDoUsuario() {
         return util.validarCampos(R.id.cadastrar_edtNomeClienteId, R.id.cadastrar_edtRuaId, R.id.cadastrar_edtBairroId,
                 R.id.cadastrar_edtCepId, R.id.cadastrar_edtCidadeId, R.id.cadastrar_edtNumeroId, R.id.cadastrar_edtComplementoId);
+    }
+
+    private boolean validarRadioButton() {
+        return mOpcaoProduto != null;
     }
 
     private void inicilizarVariaveisDeClasse() {
