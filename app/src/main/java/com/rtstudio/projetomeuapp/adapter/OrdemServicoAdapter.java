@@ -3,15 +3,15 @@ package com.rtstudio.projetomeuapp.adapter;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,7 +27,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.EditarOrdemServicoActivity;
 import com.rtstudio.projetomeuapp.R;
-import com.rtstudio.projetomeuapp.TelaInicialActivity;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
@@ -38,8 +37,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
 public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapter.MyViewHolder> {
 
@@ -52,14 +49,20 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     private List<OrdemServico> ordemServicoList;
     private File fileFoto;
     private int posicaoAtualDoClick;
-
-    public OrdemServicoAdapter(Activity activity) {
-        this.mActivity = activity;
-    }
+    private boolean imagemAltetada = false;
+    private AlertDialog mAlerta;
 
     public OrdemServicoAdapter(Activity activity, List<OrdemServico> list) {
         this.ordemServicoList = list;
         this.mActivity = activity;
+    }
+
+    public boolean isImagemAltetada() {
+        return imagemAltetada;
+    }
+
+    public void setImagemAltetada(boolean imagemAltetada) {
+        this.imagemAltetada = imagemAltetada;
     }
 
     public int getPosicaoAtualDoClick() {
@@ -128,31 +131,70 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
                 popup.inflate(R.menu.popup_menu);
 
+                if (ordemServico.getFilename() == null) {
+                    popup.getMenu().removeItem(R.id.popup_menu_imagem);
+                }
+
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.floating_context_menu_camera:
+                            case R.id.popup_menu_camera:
                                 if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
-                                   ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
+                                    ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
 
                                     return false;
                                 }
-                                posicaoAtualDoClick = position;
+
+                                setPosicaoAtualDoClick(position);
+
+                                if (ordemServico.getFilename() != null) {
+                                    setImagemAltetada(true);
+                                }
+
                                 tirarFoto();
 
                                 break;
 
-                            case R.id.floating_context_menu_galeria:
-                                posicaoAtualDoClick = ordemServicoList.get(position).getOrdemServicoId();
+                            case R.id.popup_menu_galeria:
+                                setPosicaoAtualDoClick(position);
                                 if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
                                     ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALERIA);
 
                                     return false;
                                 }
+
+                                if (ordemServico.getFilename() != null) {
+                                    setImagemAltetada(true);
+                                }
+
                                 abrirGaleria();
+
+                                break;
+
+                            case R.id.popup_menu_imagem:
+                                View view = mActivity.getLayoutInflater().inflate(R.layout.alerta_dialog, null);
+
+                                Bitmap img = BitmapFactory.decodeFile(ordemServico.getFilename());
+                                ((ImageView) view.findViewById(R.id.alerta_imagem)).setImageBitmap(img);
+
+                                view.findViewById(R.id.alerta_botao).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mAlerta.dismiss();
+                                    }
+                                });
+
+                                view.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mAlerta.dismiss();
+                                    }
+                                });
+                                mAlerta = new AlertDialog.Builder(mActivity).setView(view).create();
+                                mAlerta.show();
 
                                 break;
 
@@ -220,7 +262,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     public void tirarFoto() {
 
         try {
-            fileFoto = createImageFile(posicaoAtualDoClick);
+            fileFoto = createImageFile();
 
             Uri uriFile = FileProvider.getUriForFile(mActivity, "com.rtstudio.projetomeuapp.fileprovider", fileFoto);
 
@@ -235,10 +277,10 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
     }
 
 
-    private File createImageFile(int position) throws IOException {
+    private File createImageFile() throws IOException {
 
         String dataHoraAtual = new SimpleDateFormat("yyyyMMdd_HHmmss", new Locale("pt-BR")).format(new Date());
-        String imageName = "RPH_" + position + "-" + dataHoraAtual + "_";
+        String imageName = "RPH_" + dataHoraAtual;
 
         //File caminhaDaPasta = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
