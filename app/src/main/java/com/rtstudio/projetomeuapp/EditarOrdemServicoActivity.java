@@ -63,9 +63,6 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
             ordemServico.setSyncStatus(os.getSyncStatus());
 
             util.setDadosOrdemServico(os);
-
-            Bitmap img = BitmapFactory.decodeFile(os.getFilename());
-//            ((ImageView) findViewById(R.id.cadastrar_ivBitmap)).setImageBitmap(img);
         }
 
         ((TextInputLayout) findViewById(R.id.cadastrar_edtCepId)).getEditText().addTextChangedListener(new CepListener(this));

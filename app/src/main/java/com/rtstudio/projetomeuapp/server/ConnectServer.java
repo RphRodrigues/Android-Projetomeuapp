@@ -96,8 +96,8 @@ public class ConnectServer {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            if (response.body() != null) {
-                Log.i("Response", "post: " + response.toString() + " -> " + response.body().string());
+            if (response.isSuccessful()) {
+                Log.i("Response", "post: ok" );
             }
         } catch (IOException e) {
             e.printStackTrace();

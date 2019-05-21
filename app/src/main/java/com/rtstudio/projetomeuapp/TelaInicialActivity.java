@@ -4,8 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
@@ -60,7 +57,7 @@ public class TelaInicialActivity extends AppCompatActivity {
     private OrdemServicoAdapter adapter;
     private List<OrdemServico> ordemServicoList = null;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private NavigationView navigationView;
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +132,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         mToolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white, getTheme()));
 
-        navigationView = findViewById(R.id.telaInicial_navigationView);
+        mNavigationView = findViewById(R.id.telaInicial_navigationView);
 
         mDrawerLayout = findViewById(R.id.telaInicial_drawer);
 
@@ -143,22 +140,21 @@ public class TelaInicialActivity extends AppCompatActivity {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDrawerLayout.openDrawer(navigationView);
+                mDrawerLayout.openDrawer(mNavigationView);
             }
         });
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
-                mDrawerLayout.closeDrawer(navigationView);
+                mDrawerLayout.closeDrawer(mNavigationView);
                 if (id == R.id.drawer_ajuda) {
                     util.menuItemAjuda();
                 } else if (id == R.id.drawer_sync) {
-//                    getSupportFragmentManager().findFragmentByTag("");
-//                    if (mRepositorio.sicronizar(ordemServicoList)) {
-//                        atualizaRecyclerView(ordemServicoList);
-//                    }
+                    if (mRepositorio.sicronizar(ordemServicoList)) {
+                        atualizaRecyclerView(ordemServicoList);
+                    }
                 } else if (id == R.id.drawer_sair) {
                     onBackPressed();
                 }
@@ -190,27 +186,32 @@ public class TelaInicialActivity extends AppCompatActivity {
             }
         }
 
-        if (requestCode == REQUEST_CODE_GALERIA && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_GALERIA && resultCode == RESULT_OK && data != null) {
 
-            if (data != null) {
-                Uri imagemSeleciona = data.getData();
-                int pos = adapter.getPosicaoAtualDoClick();
-                String[] caminhoFile = {MediaStore.Images.Media.DATA};
+            Uri imagemSeleciona = data.getData();
 
-                Cursor cursor = getContentResolver().query(imagemSeleciona, caminhoFile, null, null, null);
-                cursor.moveToFirst();
+            int position = adapter.getPosicaoAtualDoClick();
 
-                int indexColuna = cursor.getColumnIndex(caminhoFile[0]);
-                String caminhoImagem = cursor.getString(indexColuna);
-                cursor.close();
+            String[] caminhoFile = {MediaStore.Images.Media.DATA};
 
-                Bitmap imagemBitmap = BitmapFactory.decodeFile(caminhoImagem);
+            Cursor cursor = getContentResolver().query(imagemSeleciona, caminhoFile, null, null, null);
+            cursor.moveToFirst();
 
-                if (new OrdemServicoDAO(this).addFotoParaUmaOS(pos, caminhoImagem)) {
-                    Log.i("BANCO", "onActivityResult: addFotoParaUmaOS");
-                    ordemServicoList = new OrdemServicoDAO(this).getAll();
-                    atualizaRecyclerView(ordemServicoList);
+            int indexColuna = cursor.getColumnIndex(caminhoFile[0]);
+            String caminhoImagem = cursor.getString(indexColuna);
+            cursor.close();
+
+            ordemServicoList.get(position).setFilename(caminhoImagem);
+
+            if (mRepositorio.atualizarImagemOrdemServico(ordemServicoList.get(position))) {
+                Log.i("BANCO", "onActivityResult: galeria");
+
+                if (adapter.isImagemAltetada()) {
+                    util.toast("Imagem alterada com sucesso", Toast.LENGTH_LONG);
+                } else {
+                    util.toast("Foto salva com sucesso", Toast.LENGTH_LONG);
                 }
+                atualizaRecyclerView(ordemServicoList);
             }
         }
 
@@ -224,9 +225,15 @@ public class TelaInicialActivity extends AppCompatActivity {
 
                 ordemServicoList.get(position).setFilename(fileFotoAbsolutePath);
 
-                new OrdemServicoDAO(this).addFotoParaUmaOS(ordemServicoList.get(position).getOrdemServicoId(), fileFotoAbsolutePath);
-
-                atualizaRecyclerView(ordemServicoList);
+                if(mRepositorio.atualizarImagemOrdemServico(ordemServicoList.get(position))) {
+                    Log.i("BANCO", "onActivityResult: camera");
+                    if (adapter.isImagemAltetada()) {
+                        util.toast("Imagem alterada com sucesso", Toast.LENGTH_LONG);
+                    } else {
+                        util.toast("Foto salva com sucesso", Toast.LENGTH_LONG);
+                    }
+                    atualizaRecyclerView(ordemServicoList);
+                }
             }
         }
     }
