@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -132,6 +133,18 @@ public class Utilitaria {
                 })
                 .create()
                 .show();
+    }
+
+    public void toast(String messagem, int duracao) {
+        Toast toast = Toast.makeText(activity, messagem, duracao);
+
+        TextView textView = toast.getView().findViewById(android.R.id.message);
+
+        textView.setTextColor(activity.getColor(R.color.white));
+
+        toast.getView().getBackground().setColorFilter(activity.getColor(R.color.myBlue), PorterDuff.Mode.SRC_IN);
+
+        toast.show();
     }
 
     public boolean checkConnection() {
