@@ -19,6 +19,7 @@ import android.provider.Settings;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -133,6 +134,12 @@ public class Utilitaria {
                 })
                 .create()
                 .show();
+    }
+
+    public AlertDialog alertDialogView(View view) {
+        return new AlertDialog.Builder(activity)
+                .setView(view)
+                .create();
     }
 
     public void toast(String messagem, int duracao) {

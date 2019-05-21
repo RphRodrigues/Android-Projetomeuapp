@@ -175,7 +175,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                                 break;
 
                             case R.id.popup_menu_imagem:
-                                View view = mActivity.getLayoutInflater().inflate(R.layout.alerta_dialog, null);
+                                View view = mActivity.getLayoutInflater().inflate(R.layout.alerta_dialog_imagem, null);
 
                                 Bitmap img = BitmapFactory.decodeFile(ordemServico.getFilename());
                                 ((ImageView) view.findViewById(R.id.alerta_imagem)).setImageBitmap(img);
