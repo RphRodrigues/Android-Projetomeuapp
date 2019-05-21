@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.EditarOrdemServicoActivity;
+import com.rtstudio.projetomeuapp.ImagemActivity;
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.notificacao.Notificacao;
@@ -190,6 +191,10 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                                 view.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
+                                        Intent intent = new Intent(mActivity, ImagemActivity.class);
+                                        intent.putExtra("IMG", ordemServico.getFilename());
+
+                                        mActivity.startActivity(intent);
                                         mAlerta.dismiss();
                                     }
                                 });

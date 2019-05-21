@@ -21,6 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ImagemActivity"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -40,7 +41,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -65,19 +65,14 @@
             android:label="@string/cadastrar_servico"
             android:screenOrientation="portrait" />
 
-        <receiver android:exported="true" android:name=".broadcast.MonitoraRedeReceiver">
+        <receiver
+            android:name=".broadcast.MonitoraRedeReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android" />
             </intent-filter>
         </receiver>
-
-
-        <!--<service android:name=".service.Service">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="" />-->
-            <!--</intent-filter>-->
-        <!--</service>-->
     </application>
 
 </manifest>
