@@ -17,7 +17,7 @@ import java.util.List;
 
 public class OrdemServicoDAO {
     private final String TABELA_ORDEM_SERVICO = "TABELA_ORDEM_SERVICO";
-    private final String CAMPOS = "ORDEM_SERVICO_ID, CLIENTE_ID, ENDERECO_ID, FOTOSERVICO, TIPOSERVICO, SYNC_STATUS";
+    private final String CAMPOS = "ORDEM_SERVICO_ID, CLIENTE_ID, ENDERECO_ID, FOTOSERVICO, TIPOSERVICO, PRODUTO, SYNC_STATUS";
 
     private Context context;
 
@@ -34,6 +34,7 @@ public class OrdemServicoDAO {
         create.append("     ENDERECO_ID         INTEGER,");
         create.append("     FOTOSERVICO         TEXT,");
         create.append("     TIPOSERVICO         TEXT,");
+        create.append("     PRODUTO             TEXT,");
         create.append("     SYNC_STATUS         INTEGER");
         create.append(")");
         sqLite.execSQL(create.toString());
@@ -61,6 +62,7 @@ public class OrdemServicoDAO {
         values.put("CLIENTE_ID", clienteId);
         values.put("ENDERECO_ID", enderecoId);
         values.put("TIPOSERVICO", ordemServico.getTipoServico());
+        values.put("PRODUTO", ordemServico.getProduto());
         values.put("SYNC_STATUS", ordemServico.getSyncStatus());
 
         banco = Connection.getInstance(context).getWritableDatabase();
@@ -78,6 +80,7 @@ public class OrdemServicoDAO {
                 " Cliente: " + ordemServico.getCliente().getNome() +
                 " Endereco: " + ordemServico.getEndereco().getBairro() +
                 " Tipo serviço: " + ordemServico.getTipoServico() +
+                " produto: " + ordemServico.getProduto() +
                 " Sync status: " + ordemServico.getSyncStatus());
         return ordemServicoId != -1;
     }
@@ -99,12 +102,13 @@ public class OrdemServicoDAO {
                     int enderecoId = cursor.getInt(cursor.getColumnIndex("ENDERECO_ID"));
                     String fotoServico = cursor.getString(cursor.getColumnIndex("FOTOSERVICO"));
                     String tipoServico = cursor.getString(cursor.getColumnIndex("TIPOSERVICO"));
+                    String produto = cursor.getString(cursor.getColumnIndex("PRODUTO"));
                     int syncStatus = cursor.getInt(cursor.getColumnIndex("SYNC_STATUS"));
 
                     Cliente cliente = new ClienteDAO(context).getClienteById(clienteId);
                     Endereco endereco = new EnderecoDAO(context).getEnderecoById(enderecoId);
 
-                    OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, fotoServico, tipoServico);
+                    OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, fotoServico, tipoServico, produto);
                     os.setSyncStatus(syncStatus);
 
                     Log.v("BANCO", "Lendo -> Os: " + os.getOrdemServicoId() +
@@ -112,6 +116,7 @@ public class OrdemServicoDAO {
                             " Endereco: " + endereco.getBairro() +
                             " foto: " + os.getFilename() +
                             " Tipo serviço: " + os.getTipoServico() +
+                            " produto: " + os.getProduto() +
                             " Sync status: " + os.getSyncStatus());
 
                     ordens.add(os);
@@ -158,6 +163,7 @@ public class OrdemServicoDAO {
 
         valuesOS.put("FOTOSERVICO", ordemServico.getFilename());
         valuesOS.put("TIPOSERVICO", ordemServico.getTipoServico());
+        valuesOS.put("PRODUTO",     ordemServico.getProduto());
         valuesOS.put("SYNC_STATUS", ordemServico.getSyncStatus());
 
         String[] args = {String.valueOf(ordemServico.getOrdemServicoId())};
@@ -193,12 +199,13 @@ public class OrdemServicoDAO {
                     int enderecoId = cursor.getInt(cursor.getColumnIndex("ENDERECO_ID"));
                     String fotoServico = cursor.getString(cursor.getColumnIndex("FOTOSERVICO"));
                     String tipoServico = cursor.getString(cursor.getColumnIndex("TIPOSERVICO"));
+                    String produto = cursor.getString(cursor.getColumnIndex("PRODUTO"));
                     int syncStatus = cursor.getInt(cursor.getColumnIndex("SYNC_STATUS"));
 
                     Cliente cliente = new ClienteDAO(context).getClienteById(clienteId);
                     Endereco endereco = new EnderecoDAO(context).getEnderecoById(enderecoId);
 
-                    OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, fotoServico, tipoServico);
+                    OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, fotoServico, tipoServico, produto);
                     os.setSyncStatus(syncStatus);
 
                     Log.v("BANCO", "getOrdemServicoByBairro -> Os: " + os.getOrdemServicoId() +

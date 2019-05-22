@@ -35,7 +35,7 @@
     <string name="tipo_servico">Tipo do serviço</string>
     <string name="ver_imagem">Ver imagem</string>
     <string name="ok">OK</string>
-    <string name="produto">Escolher produto</string>
+    <string name="escolher_produto">Escolher produto</string>
     <string name="internet_discada">Internet discada</string>
     <string name="internet_4g">Internet 4G</string>
     <string name="internet_5g">Internet 5G</string>
