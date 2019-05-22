@@ -11,6 +11,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -136,10 +137,8 @@ public class Utilitaria {
                 .show();
     }
 
-    public AlertDialog alertDialogView(View view) {
-        return new AlertDialog.Builder(activity)
-                .setView(view)
-                .create();
+    public void exexutarSom() {
+        MediaPlayer.create(activity, R.raw.window_xp_erro).start();
     }
 
     public void toast(String messagem, int duracao) {

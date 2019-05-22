@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -64,7 +65,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         PreferenciasUsuario.Companion.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
-
+        MediaPlayer.create(TelaInicialActivity.this, R.raw.windows_xp_login).start();
         setNavigationDrawer();
 
         util = new Utilitaria(this);
@@ -347,6 +348,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        MediaPlayer.create(TelaInicialActivity.this, R.raw.windows_xp_shutdown).start();
                         finish();
                     }
                 })

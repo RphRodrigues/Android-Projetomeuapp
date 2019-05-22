@@ -72,6 +72,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!validarInputDoUsuario()) {
+                    util.exexutarSom();
                     return;
                 }
 
