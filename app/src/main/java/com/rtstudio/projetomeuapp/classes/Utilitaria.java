@@ -235,6 +235,15 @@ public class Utilitaria {
                     ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
                     return true;
                 }
+            case R.id.fragment_editar_produto:
+                if (((TextInputLayout) activity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                    ((TextInputLayout) activity.findViewById(id)).setError("Informe o produto");
+                    return false;
+                } else {
+                    ((TextInputLayout) activity.findViewById(id)).setError(null);
+                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
+                    return true;
+                }
         }
         return true;
     }
