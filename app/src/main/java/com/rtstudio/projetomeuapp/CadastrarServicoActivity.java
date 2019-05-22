@@ -55,9 +55,12 @@ public class CadastrarServicoActivity extends AppCompatActivity implements Cadas
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_servico);
 
+        util = new Utilitaria(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(util.getArrowWhite());
         toolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white, getTheme()));
 
         mRepositorio = new Repositorio(this);
@@ -72,8 +75,6 @@ public class CadastrarServicoActivity extends AppCompatActivity implements Cadas
 //        }
 
         cep.getEditText().addTextChangedListener(new CepListener(this));
-
-        util = new Utilitaria(this);
 
         findViewById(R.id.cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
             @Override

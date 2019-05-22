@@ -37,16 +37,17 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_ordem_servico);
 
+        util = new Utilitaria(this);
+
         mRepositorio = new Repositorio(this);
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(util.getArrowWhite());
         mToolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white, getTheme()));
 
-        ((Button) findViewById(R.id.cadastrar_btnCriarOSId)).setText("Salvar");
-
-        util = new Utilitaria(this);
+        ((Button) findViewById(R.id.cadastrar_btnCriarOSId)).setText(getString(R.string.salvar));
 
         final OrdemServico os = new Gson().fromJson(getIntent().getStringExtra("ORDEM_SERVICO"), OrdemServico.class);
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -20,7 +21,6 @@ import android.provider.Settings;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -151,6 +151,10 @@ public class Utilitaria {
         toast.getView().getBackground().setColorFilter(activity.getColor(R.color.myBlue), PorterDuff.Mode.SRC_IN);
 
         toast.show();
+    }
+
+    public Drawable getArrowWhite() {
+        return activity.getResources().getDrawable(R.drawable.ic_arrow_white_24dp, activity.getTheme());
     }
 
     public boolean checkConnection() {
