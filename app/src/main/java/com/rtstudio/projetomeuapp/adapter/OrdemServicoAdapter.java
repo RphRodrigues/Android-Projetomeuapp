@@ -193,6 +193,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                                     public void onClick(View v) {
                                         Intent intent = new Intent(mActivity, ImagemActivity.class);
                                         intent.putExtra("IMG", ordemServico.getFilename());
+                                        intent.putExtra("ID", ordemServico.getOrdemServicoId());
 
                                         mActivity.startActivity(intent);
                                         mAlerta.dismiss();
