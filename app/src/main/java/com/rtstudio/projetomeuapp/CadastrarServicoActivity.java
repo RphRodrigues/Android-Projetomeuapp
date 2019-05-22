@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,8 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -30,7 +27,7 @@ import com.rtstudio.projetomeuapp.classes.Utilitaria;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 
-public class CadastrarServicoActivity extends AppCompatActivity {
+public class CadastrarServicoActivity extends AppCompatActivity implements CadastrarProdutoFragment.passagemDeDados {
 
     public static final int PERMISSION_REQUEST_GPS = 100;
     public static final int PERMISSION_REQUEST_MEMORIA = 101;
@@ -48,10 +45,8 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     private Spinner estado;
     private Spinner tipoServico;
     private Utilitaria util;
-    private Toolbar mToolbar;
     private Repositorio mRepositorio;
-    private String mOpcaoProduto;
-    private AlertDialog mAlertProduro;
+    private String mProduto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,21 +54,21 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_servico);
 
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white));
+        toolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white, getTheme()));
 
         mRepositorio = new Repositorio(this);
 
         inicilizarVariaveisDeClasse();
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_MEMORIA);
-
-            return;
-        }
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_MEMORIA);
+//
+//            return;
+//        }
 
         cep.getEditText().addTextChangedListener(new CepListener(this));
 
@@ -82,12 +77,11 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         findViewById(R.id.cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validarRadioButton()) {
-                    findViewById(R.id.cadastrar_tvEscolha).setVisibility(View.VISIBLE);
-                    return;
-                }
-
-                if (!validarInputDoUsuario()) {
+                if (!validarInputDoUsuario() | !validarRadioButton()) {
+                    util.exexutarSom();
+                    if (!validarRadioButton()) {
+                        findViewById(R.id.fragment_tvEscolha).setVisibility(View.VISIBLE);
+                    }
                     return;
                 }
 
@@ -122,28 +116,16 @@ public class CadastrarServicoActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.cadastrar_btnProduto).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                findViewById(R.id.cadastrar_tvEscolha).setVisibility(View.INVISIBLE);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .replace(R.id.cadastrar_container_fragment, new CadastrarProdutoFragment())
+                .commit();
+    }
 
-                View view = getLayoutInflater().inflate(R.layout.alerta_dialog_produto, null);
-
-                view.findViewById(R.id.alerta_produto_btnOk).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        RadioGroup radioGroup = view.findViewById(R.id.alerta_produto_radioGroup);
-                        RadioButton radioButton = view.findViewById(radioGroup.getCheckedRadioButtonId());
-                        mOpcaoProduto = radioButton.getText().toString();
-
-                        mAlertProduro.dismiss();
-                    }
-                });
-
-                mAlertProduro = util.alertDialogView(view);
-                mAlertProduro.show();
-            }
-        });
+    @Override
+    public void passarDados(String dados) {
+        mProduto = dados;
     }
 
     private boolean validarInputDoUsuario() {
@@ -152,7 +134,7 @@ public class CadastrarServicoActivity extends AppCompatActivity {
     }
 
     private boolean validarRadioButton() {
-        return mOpcaoProduto != null;
+        return mProduto != null;
     }
 
     private void inicilizarVariaveisDeClasse() {
@@ -174,7 +156,8 @@ public class CadastrarServicoActivity extends AppCompatActivity {
         mOrdemServico = new OrdemServico(
                 mCliente,
                 mEndereco,
-                tipoServico.getSelectedItem().toString()
+                tipoServico.getSelectedItem().toString(),
+                mProduto
         );
     }
 

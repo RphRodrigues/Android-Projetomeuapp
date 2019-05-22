@@ -1,8 +1,6 @@
 package com.rtstudio.projetomeuapp;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +41,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white));
+        mToolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white, getTheme()));
 
         ((Button) findViewById(R.id.cadastrar_btnCriarOSId)).setText("Salvar");
 
@@ -85,6 +83,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
                 String cidade = ((TextInputLayout) findViewById(R.id.cadastrar_edtCidadeId)).getEditText().getText().toString();
                 String estado = ((Spinner) findViewById(R.id.cadastrar_spinnerEstados)).getSelectedItem().toString();
                 String tipoServico = ((Spinner) findViewById(R.id.cadastrar_spinnerTipoServico)).getSelectedItem().toString();
+                String produto = ((TextInputLayout) findViewById(R.id.fragment_editar_produto)).getEditText().getText().toString();
 
                 cliente.setNome(nomeCliente);
                 cliente.setCodigoCliente(nomeCliente.substring(0, 3));
@@ -100,6 +99,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
                 ordemServico.setCliente(cliente);
                 ordemServico.setEndereco(endereco);
                 ordemServico.setTipoServico(tipoServico);
+                ordemServico.setProduto(produto);
 
                 if (mRepositorio.atualizar(ordemServico)) {
                     setResult(RESULT_OK, new Intent().putExtra("ORDEM_SERVICO_EDITADA", new Gson().toJson(ordemServico)));
@@ -116,11 +116,25 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
                 util.getLocalizacao();
             }
         });
+
+        EditarProdutoFragment editarProdutoFragment = new EditarProdutoFragment();
+        Bundle bundle = new Bundle();
+        if (os != null) {
+            bundle.putString("PRODUTO", os.getProduto());
+        }
+        editarProdutoFragment.setArguments(bundle);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .replace(R.id.cadastrar_container_fragment, editarProdutoFragment)
+                .commit();
     }
 
     private boolean validarInputDoUsuario() {
         return util.validarCampos(R.id.cadastrar_edtNomeClienteId, R.id.cadastrar_edtRuaId, R.id.cadastrar_edtBairroId,
-                R.id.cadastrar_edtCepId, R.id.cadastrar_edtCidadeId, R.id.cadastrar_edtNumeroId, R.id.cadastrar_edtComplementoId);
+                R.id.cadastrar_edtCepId, R.id.cadastrar_edtCidadeId, R.id.cadastrar_edtNumeroId, R.id.cadastrar_edtComplementoId,
+                R.id.fragment_editar_produto);
     }
 
     public String getUriCep() {
