@@ -45,9 +45,6 @@ import static com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter.REQUEST_COD
 
 public class TelaInicialActivity extends AppCompatActivity {
 
-    public static final String TEMA_PADRAO = "temaPadrao";
-    public static final String TEMA_NOTURNO = "temaNoturno";
-
     private Utilitaria util;
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
@@ -288,7 +285,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         });
 
         String tema = PreferenciasUsuario.Companion.getPreferenciaTema(this);
-        if (tema.equals(TEMA_NOTURNO)) {
+        if (tema.equals(PreferenciasUsuario.Companion.getTEMA_NOTURNO())) {
             menu.findItem(R.id.app_bar_checkbox).setChecked(true);
         }
 
@@ -307,10 +304,10 @@ public class TelaInicialActivity extends AppCompatActivity {
             item.setChecked(isChecked);
 
             if (item.isChecked()) {
-                PreferenciasUsuario.Companion.setPreferenciaTema(this, TEMA_NOTURNO);
+                PreferenciasUsuario.Companion.setPreferenciaTema(this, PreferenciasUsuario.Companion.getTEMA_NOTURNO());
                 this.recreate();
             } else {
-                PreferenciasUsuario.Companion.setPreferenciaTema(this, TEMA_PADRAO);
+                PreferenciasUsuario.Companion.setPreferenciaTema(this, PreferenciasUsuario.Companion.getTEMA_PADRAO());
                 this.recreate();
             }
         }

@@ -6,6 +6,8 @@ import com.rtstudio.projetomeuapp.TelaInicialActivity
 
 class PreferenciasUsuario {
     companion object {
+        val TEMA_PADRAO = "temaPadrao"
+        val TEMA_NOTURNO = "temaNoturno"
         val TEMA = "TEMA"
 
         fun setPreferenciaTema(context: Context, tema: String) {
@@ -16,12 +18,12 @@ class PreferenciasUsuario {
         }
 
         fun getPreferenciaTema(context: Context): String {
-            val retorno = context.getSharedPreferences(TEMA, Context.MODE_PRIVATE).getString("PREFERENCIA_TEMA", TelaInicialActivity.TEMA_PADRAO)
+            val retorno = context.getSharedPreferences(TEMA, Context.MODE_PRIVATE).getString("PREFERENCIA_TEMA", TEMA_PADRAO)
             return retorno ?: "nao encontrado"
         }
 
         fun setTema(context: Context) {
-            if (getPreferenciaTema(context).equals(TelaInicialActivity.TEMA_NOTURNO)) {
+            if (getPreferenciaTema(context).equals(TEMA_NOTURNO)) {
                 context.setTheme(R.style.TemaModoNotuno)
             } else {
                 context.setTheme(R.style.AppTheme)
