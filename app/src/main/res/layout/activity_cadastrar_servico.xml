@@ -220,22 +220,10 @@
                     android:layout_toEndOf="@id/cadastrar_layout_servico"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/cadastrar_tvEscolha"
+                    <FrameLayout
+                        android:id="@+id/cadastrar_container_fragment"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:textColor="@color/red"
-                        android:visibility="invisible"
-                        android:text="@string/escolha_o_produto"/>
-
-                    <Button
-                        android:id="@+id/cadastrar_btnProduto"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:textStyle="normal"
-                        android:text="@string/produto" />
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
             </RelativeLayout>
