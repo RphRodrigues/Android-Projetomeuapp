@@ -21,7 +21,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ImagemActivity"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -64,6 +63,8 @@
             android:name=".CadastrarServicoActivity"
             android:label="@string/cadastrar_servico"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ImagemActivity"/>
 
         <receiver
             android:name=".broadcast.MonitoraRedeReceiver"

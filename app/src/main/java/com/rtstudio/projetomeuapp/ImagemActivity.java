@@ -4,11 +4,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
+
+import com.github.chrisbanes.photoview.PhotoView;
 
 public class ImagemActivity extends AppCompatActivity {
 
-    private ImageView mImagem;
+    private PhotoView mPhotoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,13 +17,12 @@ public class ImagemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_imagem);
 
         Bitmap bitmap;
-        mImagem = findViewById(R.id.imagem_imageView);
+        mPhotoView = findViewById(R.id.imagem_photoView);
 
         if (getIntent().hasExtra("IMG")) {
             String imageName = getIntent().getStringExtra("IMG");
             bitmap = BitmapFactory.decodeFile(imageName);
-            mImagem.setImageBitmap(bitmap);
-
+            mPhotoView.setImageBitmap(bitmap);
         }
     }
 }

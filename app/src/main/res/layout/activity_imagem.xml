@@ -6,8 +6,8 @@
     android:background="@color/colorPrimaryDarkTemaModoNotuno"
     tools:context=".ImagemActivity">
 
-    <ImageView
-        android:id="@+id/imagem_imageView"
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/imagem_photoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
