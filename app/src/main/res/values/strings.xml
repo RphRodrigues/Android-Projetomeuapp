@@ -41,6 +41,7 @@
     <string name="internet_5g">Internet 5G</string>
     <string name="produtos">Produtos</string>
     <string name="escolha_o_produto">Escolha o produto</string>
+    <string name="produto_selecionado">Produto selecionado</string>
 
     <string-array name="lista_servico">
         <item>Instalação</item>

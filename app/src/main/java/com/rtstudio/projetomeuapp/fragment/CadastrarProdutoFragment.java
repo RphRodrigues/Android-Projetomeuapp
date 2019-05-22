@@ -1,4 +1,4 @@
-package com.rtstudio.projetomeuapp;
+package com.rtstudio.projetomeuapp.fragment;
 
 
 import android.app.AlertDialog;
@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import com.rtstudio.projetomeuapp.R;
 
 
 /**
