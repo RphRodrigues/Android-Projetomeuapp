@@ -1,6 +1,6 @@
 package com.rtstudio.projetomeuapp.interfaces;
 
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 
 import java.io.File;
 import java.util.List;

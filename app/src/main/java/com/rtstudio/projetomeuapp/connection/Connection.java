@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.rtstudio.projetomeuapp.DAO.ClienteDAO;
 import com.rtstudio.projetomeuapp.DAO.EnderecoDAO;
 import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
+import com.rtstudio.projetomeuapp.DAO.UsuarioDAO;
 
 public class Connection extends SQLiteOpenHelper {
 
@@ -31,6 +32,7 @@ public class Connection extends SQLiteOpenHelper {
         ClienteDAO.createTable(db);
         EnderecoDAO.createTable(db);
         OrdemServicoDAO.createTable(db);
+        UsuarioDAO.createTable(db);
     }
 
     @Override

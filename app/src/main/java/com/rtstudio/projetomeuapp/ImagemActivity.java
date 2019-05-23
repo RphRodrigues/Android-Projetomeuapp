@@ -25,9 +25,9 @@ public class ImagemActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(new Utilitaria(this).getArrowWhite());
+        getSupportActionBar().setHomeAsUpIndicator(new Utilitaria(this).getWhiteArrow());
 
-        if (PreferenciasUsuario.Companion.getPreferenciaTema(this).equals(PreferenciasUsuario.Companion.getTEMA_NOTURNO())) {
+        if (PreferenciasUsuario.Companion.getPreferenciaTema(this).equals(PreferenciasUsuario.TEMA_NOTURNO)) {
             (findViewById(R.id.layout_activity_imagem)).setBackgroundColor(Color.BLACK);
         } else {
             (findViewById(R.id.layout_activity_imagem)).setBackgroundColor(Color.WHITE);

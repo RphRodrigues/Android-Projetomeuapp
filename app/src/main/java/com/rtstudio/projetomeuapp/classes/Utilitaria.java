@@ -30,6 +30,9 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.rtstudio.projetomeuapp.R;
+import com.rtstudio.projetomeuapp.modelo.Cliente;
+import com.rtstudio.projetomeuapp.modelo.Endereco;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 
 import java.io.IOException;
 import java.util.List;
@@ -153,7 +156,7 @@ public class Utilitaria {
         toast.show();
     }
 
-    public Drawable getArrowWhite() {
+    public Drawable getWhiteArrow() {
         return activity.getResources().getDrawable(R.drawable.ic_arrow_white_24dp, activity.getTheme());
     }
 

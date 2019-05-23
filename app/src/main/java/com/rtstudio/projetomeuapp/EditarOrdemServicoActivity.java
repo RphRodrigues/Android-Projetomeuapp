@@ -14,11 +14,11 @@ import android.widget.Spinner;
 
 import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.classes.CepListener;
-import com.rtstudio.projetomeuapp.classes.Cliente;
-import com.rtstudio.projetomeuapp.classes.Endereco;
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
 import com.rtstudio.projetomeuapp.fragment.EditarProdutoFragment;
+import com.rtstudio.projetomeuapp.modelo.Cliente;
+import com.rtstudio.projetomeuapp.modelo.Endereco;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 
@@ -44,7 +44,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(util.getArrowWhite());
+        getSupportActionBar().setHomeAsUpIndicator(util.getWhiteArrow());
         mToolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white, getTheme()));
 
         ((Button) findViewById(R.id.cadastrar_btnCriarOSId)).setText(getString(R.string.salvar));

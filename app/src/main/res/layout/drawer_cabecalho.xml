@@ -7,7 +7,7 @@
     android:background="@drawable/android">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/navigation_cabecalho_imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -18,29 +18,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/drawer_email"
+        android:id="@+id/navigation_cabecalho_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
         android:layout_marginBottom="10dp"
-        android:text="Rodrigues.rph@gmail.com"
+        android:text=""
         android:textColor="#fff"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/navigation_cabecalho_nome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
         android:layout_marginBottom="5dp"
-        android:text="Raphael"
+        android:text=""
         android:textColor="#fff"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/drawer_email"
+        app:layout_constraintBottom_toTopOf="@+id/navigation_cabecalho_email"
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

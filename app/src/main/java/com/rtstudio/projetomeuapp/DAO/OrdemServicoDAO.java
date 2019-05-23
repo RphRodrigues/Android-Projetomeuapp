@@ -6,11 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.rtstudio.projetomeuapp.classes.Cliente;
-import com.rtstudio.projetomeuapp.classes.Endereco;
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.connection.Connection;
-import com.rtstudio.projetomeuapp.server.WebServiceDelete;
+import com.rtstudio.projetomeuapp.modelo.Cliente;
+import com.rtstudio.projetomeuapp.modelo.Endereco;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,8 +128,6 @@ public class OrdemServicoDAO {
     }
 
     public boolean deleteOrdemServico(int ordemServicoId) {
-        WebServiceDelete webServiceDelete = new WebServiceDelete();
-        webServiceDelete.execute(ordemServicoId);
         SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
 
         String[] value = new String[]{String.valueOf(ordemServicoId)};
@@ -163,7 +160,7 @@ public class OrdemServicoDAO {
 
         valuesOS.put("FOTOSERVICO", ordemServico.getFilename());
         valuesOS.put("TIPOSERVICO", ordemServico.getTipoServico());
-        valuesOS.put("PRODUTO",     ordemServico.getProduto());
+        valuesOS.put("PRODUTO", ordemServico.getProduto());
         valuesOS.put("SYNC_STATUS", ordemServico.getSyncStatus());
 
         String[] args = {String.valueOf(ordemServico.getOrdemServicoId())};

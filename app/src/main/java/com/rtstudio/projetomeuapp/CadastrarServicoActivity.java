@@ -20,11 +20,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.classes.CepListener;
-import com.rtstudio.projetomeuapp.classes.Cliente;
-import com.rtstudio.projetomeuapp.classes.Endereco;
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
 import com.rtstudio.projetomeuapp.fragment.CadastrarProdutoFragment;
+import com.rtstudio.projetomeuapp.modelo.Cliente;
+import com.rtstudio.projetomeuapp.modelo.Endereco;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 
@@ -60,7 +60,7 @@ public class CadastrarServicoActivity extends AppCompatActivity implements Cadas
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(util.getArrowWhite());
+        getSupportActionBar().setHomeAsUpIndicator(util.getWhiteArrow());
         toolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white, getTheme()));
 
         mRepositorio = new Repositorio(this);
@@ -79,7 +79,7 @@ public class CadastrarServicoActivity extends AppCompatActivity implements Cadas
         findViewById(R.id.cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validarInputDoUsuario() | !validarRadioButton()) {
+                if (!validarInputDoUsuario() || !validarRadioButton()) {
                     util.exexutarSom();
                     if (!validarRadioButton()) {
                         findViewById(R.id.fragment_tvEscolha).setVisibility(View.VISIBLE);

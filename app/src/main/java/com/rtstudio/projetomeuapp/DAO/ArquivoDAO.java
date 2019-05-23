@@ -2,7 +2,7 @@ package com.rtstudio.projetomeuapp.DAO;
 
 import android.util.Log;
 
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 import com.rtstudio.projetomeuapp.interfaces.InterfaceDAO;
 
 import java.io.EOFException;

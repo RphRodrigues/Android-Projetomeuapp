@@ -6,8 +6,8 @@ import com.rtstudio.projetomeuapp.TelaInicialActivity
 
 class PreferenciasUsuario {
     companion object {
-        val TEMA_PADRAO = "temaPadrao"
-        val TEMA_NOTURNO = "temaNoturno"
+        const val TEMA_PADRAO = "temaPadrao"
+        const val TEMA_NOTURNO = "temaNoturno"
         val TEMA = "TEMA"
 
         fun setPreferenciaTema(context: Context, tema: String) {

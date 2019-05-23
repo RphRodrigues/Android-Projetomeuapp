@@ -1,4 +1,4 @@
-package com.rtstudio.projetomeuapp.classes;
+package com.rtstudio.projetomeuapp.modelo;
 
 import java.io.Serializable;
 import java.util.Random;

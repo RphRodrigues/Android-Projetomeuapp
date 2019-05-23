@@ -3,7 +3,7 @@ package com.rtstudio.projetomeuapp.server;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 
 import java.io.IOException;
 import java.util.ArrayList;

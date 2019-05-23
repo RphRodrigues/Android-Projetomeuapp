@@ -2,7 +2,7 @@ package com.rtstudio.projetomeuapp.server;
 
 import android.os.AsyncTask;
 
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 
 import java.lang.ref.WeakReference;

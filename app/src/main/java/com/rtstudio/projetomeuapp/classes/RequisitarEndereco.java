@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.CadastrarServicoActivity;
 import com.rtstudio.projetomeuapp.EditarOrdemServicoActivity;
+import com.rtstudio.projetomeuapp.modelo.Endereco;
 
 import java.lang.ref.WeakReference;
 
