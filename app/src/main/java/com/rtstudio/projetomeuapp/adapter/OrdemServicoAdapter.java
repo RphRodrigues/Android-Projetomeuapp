@@ -28,7 +28,7 @@ import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.EditarOrdemServicoActivity;
 import com.rtstudio.projetomeuapp.ImagemActivity;
 import com.rtstudio.projetomeuapp.R;
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 
@@ -181,12 +181,12 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                                 Bitmap img = BitmapFactory.decodeFile(ordemServico.getFilename());
                                 ((ImageView) view.findViewById(R.id.alerta_imagem)).setImageBitmap(img);
 
-                                view.findViewById(R.id.alerta_botao).setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mAlerta.dismiss();
-                                    }
-                                });
+//                                view.findViewById(R.id.alerta_botao).setOnClickListener(new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View v) {
+//                                        mAlerta.dismiss();
+//                                    }
+//                                });
 
                                 view.setOnClickListener(new View.OnClickListener() {
                                     @Override
