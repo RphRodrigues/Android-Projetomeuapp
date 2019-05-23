@@ -194,7 +194,6 @@ public class Utilitaria {
                     return false;
                 } else {
                     ((TextInputLayout) activity.findViewById(id)).setError(null);
-                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
                     return true;
                 }
             case R.id.cadastrar_edtRuaId:
@@ -203,7 +202,6 @@ public class Utilitaria {
                     return false;
                 } else {
                     ((TextInputLayout) activity.findViewById(id)).setError(null);
-                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
                     return true;
                 }
             case R.id.cadastrar_edtBairroId:
@@ -212,7 +210,6 @@ public class Utilitaria {
                     return false;
                 } else {
                     ((TextInputLayout) activity.findViewById(id)).setError(null);
-                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
                     return true;
                 }
             case R.id.cadastrar_edtCepId:
@@ -221,7 +218,6 @@ public class Utilitaria {
                     return false;
                 } else {
                     ((TextInputLayout) activity.findViewById(id)).setError(null);
-                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
                     return true;
                 }
             case R.id.cadastrar_edtNumeroId:
@@ -230,7 +226,6 @@ public class Utilitaria {
                     return false;
                 } else {
                     ((TextInputLayout) activity.findViewById(id)).setError(null);
-                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
                     return true;
                 }
             case R.id.cadastrar_edtCidadeId:
@@ -239,7 +234,6 @@ public class Utilitaria {
                     return false;
                 } else {
                     ((TextInputLayout) activity.findViewById(id)).setError(null);
-                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
                     return true;
                 }
             case R.id.fragment_editar_produto:
@@ -248,7 +242,6 @@ public class Utilitaria {
                     return false;
                 } else {
                     ((TextInputLayout) activity.findViewById(id)).setError(null);
-                    ((TextInputLayout) activity.findViewById(id)).setErrorEnabled(false);
                     return true;
                 }
         }
