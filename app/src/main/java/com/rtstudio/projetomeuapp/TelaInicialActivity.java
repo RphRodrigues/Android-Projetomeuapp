@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,13 +25,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
 import com.rtstudio.projetomeuapp.classes.Utilitaria;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
+import com.rtstudio.projetomeuapp.modelo.Usuario;
 import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
@@ -49,7 +52,6 @@ public class TelaInicialActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private Repositorio mRepositorio;
-    private ImageView imgBackground;
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
     private OrdemServicoAdapter adapter;
@@ -62,14 +64,12 @@ public class TelaInicialActivity extends AppCompatActivity {
         PreferenciasUsuario.Companion.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
-        MediaPlayer.create(TelaInicialActivity.this, R.raw.windows_xp_login).start();
+
         setNavigationDrawer();
 
         util = new Utilitaria(this);
 
         mRepositorio = new Repositorio(this);
-
-        imgBackground = findViewById(R.id.telaInicial_imgBg);
 
         fab = findViewById(R.id.telaInicial_fabId);
 
@@ -128,11 +128,21 @@ public class TelaInicialActivity extends AppCompatActivity {
     public void setNavigationDrawer() {
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        mToolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white, getTheme()));
+
+        mDrawerLayout = findViewById(R.id.telaInicial_drawer);
 
         mNavigationView = findViewById(R.id.telaInicial_navigationView);
 
-        mDrawerLayout = findViewById(R.id.telaInicial_drawer);
+        Usuario usuario = null;
+        if (getIntent().hasExtra("USUARIO")) {
+            usuario = new Gson().fromJson(getIntent().getStringExtra("USUARIO"), Usuario.class);
+        }
+
+        if (usuario != null) {
+            View headerView = mNavigationView.getHeaderView(0);
+            ((TextView)headerView.findViewById(R.id.navigation_cabecalho_nome)).setText(usuario.getNome());
+            ((TextView)headerView.findViewById(R.id.navigation_cabecalho_email)).setText(usuario.getEmail());
+        }
 
         mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_menu_white_24dp, getTheme()));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -223,7 +233,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
                 ordemServicoList.get(position).setFilename(fileFotoAbsolutePath);
 
-                if(mRepositorio.atualizarImagemOrdemServico(ordemServicoList.get(position))) {
+                if (mRepositorio.atualizarImagemOrdemServico(ordemServicoList.get(position))) {
                     Log.i("BANCO", "onActivityResult: camera");
                     if (adapter.isImagemAltetada()) {
                         util.toast("Imagem alterada com sucesso", Toast.LENGTH_LONG);
@@ -236,21 +246,11 @@ public class TelaInicialActivity extends AppCompatActivity {
         }
     }
 
-    public void checkImageBackground() {
-        if (adapter != null && adapter.getItemCount() > 0) {
-            imgBackground.setVisibility(View.INVISIBLE);
-        } else {
-            imgBackground.setVisibility(View.VISIBLE);
-        }
-    }
-
     private void atualizaRecyclerView(List<OrdemServico> ordemServicoList) {
 
         adapter = new OrdemServicoAdapter(this, ordemServicoList);
 
         recyclerView.setAdapter(adapter);
-
-        checkImageBackground();
     }
 
     private void getOrdemServicoByBairro(String bairro) {
@@ -271,6 +271,10 @@ public class TelaInicialActivity extends AppCompatActivity {
 
         SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
 
+        EditText txtSearch = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        txtSearch.setHintTextColor(Color.LTGRAY);
+        txtSearch.setTextColor(Color.WHITE);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String string) {
@@ -285,7 +289,7 @@ public class TelaInicialActivity extends AppCompatActivity {
         });
 
         String tema = PreferenciasUsuario.Companion.getPreferenciaTema(this);
-        if (tema.equals(PreferenciasUsuario.Companion.getTEMA_NOTURNO())) {
+        if (tema.equals(PreferenciasUsuario.TEMA_NOTURNO)) {
             menu.findItem(R.id.app_bar_checkbox).setChecked(true);
         }
 
@@ -304,10 +308,10 @@ public class TelaInicialActivity extends AppCompatActivity {
             item.setChecked(isChecked);
 
             if (item.isChecked()) {
-                PreferenciasUsuario.Companion.setPreferenciaTema(this, PreferenciasUsuario.Companion.getTEMA_NOTURNO());
+                PreferenciasUsuario.Companion.setPreferenciaTema(this, PreferenciasUsuario.TEMA_NOTURNO);
                 this.recreate();
             } else {
-                PreferenciasUsuario.Companion.setPreferenciaTema(this, PreferenciasUsuario.Companion.getTEMA_PADRAO());
+                PreferenciasUsuario.Companion.setPreferenciaTema(this, PreferenciasUsuario.TEMA_PADRAO);
                 this.recreate();
             }
         }

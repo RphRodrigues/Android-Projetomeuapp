@@ -53,6 +53,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:theme="@style/TemaLogin"
+            android:name=".LoginActivity" />
+
+        <activity
             android:name=".TelaInicialActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -63,8 +67,7 @@
             android:name=".CadastrarServicoActivity"
             android:label="@string/cadastrar_servico"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ImagemActivity"/>
+        <activity android:name=".ImagemActivity" />
 
         <receiver
             android:name=".broadcast.MonitoraRedeReceiver"
