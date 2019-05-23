@@ -8,7 +8,31 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TemaSplashscreen" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:statusBarColor">@android:color/darker_gray</item>
+    </style>
+
+    <style name="TemaLogin" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/statusBarGreen</item>
+        <item name="colorAccent">@android:color/holo_orange_dark</item>
+    </style>
+
+    <style name="AppTheme.Toolbar" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <!--This line changes the color of text in Toolbar-->
+        <item name="android:textColorPrimary">@color/white</item>
+        <!--This line changes the color of icons in toolbar (back, overflow menu icons)-->
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="AppTheme">
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorSecondary">@color/black</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
     <style name="TemaModoNotuno" parent="AppTheme">
+        <item name="actionModeBackground">@color/colorPrimaryDarkTemaModoNotuno</item>
         <item name="colorPrimary">@color/colorPrimaryTemaModoNotuno</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkTemaModoNotuno</item>
         <item name="colorAccent">@color/colorAccentTemaModoNotuno</item>
@@ -20,6 +44,5 @@
         <item name="android:textColorSecondaryInverse">@color/colorPrimaryDarkTemaModoNotuno</item>
         <item name="android:textColorTertiaryInverse">@color/colorPrimaryDarkTemaModoNotuno</item>
     </style>
-
 
 </resources>
