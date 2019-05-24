@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
+import com.rtstudio.projetomeuapp.dao.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 import com.rtstudio.projetomeuapp.server.WebServiceDelete;
@@ -17,6 +17,7 @@ import com.rtstudio.projetomeuapp.server.WebServicePut;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Raphael Rodrigues on 16/05/2019.
@@ -24,8 +25,7 @@ import java.util.List;
 public class Repositorio {
 
     private Context mContext;
-    private List<OrdemServico> listaOrdensBanco = new ArrayList<>();
-    private List<OrdemServico> listaOrdensServico = new ArrayList<>();
+    private List<OrdemServico> mListaOrdens = new ArrayList<>();
 
     public Repositorio(Context context) {
         this.mContext = context;
@@ -91,53 +91,9 @@ public class Repositorio {
     }
 
     public List<OrdemServico> buscar() {
-        listaOrdensServico = recuperarOrdemServicoDoBancoDeDados();
         recuperarOrdemServicoDoServidor();
-        return listaOrdensServico;
+        return recuperarOrdemServicoDoBancoDeDados();
     }
-
-    public void retornoDoServidor(List<OrdemServico> listaOrdemServicoServidor) {
-
-        List<OrdemServico> listaOrdemServicoServidorAux = new ArrayList<>(listaOrdemServicoServidor);
-        List<OrdemServico> listaOrdemServicoBancoDedados = recuperarOrdemServicoDoBancoDeDados();
-
-        for (OrdemServico OSServidor : listaOrdemServicoServidor) {
-            for (int i = 0; i < listaOrdemServicoBancoDedados.size(); i++) {
-                if (listaOrdemServicoBancoDedados.get(i).getOrdemServicoId() == OSServidor.getOrdemServicoId()) {
-                    listaOrdemServicoServidorAux.remove(OSServidor);
-                }
-            }
-        }
-
-        if (!listaOrdemServicoServidorAux.isEmpty()) {
-            for (OrdemServico os : listaOrdemServicoServidorAux) {
-                os.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
-//                salvarOrdemServicoNoBancoDeDados(os);
-            }
-        }
-    }
-
-//    public void atualizaLista(List<OrdemServico> listaOrdemServicoServidor) {
-//
-//        List<OrdemServico> listaOrdemServicoServidorAux = new ArrayList<>(listaOrdemServicoServidor);
-//
-//        for (OrdemServico OSServidor : listaOrdemServicoServidor) {
-//            for (int i = 0; i < listaOrdensServico.size(); i++) {
-//                if (listaOrdensServico.get(i).getOrdemServicoId() == OSServidor.getOrdemServicoId()) {
-//                    listaOrdemServicoServidorAux.remove(OSServidor);
-//                }
-//            }
-//        }
-//
-//        if (listaOrdemServicoServidorAux.isEmpty()) {
-//            Toast.makeText(mContext, "Lista atualizada", Toast.LENGTH_SHORT).show();
-//        } else {
-//            for (OrdemServico os : listaOrdemServicoServidorAux) {
-//                os.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
-//            }
-//            listaOrdensServico.addAll(listaOrdemServicoServidorAux);
-//        }
-//    }
 
     private boolean salvarOrdemServicoNoServidor(OrdemServico ordemServico) {
         if (checkConnection()) {
@@ -173,14 +129,22 @@ public class Repositorio {
 
     private boolean recuperarOrdemServicoDoServidor() {
         if (checkConnection()) {
-            WebServiceGet mWebServiceGet = new WebServiceGet(this);
-//            mWebServiceGet.setTeste(new WebServiceGet.Do() {
-//                @Override
-//                public void atualizar(List<OrdemServico> ordemServicoList) {
-//
-//                }
-//            });
-            mWebServiceGet.execute();
+            WebServiceGet mWebServiceGet = new WebServiceGet();
+
+            try {
+                mListaOrdens = mWebServiceGet.execute().get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            for (OrdemServico ordem : mListaOrdens) {
+                ordem.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
+                if (!atualizarOrdemServicoNoBancoDeDados(ordem)) {
+                    salvarOrdemServicoNoBancoDeDados(ordem);
+                }
+            }
             return true;
         }
         return false;

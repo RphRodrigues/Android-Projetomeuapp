@@ -48,7 +48,7 @@ import static com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter.REQUEST_COD
 
 public class TelaInicialActivity extends AppCompatActivity {
 
-    private Utilitaria util;
+    private Utilitaria mUtil;
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private Repositorio mRepositorio;
@@ -67,9 +67,7 @@ public class TelaInicialActivity extends AppCompatActivity {
 
         setNavigationDrawer();
 
-        util = new Utilitaria(this);
-
-        mRepositorio = new Repositorio(this);
+        mUtil = new Utilitaria(this);
 
         fab = findViewById(R.id.telaInicial_fabId);
 
@@ -77,19 +75,12 @@ public class TelaInicialActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        if (ordemServicoList == null) {
-            try {
-                ordemServicoList = new ArrayList<>();
+        mRepositorio = new Repositorio(this);
 
-                ordemServicoList = mRepositorio.buscar();
+        ordemServicoList = new ArrayList<>();
+        ordemServicoList = mRepositorio.buscar();
 
-                if (!ordemServicoList.isEmpty()) {
-                    atualizaRecyclerView(ordemServicoList);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        atualizaRecyclerView(ordemServicoList);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -140,8 +131,8 @@ public class TelaInicialActivity extends AppCompatActivity {
 
         if (usuario != null) {
             View headerView = mNavigationView.getHeaderView(0);
-            ((TextView)headerView.findViewById(R.id.navigation_cabecalho_nome)).setText(usuario.getNome());
-            ((TextView)headerView.findViewById(R.id.navigation_cabecalho_email)).setText(usuario.getEmail());
+            ((TextView) headerView.findViewById(R.id.navigation_cabecalho_nome)).setText(usuario.getNome());
+            ((TextView) headerView.findViewById(R.id.navigation_cabecalho_email)).setText(usuario.getEmail());
         }
 
         mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_menu_white_24dp, getTheme()));
@@ -158,7 +149,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 mDrawerLayout.closeDrawer(mNavigationView);
                 if (id == R.id.drawer_ajuda) {
-                    util.menuItemAjuda();
+                    mUtil.menuItemAjuda();
                 } else if (id == R.id.drawer_sync) {
                     if (mRepositorio.sicronizar(ordemServicoList)) {
                         atualizaRecyclerView(ordemServicoList);
@@ -215,9 +206,9 @@ public class TelaInicialActivity extends AppCompatActivity {
                 Log.i("BANCO", "onActivityResult: galeria");
 
                 if (adapter.isImagemAltetada()) {
-                    util.toast("Imagem alterada com sucesso", Toast.LENGTH_LONG);
+                    mUtil.toast("Imagem alterada com sucesso", Toast.LENGTH_LONG);
                 } else {
-                    util.toast("Foto salva com sucesso", Toast.LENGTH_LONG);
+                    mUtil.toast("Foto salva com sucesso", Toast.LENGTH_LONG);
                 }
                 atualizaRecyclerView(ordemServicoList);
             }
@@ -236,9 +227,9 @@ public class TelaInicialActivity extends AppCompatActivity {
                 if (mRepositorio.atualizarImagemOrdemServico(ordemServicoList.get(position))) {
                     Log.i("BANCO", "onActivityResult: camera");
                     if (adapter.isImagemAltetada()) {
-                        util.toast("Imagem alterada com sucesso", Toast.LENGTH_LONG);
+                        mUtil.toast("Imagem alterada com sucesso", Toast.LENGTH_LONG);
                     } else {
-                        util.toast("Foto salva com sucesso", Toast.LENGTH_LONG);
+                        mUtil.toast("Foto salva com sucesso", Toast.LENGTH_LONG);
                     }
                     atualizaRecyclerView(ordemServicoList);
                 }
@@ -247,9 +238,7 @@ public class TelaInicialActivity extends AppCompatActivity {
     }
 
     private void atualizaRecyclerView(List<OrdemServico> ordemServicoList) {
-
         adapter = new OrdemServicoAdapter(this, ordemServicoList);
-
         recyclerView.setAdapter(adapter);
     }
 
@@ -301,7 +290,6 @@ public class TelaInicialActivity extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.menu_itemAjuda) {
-//            stopService(new Intent(this, Service.class));
             new Utilitaria(this).menuItemAjuda();
         } else if (id == R.id.app_bar_checkbox) {
             boolean isChecked = !item.isChecked();
@@ -327,7 +315,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 adapter.tirarFoto();
             } else {
                 Log.v("PERMISSAO", "permissão camera negada");
-                Toast.makeText(this, "O acesso à câmera é necessário para adicionar uma imagem a OS.", Toast.LENGTH_LONG).show();
+                mUtil.toast("O acesso à câmera é necessário para adicionar/alterar uma imagem a OS.", Toast.LENGTH_SHORT * 2);
             }
         } else if (requestCode == REQUEST_CODE_GALERIA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -335,7 +323,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 adapter.abrirGaleria();
             } else {
                 Log.v("PERMISSAO", "permissão galeria negada");
-                Toast.makeText(this, "O acesso à galeria é necessário para adicionar uma imagem a OS.", Toast.LENGTH_LONG).show();
+                mUtil.toast("O acesso à galeria é necessário para adicionar/alterar uma imagem a OS.", Toast.LENGTH_SHORT * 2);
             }
         }
     }

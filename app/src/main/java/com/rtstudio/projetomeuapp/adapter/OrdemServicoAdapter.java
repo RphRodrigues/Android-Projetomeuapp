@@ -132,7 +132,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
                 popup.inflate(R.menu.popup_menu);
 
-                if (ordemServico.getFilename() == null) {
+                if (ordemServico.getFilename() == null || ordemServico.getFilename().isEmpty()) {
                     popup.getMenu().removeItem(R.id.popup_menu_imagem);
                 }
 

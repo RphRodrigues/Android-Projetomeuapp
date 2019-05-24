@@ -4,14 +4,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.rtstudio.projetomeuapp.DAO.ClienteDAO;
-import com.rtstudio.projetomeuapp.DAO.EnderecoDAO;
-import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
-import com.rtstudio.projetomeuapp.DAO.UsuarioDAO;
+import com.rtstudio.projetomeuapp.dao.ClienteDAO;
+import com.rtstudio.projetomeuapp.dao.EnderecoDAO;
+import com.rtstudio.projetomeuapp.dao.OrdemServicoDAO;
+import com.rtstudio.projetomeuapp.dao.UsuarioDAO;
 
 public class Connection extends SQLiteOpenHelper {
 
-    private static final String BD_NAME = "BancoDeDadosTcc";
+    private static final String BD_NAME = "BancoDeDadosSinapse";
     private static final int BD_VERSION = 1;
 
     private static Connection connection;
@@ -37,6 +37,8 @@ public class Connection extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if (newVersion > oldVersion) {
+            onCreate(db);
+        }
     }
 }

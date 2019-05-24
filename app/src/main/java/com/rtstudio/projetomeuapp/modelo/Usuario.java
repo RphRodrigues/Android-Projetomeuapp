@@ -10,10 +10,9 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String nome, String email, String telefone) {
+    public Usuario(String nome, String email) {
         this.nome = nome;
         this.email = email;
-        this.telefone = telefone;
     }
 
     public int getUsuarioId() {

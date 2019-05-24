@@ -67,13 +67,6 @@ public class CadastrarServicoActivity extends AppCompatActivity implements Cadas
 
         inicilizarVariaveisDeClasse();
 
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_MEMORIA);
-//
-//            return;
-//        }
-
         cep.getEditText().addTextChangedListener(new CepListener(this));
 
         findViewById(R.id.cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
@@ -192,16 +185,7 @@ public class CadastrarServicoActivity extends AppCompatActivity implements Cadas
                 util.getLocalizacao();
             } else {
                 Log.v("PERMISSAO", "Permissão gps negada");
-                Toast.makeText(this, "O acesso a localização é necessário para utilizar o GPS.", Toast.LENGTH_LONG).show();
-            }
-        } else if (requestCode == PERMISSION_REQUEST_MEMORIA) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.v("PERMISSAO", "Permissão memória concedida");
-
-            } else {
-                Log.v("PERMISSAO", "Permissão memória negada");
-                Toast.makeText(this, "O acesso à memória é necessário para criar OS", Toast.LENGTH_LONG).show();
-                finish();
+                util.toast("O acesso a localização é necessário para utilizar o GPS.", Toast.LENGTH_LONG * 2);
             }
         }
     }

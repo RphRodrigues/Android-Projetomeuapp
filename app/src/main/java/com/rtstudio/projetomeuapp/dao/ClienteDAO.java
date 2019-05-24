@@ -1,12 +1,12 @@
-package com.rtstudio.projetomeuapp.DAO;
+package com.rtstudio.projetomeuapp.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.rtstudio.projetomeuapp.modelo.Cliente;
 import com.rtstudio.projetomeuapp.connection.Connection;
+import com.rtstudio.projetomeuapp.modelo.Cliente;
 
 public class ClienteDAO {
     private static final String TABELA_CLIENTE = "TABELA_CLIENTE";
@@ -72,11 +72,13 @@ public class ClienteDAO {
         SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
 
         ContentValues valuesCliente = new ContentValues();
-        valuesCliente.put("NOME_CLIENTE", cliente.getNome());
-        valuesCliente.put("COD_CLIENTE", cliente.getCodigoCliente());
-
-        String[] args = new String[]{String.valueOf(cliente.getClienteId())};
-
-        return banco.update(TABELA_CLIENTE, valuesCliente, "ID = ?", args) > 0;
+        String[] args;
+        if (cliente != null) {
+            valuesCliente.put("NOME_CLIENTE", cliente.getNome());
+            valuesCliente.put("COD_CLIENTE",  cliente.getCodigoCliente());
+            args = new String[]{String.valueOf(cliente.getClienteId())};
+            return banco.update(TABELA_CLIENTE, valuesCliente, "ID = ?", args) > 0;
+        }
+        return false;
     }
 }

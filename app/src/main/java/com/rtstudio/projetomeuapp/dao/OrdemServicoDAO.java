@@ -1,4 +1,4 @@
-package com.rtstudio.projetomeuapp.DAO;
+package com.rtstudio.projetomeuapp.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrdemServicoDAO {
-    private final String TABELA_ORDEM_SERVICO = "TABELA_ORDEM_SERVICO";
-    private final String CAMPOS = "ORDEM_SERVICO_ID, CLIENTE_ID, ENDERECO_ID, FOTOSERVICO, TIPOSERVICO, PRODUTO, SYNC_STATUS";
+    private static final String TABELA_ORDEM_SERVICO = "TABELA_ORDEM_SERVICO";
+    private static final String CAMPOS = "ORDEM_SERVICO_ID, CLIENTE_ID, ENDERECO_ID, FOTOSERVICO, TIPOSERVICO, PRODUTO, SYNC_STATUS";
 
     private Context context;
 
@@ -26,7 +26,7 @@ public class OrdemServicoDAO {
 
     public static void createTable(SQLiteDatabase sqLite) {
         StringBuffer create = new StringBuffer();
-        create.append("CREATE TABLE IF NOT EXISTS TABELA_ORDEM_SERVICO");
+        create.append("CREATE TABLE IF NOT EXISTS " + TABELA_ORDEM_SERVICO);
         create.append("(");
         create.append("     ORDEM_SERVICO_ID    INTEGER NOT NULL PRIMARY KEY,");
         create.append("     CLIENTE_ID          INTEGER,");
@@ -66,15 +66,8 @@ public class OrdemServicoDAO {
 
         banco = Connection.getInstance(context).getWritableDatabase();
 
-        banco.beginTransaction();
+        long ordemServicoId = banco.insert(TABELA_ORDEM_SERVICO, null, values);
 
-        long ordemServicoId;
-        try {
-            ordemServicoId = banco.insert(TABELA_ORDEM_SERVICO, null, values);
-            banco.setTransactionSuccessful();
-        } finally {
-            banco.endTransaction();
-        }
         Log.v("BANCO", "Escrevendo -> Os: " + ordemServico.getOrdemServicoId() +
                 " Cliente: " + ordemServico.getCliente().getNome() +
                 " Endereco: " + ordemServico.getEndereco().getBairro() +
@@ -146,6 +139,7 @@ public class OrdemServicoDAO {
     }
 
     public boolean updateOS(OrdemServico ordemServico) {
+        Log.i("BANCO", "atualizando: " + ordemServico.getOrdemServicoId());
         SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
 
         ContentValues valuesOS = new ContentValues();
@@ -160,9 +154,9 @@ public class OrdemServicoDAO {
 
         valuesOS.put("FOTOSERVICO", ordemServico.getFilename());
         valuesOS.put("TIPOSERVICO", ordemServico.getTipoServico());
-        valuesOS.put("PRODUTO", ordemServico.getProduto());
+        valuesOS.put("PRODUTO",     ordemServico.getProduto());
         valuesOS.put("SYNC_STATUS", ordemServico.getSyncStatus());
-
+        Log.i("BANCO", "atualizando ok: " + ordemServico.getOrdemServicoId());
         String[] args = {String.valueOf(ordemServico.getOrdemServicoId())};
         return banco.update(TABELA_ORDEM_SERVICO, valuesOS, "ORDEM_SERVICO_ID = ?", args) == 1;
     }

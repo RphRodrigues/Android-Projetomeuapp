@@ -82,7 +82,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="30dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/complementoIdLayout"
@@ -111,8 +111,6 @@
                         android:hint="@string/bairro"
                         android:inputType="textCapSentences|textMultiLine|textAutoCorrect" />
                 </android.support.design.widget.TextInputLayout>
-
-
             </RelativeLayout>
 
             <RelativeLayout
@@ -232,7 +230,7 @@
                 android:id="@+id/cadastrar_btnCriarOSId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
+                android:layout_marginTop="15sp"
                 android:text="@string/cadastrar_servico" />
 
         </LinearLayout>
