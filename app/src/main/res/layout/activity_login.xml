@@ -60,25 +60,29 @@
                 android:textColor="@color/white" />
         </android.support.design.widget.TextInputLayout>
 
+          <LinearLayout
+              android:orientation="horizontal"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+              <Switch
+                  android:id="@+id/login_switch"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" />
 
-            <EditText
-                android:id="@+id/login_telefone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="Telefone"
-                android:inputType="phone"
-                android:textColor="@color/white" />
-        </android.support.design.widget.TextInputLayout>
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Lembrar nome e email"
+                  android:textColor="@color/white"
+                  android:layout_marginStart="20dp"/>
+          </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal">
 
             <Button
