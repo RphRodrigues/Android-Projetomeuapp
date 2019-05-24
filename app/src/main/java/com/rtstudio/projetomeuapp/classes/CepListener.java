@@ -1,6 +1,6 @@
 package com.rtstudio.projetomeuapp.classes;
 
-import android.content.Context;
+import android.app.Activity;
 import android.text.Editable;
 import android.text.TextWatcher;
 
@@ -12,10 +12,17 @@ import com.rtstudio.projetomeuapp.EditarOrdemServicoActivity;
  */
 public class CepListener implements TextWatcher {
 
-    private Context context;
+    private Activity mActivity;
+    private String mCep;
 
-    public CepListener(Context context) {
-        this.context = context;
+
+    public CepListener(Activity activity) {
+        this.mActivity = activity;
+    }
+
+    public CepListener(Activity activity, String cep) {
+        this.mActivity = activity;
+        this.mCep = cep;
     }
 
     @Override
@@ -32,11 +39,17 @@ public class CepListener implements TextWatcher {
     public void afterTextChanged(Editable s) {
         String cep = s.toString();
         if (cep.length() == 8) {
-            if (context instanceof CadastrarServicoActivity ) {
-                new RequisitarEndereco((CadastrarServicoActivity) context).execute();
-            } else if (context instanceof EditarOrdemServicoActivity) {
-                new RequisitarEndereco((EditarOrdemServicoActivity) context).execute();
+            if (mActivity instanceof CadastrarServicoActivity) {
+                new RequisitarEndereco((CadastrarServicoActivity) mActivity).execute();
+            } else if (mActivity instanceof EditarOrdemServicoActivity) {
+                new RequisitarEndereco((EditarOrdemServicoActivity) mActivity).execute();
             }
+        }
+
+        if (!cep.equals(mCep)) {
+            new Utilitaria(mActivity).desbloquearBotaoSalvar(true);
+        } else {
+            new Utilitaria(mActivity).desbloquearBotaoSalvar(false);
         }
     }
 }

@@ -80,7 +80,7 @@ public class CadastrarServicoActivity extends AppCompatActivity implements Cadas
             @Override
             public void onClick(View v) {
                 if (!validarInputDoUsuario() || !validarRadioButton()) {
-                    util.exexutarSom();
+                    util.executarSom();
                     if (!validarRadioButton()) {
                         findViewById(R.id.fragment_tvEscolha).setVisibility(View.VISIBLE);
                     }

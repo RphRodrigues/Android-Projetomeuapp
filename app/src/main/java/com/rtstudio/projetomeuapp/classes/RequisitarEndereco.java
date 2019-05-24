@@ -69,20 +69,17 @@ public class RequisitarEndereco extends AsyncTask<Void, Void, Endereco> {
         if (endereco != null) {
             if (activity instanceof CadastrarServicoActivity) {
                 if (endereco.getCep() != null && cadastrarServicoActivityWeakReference.get() != null) {
-                    util.bloquearCampos(false);
                     util.setDadosEndereco(endereco);
                 } else {
                     Toast.makeText(activity, "Cep inválido", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 if (endereco.getCep() != null && editarOrdemServicoActivityWeakReference.get() != null) {
-                    util.bloquearCampos(false);
                     util.setDadosEndereco(endereco);
                 } else {
                     Toast.makeText(activity, "Cep inválido", Toast.LENGTH_SHORT).show();
                 }
             }
         }
-        util.bloquearCampos(false);
     }
 }

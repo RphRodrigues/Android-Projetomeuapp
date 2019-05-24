@@ -4,11 +4,14 @@ package com.rtstudio.projetomeuapp.fragment;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.rtstudio.projetomeuapp.R;
+import com.rtstudio.projetomeuapp.classes.Utilitaria;
 
 
 /**
@@ -16,20 +19,45 @@ import com.rtstudio.projetomeuapp.R;
  */
 public class EditarProdutoFragment extends Fragment {
 
+    private String mProduto = "";
+    private TextInputLayout mTextInputLayout;
+    private Utilitaria mUtil;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_editar_produto, container, false);
 
-        TextInputLayout nTextInputLayout = view.findViewById(R.id.fragment_editar_produto);
+        mTextInputLayout = view.findViewById(R.id.fragment_editar_produto);
 
-        String produto = "";
+        mUtil = new Utilitaria(getActivity());
 
         if (getArguments() != null) {
-            produto = getArguments().getString("PRODUTO");
+            mProduto = getArguments().getString("PRODUTO");
         }
 
-        nTextInputLayout.getEditText().setText(produto);
+        mTextInputLayout.getEditText().setText(mProduto);
+
+        mTextInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!mTextInputLayout.getEditText().getText().toString().equals(mProduto)) {
+                    mUtil.desbloquearBotaoSalvar(true);
+                } else {
+                    mUtil.desbloquearBotaoSalvar(false);
+                }
+            }
+        });
 
         return view;
     }
