@@ -3,7 +3,7 @@
     android:id="@+id/layout_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4caf50"
+    android:background="@drawable/android"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_margin="16dp"
-        android:background="#4caf50"
+        android:background="@android:color/transparent"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -42,8 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="Primeiro nome"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/white" />
+                android:inputType="textEmailAddress"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -56,8 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/white" />
+                android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
 
           <LinearLayout
@@ -68,13 +66,13 @@
               <Switch
                   android:id="@+id/login_switch"
                   android:layout_width="wrap_content"
-                  android:layout_height="wrap_content" />
+                  android:layout_height="wrap_content"
+                  android:theme="@style/TemaLoginSwitch"/>
 
               <TextView
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="Lembrar nome e email"
-                  android:textColor="@color/white"
                   android:layout_marginStart="20dp"/>
           </LinearLayout>
 
@@ -90,10 +88,8 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="#388e3c"
-                android:tag="custom_signup_button"
+                android:background="#33000000"
                 android:text="@string/ok"
-                android:textColor="@color/white"
                 android:textStyle="bold" />
 
         </LinearLayout>
