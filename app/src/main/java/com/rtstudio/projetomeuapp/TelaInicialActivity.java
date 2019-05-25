@@ -172,7 +172,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 OrdemServico ordemServico = new Gson().fromJson(data.getStringExtra("ORDEM_SERVICO_CRIADA"), OrdemServico.class);
                 ordemServicoList.add(ordemServico);
 
-                new Notificacao().notificacaoSimples(this, ordemServico.getEndereco().getBairro());
+                new Notificacao().notificacaoSimples(this, ordemServico.getEndereco().getBairro(), ordemServico.getEndereco().getUf());
 
                 atualizaRecyclerView(ordemServicoList);
 

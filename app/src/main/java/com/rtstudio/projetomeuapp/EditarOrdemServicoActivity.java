@@ -127,10 +127,12 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
         findViewById(R.id.cadastrar_btnLocation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mUtil.permissaoGPS();
                 mUtil.getLocalizacao();
             }
         });
 
+        //fragment
         EditarProdutoFragment editarProdutoFragment = new EditarProdutoFragment();
         Bundle bundle = new Bundle();
         bundle.putString("PRODUTO", os.getProduto());

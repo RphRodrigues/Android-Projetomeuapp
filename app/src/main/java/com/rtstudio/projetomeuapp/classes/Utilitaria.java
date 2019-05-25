@@ -1,10 +1,12 @@
 package com.rtstudio.projetomeuapp.classes;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
@@ -19,6 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Button;
@@ -45,6 +48,10 @@ import static android.content.Context.LOCATION_SERVICE;
  * Created by Raphael Rodrigues on 29/04/2019.
  */
 public class Utilitaria {
+
+    public static final int PERMISSION_REQUEST_GPS = 100;
+    public static final int PERMISSION_REQUEST_MEMORIA = 101;
+
     private Activity mActivity;
 
     public Utilitaria(Activity mActivity) {
@@ -345,7 +352,17 @@ public class Utilitaria {
             e.printStackTrace();
         } catch (NullPointerException e) {
             e.printStackTrace();
-            Toast.makeText(mActivity, "Aguardando triangulação do gps", Toast.LENGTH_SHORT).show();
+            toast("Aguardando triangulação do gps", Toast.LENGTH_LONG);
+        }
+    }
+
+    public void permissaoGPS() {
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+
+            String[] permissoes = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+
+            ActivityCompat.requestPermissions(mActivity, permissoes, PERMISSION_REQUEST_GPS);
         }
     }
 }

@@ -181,13 +181,6 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                                 Bitmap img = BitmapFactory.decodeFile(ordemServico.getFilename());
                                 ((ImageView) view.findViewById(R.id.alerta_imagem)).setImageBitmap(img);
 
-//                                view.findViewById(R.id.alerta_botao).setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//                                        mAlerta.dismiss();
-//                                    }
-//                                });
-
                                 view.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -238,8 +231,6 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 int ordemServicoId = ordemServicoList.get(position).getOrdemServicoId();
-
-                                new Notificacao().notificacaoBotao(mActivity, ordemServicoList.get(position));
 
                                 new Repositorio(mActivity).deletar(ordemServicoId);
 

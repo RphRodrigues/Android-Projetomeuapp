@@ -18,7 +18,7 @@ public class Notificacao {
     private String NOTIFICACAO_SIMPLES = "NotificacaoSimples";
     private String NOTIFICACAO_BOTAO = "NotificacaoBotão";
 
-    public void notificacaoSimples(Context context, String bairro) {
+    public void notificacaoSimples(Context context, String bairro, String estado) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(
@@ -37,7 +37,7 @@ public class Notificacao {
         NotificationCompat.Builder notificacao = new NotificationCompat.Builder(context, NOTIFICACAO_SIMPLES)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle("Nova Ordem de Serviço")
-                .setContentText(bairro)
+                .setContentText(bairro + " " + estado)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);

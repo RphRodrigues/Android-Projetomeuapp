@@ -30,9 +30,6 @@ import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 
 public class CadastrarServicoActivity extends AppCompatActivity implements CadastrarProdutoFragment.passagemDeDados {
 
-    public static final int PERMISSION_REQUEST_GPS = 100;
-    public static final int PERMISSION_REQUEST_MEMORIA = 101;
-
     private Cliente mCliente = null;
     private Endereco mEndereco = null;
     private OrdemServico mOrdemServico = null;
@@ -99,14 +96,7 @@ public class CadastrarServicoActivity extends AppCompatActivity implements Cadas
         findViewById(R.id.cadastrar_btnLocation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        || (ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-
-                    String[] permissoes = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
-
-                    ActivityCompat.requestPermissions(CadastrarServicoActivity.this, permissoes, PERMISSION_REQUEST_GPS);
-                    return;
-                }
+                util.permissaoGPS();
                 util.getLocalizacao();
             }
         });
@@ -179,7 +169,7 @@ public class CadastrarServicoActivity extends AppCompatActivity implements Cadas
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (requestCode == PERMISSION_REQUEST_GPS) {
+        if (requestCode == Utilitaria.PERMISSION_REQUEST_GPS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.v("PERMISSAO", "Permissão gps concedida");
                 util.getLocalizacao();
