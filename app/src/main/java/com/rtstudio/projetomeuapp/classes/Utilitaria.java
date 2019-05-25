@@ -194,8 +194,9 @@ public class Utilitaria {
 
         switch (id) {
             case R.id.cadastrar_edtNomeClienteId:
-                if (((TextInputLayout) mActivity.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
-                    ((TextInputLayout) mActivity.findViewById(id)).setError("Digite o nome do cliente");
+                if (((TextInputLayout) mActivity.findViewById(id)).getEditText().getText().toString().trim().isEmpty() ||
+                    ((TextInputLayout) mActivity.findViewById(id)).getEditText().getText().toString().trim().length() < 3) {
+                    ((TextInputLayout) mActivity.findViewById(id)).setError("Digite um nome de cliente válido");
                     return false;
                 } else {
                     ((TextInputLayout) mActivity.findViewById(id)).setError(null);

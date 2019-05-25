@@ -317,7 +317,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 adapter.tirarFoto();
             } else {
                 Log.v("PERMISSAO", "permissão camera negada");
-                mUtil.toast("O acesso à câmera é necessário para adicionar/alterar uma imagem a OS.", Toast.LENGTH_SHORT * 2);
+                mUtil.toast("O acesso à câmera é necessário para selecionar uma imagem", Toast.LENGTH_SHORT * 2);
             }
         } else if (requestCode == REQUEST_CODE_GALERIA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -325,7 +325,7 @@ public class TelaInicialActivity extends AppCompatActivity {
                 adapter.abrirGaleria();
             } else {
                 Log.v("PERMISSAO", "permissão galeria negada");
-                mUtil.toast("O acesso à galeria é necessário para adicionar/alterar uma imagem a OS.", Toast.LENGTH_SHORT * 2);
+                mUtil.toast("O acesso à galeria é necessário para selecionar uma imagem", Toast.LENGTH_SHORT * 2);
             }
         }
     }

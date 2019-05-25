@@ -176,6 +176,13 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                                 break;
 
                             case R.id.popup_menu_imagem:
+                                if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                                    ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALERIA);
+
+                                    return false;
+                                }
+
                                 View view = mActivity.getLayoutInflater().inflate(R.layout.alerta_dialog_imagem, null);
 
                                 Bitmap img = BitmapFactory.decodeFile(ordemServico.getFilename());

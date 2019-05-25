@@ -84,7 +84,7 @@ public class Repositorio {
 
     public boolean deletar(int ordemServicoId) {
         if (deletarOrdemServicoDoBancoDeDados(ordemServicoId)) {
-//            deletarOrdemServicoNoServidor(ordemServicoId);
+            deletarOrdemServicoNoServidor(ordemServicoId);
             return true;
         }
         return false;
@@ -139,11 +139,13 @@ public class Repositorio {
                 e.printStackTrace();
             }
 
-            for (OrdemServico ordem : mListaOrdens) {
-                if (ordem.getCliente() != null && ordem.getEndereco() != null) {
-                    ordem.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
-                    if (!atualizarOrdemServicoNoBancoDeDados(ordem)) {
-                        salvarOrdemServicoNoBancoDeDados(ordem);
+            if (mListaOrdens != null) {
+                for (OrdemServico ordem : mListaOrdens) {
+                    if (ordem.getCliente() != null && ordem.getEndereco() != null) {
+                        ordem.setSyncStatus(OrdemServico.SYNC_STATUS_TRUE);
+                        if (!atualizarOrdemServicoNoBancoDeDados(ordem)) {
+                            salvarOrdemServicoNoBancoDeDados(ordem);
+                        }
                     }
                 }
             }

@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                if ((mUsuario = new UsuarioDAO(getBaseContext()).getUsuarioByEmail(mEmail.getText().toString())) == null) {
+                if ((mUsuario = new UsuarioDAO(getBaseContext()).getUsuarioByEmail(mEmail.getText().toString())) != null) {
                     mUsuario = new Usuario(
                             mPrimeiroNome.getText().toString(),
                             mEmail.getText().toString()
