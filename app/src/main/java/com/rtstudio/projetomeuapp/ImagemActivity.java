@@ -52,10 +52,10 @@ public class ImagemActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             finish();
-        } else if (id == R.id.menu_imagem_compartilhar) {
+        }/* else if (id == R.id.menu_imagem_compartilhar) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             //TODO continuar a intent para enviar imagem
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
