@@ -172,9 +172,11 @@ public class TelaInicialActivity extends AppCompatActivity {
                 OrdemServico ordemServico = new Gson().fromJson(data.getStringExtra("ORDEM_SERVICO_CRIADA"), OrdemServico.class);
                 ordemServicoList.add(ordemServico);
 
-                new Notificacao().notificacaoSimples(this, ordemServico.getEndereco().getBairro(), ordemServico.getEndereco().getUf());
+//                new Notificacao().notificacaoSimples(this, ordemServico.getEndereco().getBairro(), ordemServico.getEndereco().getUf());
 
                 atualizaRecyclerView(ordemServicoList);
+
+                new Notificacao().notificacaoBotao(this, ordemServico);
 
             } else if (requestCode == REQUEST_CODE_EDITAR && resultCode == RESULT_OK) {
                 OrdemServico ordemServico = new Gson().fromJson(data.getStringExtra("ORDEM_SERVICO_EDITADA"), OrdemServico.class);
