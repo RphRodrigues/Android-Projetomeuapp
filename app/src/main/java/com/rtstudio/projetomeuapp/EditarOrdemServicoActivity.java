@@ -16,10 +16,10 @@ import android.widget.Spinner;
 
 import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.classes.CepListener;
-import com.rtstudio.projetomeuapp.classes.Cliente;
-import com.rtstudio.projetomeuapp.classes.Endereco;
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
-import com.rtstudio.projetomeuapp.classes.Utilitaria;
+import com.rtstudio.projetomeuapp.modelo.Cliente;
+import com.rtstudio.projetomeuapp.modelo.Endereco;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
+import com.rtstudio.projetomeuapp.util.Utilitaria;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 

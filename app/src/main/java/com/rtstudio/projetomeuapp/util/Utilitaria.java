@@ -1,10 +1,11 @@
-package com.rtstudio.projetomeuapp.classes;
+package com.rtstudio.projetomeuapp.util;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -29,6 +30,9 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.rtstudio.projetomeuapp.R;
+import com.rtstudio.projetomeuapp.modelo.Cliente;
+import com.rtstudio.projetomeuapp.modelo.Endereco;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,7 +45,7 @@ import static android.content.Context.LOCATION_SERVICE;
  * Created by Raphael Rodrigues on 29/04/2019.
  */
 public class Utilitaria {
-    private Activity activity;
+    private Activity mActivity;
     private Fragment fragment;
     private View mView;
 
@@ -51,7 +55,7 @@ public class Utilitaria {
     }
 
     public Utilitaria(Activity activity) {
-        this.activity = activity;
+        this.mActivity = activity;
     }
 
     public Utilitaria(Fragment fragment) {
@@ -89,11 +93,23 @@ public class Utilitaria {
         }
     }
 
+    public void toast(String messagem, int duracao) {
+        Toast toast = Toast.makeText(mActivity, messagem, duracao);
+
+        TextView textView = toast.getView().findViewById(android.R.id.message);
+
+        textView.setTextColor(mActivity.getColor(R.color.white));
+
+        toast.getView().getBackground().setColorFilter(mActivity.getColor(R.color.myBlue), PorterDuff.Mode.SRC_IN);
+
+        toast.show();
+    }
+
     private void setDadosCliente(Cliente cliente) {
         setCampos(R.id.cadastrar_edtNomeClienteId, cliente.getNome());
     }
 
-    void setDadosEndereco(Endereco endereco) {
+    public void setDadosEndereco(Endereco endereco) {
         setCampos(R.id.cadastrar_edtCepId, endereco.getCep());
         setCampos(R.id.cadastrar_edtRuaId, endereco.getLogradouro());
         setCampos(R.id.cadastrar_edtNumeroId, endereco.getNumero());
@@ -132,7 +148,7 @@ public class Utilitaria {
         if (fragment != null) {
             fragment.startActivity(intent);
         } else {
-            activity.startActivity(intent);
+            mActivity.startActivity(intent);
         }
     }
 

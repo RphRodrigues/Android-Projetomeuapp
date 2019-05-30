@@ -2,6 +2,7 @@ package com.rtstudio.projetomeuapp.fragment;
 
 
 import android.Manifest;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -23,11 +24,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.classes.CepListener;
-import com.rtstudio.projetomeuapp.classes.Cliente;
-import com.rtstudio.projetomeuapp.classes.Endereco;
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
-import com.rtstudio.projetomeuapp.classes.Utilitaria;
+import com.rtstudio.projetomeuapp.modelo.Cliente;
+import com.rtstudio.projetomeuapp.modelo.Endereco;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
+import com.rtstudio.projetomeuapp.util.Utilitaria;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
+import com.rtstudio.projetomeuapp.viewModel.MyViewModel;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -55,6 +57,7 @@ public class CadastrarFragment extends Fragment {
     private Spinner tipoServico;
     private Repositorio mRepositorio;
     private Utilitaria util;
+    private MyViewModel mMyViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -115,6 +118,15 @@ public class CadastrarFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMyViewModel = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
+        if (mOrdemServico != null) {
+            mMyViewModel.criarOS(mOrdemServico);
+        }
     }
 
     private boolean validarInputDoUsuario() {

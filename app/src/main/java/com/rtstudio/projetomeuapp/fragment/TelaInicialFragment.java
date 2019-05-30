@@ -28,14 +28,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
+import com.rtstudio.projetomeuapp.dao.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
-import com.rtstudio.projetomeuapp.classes.Utilitaria;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
+import com.rtstudio.projetomeuapp.util.Utilitaria;
 import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
+import com.rtstudio.projetomeuapp.viewModel.MyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,7 @@ public class TelaInicialFragment extends Fragment {
     private List<OrdemServico> ordemServicoList = null;
     private Repositorio mRepositorio;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private MyViewModel mMyViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -120,7 +122,7 @@ public class TelaInicialFragment extends Fragment {
                     getFragmentManager()
                             .beginTransaction()
                             .addToBackStack("INICIO")
-                            .replace(R.id.activity_tela_inicial_fragment_area, new CadastrarFragment(), "CADASTRAR")
+                            .replace(R.id.main_activity_fragment_area, new CadastrarFragment(), "CADASTRAR")
                             .commit();
                 }
 

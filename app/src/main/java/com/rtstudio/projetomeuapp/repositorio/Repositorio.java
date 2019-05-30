@@ -5,8 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
-import com.rtstudio.projetomeuapp.DAO.OrdemServicoDAO;
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.dao.OrdemServicoDAO;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 import com.rtstudio.projetomeuapp.server.WebServiceDelete;
 import com.rtstudio.projetomeuapp.server.WebServiceGet;
 import com.rtstudio.projetomeuapp.server.WebServicePost;

@@ -11,8 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.rtstudio.projetomeuapp.classes.Utilitaria;
+import com.rtstudio.projetomeuapp.util.Utilitaria;
 import com.rtstudio.projetomeuapp.fragment.TelaInicialFragment;
+import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        PreferenciasUsuario.Companion.setTema(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

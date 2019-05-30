@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.TelaInicialActivity;
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 
 public class Notificacao {
 

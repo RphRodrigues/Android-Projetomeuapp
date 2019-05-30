@@ -33,6 +33,7 @@
     <string name="abrir">abrir</string>
     <string name="fechar">fechar</string>
     <string name="tipo_servico">Tipo do serviço</string>
+    <string name="ok">OK</string>
 
     <string-array name="lista_servico">
         <item>Instalação</item>

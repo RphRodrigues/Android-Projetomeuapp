@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.R;
-import com.rtstudio.projetomeuapp.classes.OrdemServico;
+import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 import com.rtstudio.projetomeuapp.fragment.EditarFragment;
 import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;

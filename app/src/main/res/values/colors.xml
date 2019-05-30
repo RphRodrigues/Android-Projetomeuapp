@@ -11,6 +11,9 @@
     <color name="myBlue">#2C86FF</color>
     <color name="cinzaClaro">#f2f2f2</color>
     <color name="white">#ffffff</color>
+    <color name="red">#ff0000</color>
+    <color name="statusBarGreen">#388e3c</color>
+    <color name="black">#000000</color>
 
     <color name="colorPrimaryTemaModoNotuno">#212121</color>
     <color name="colorPrimaryDarkTemaModoNotuno">#000000</color>

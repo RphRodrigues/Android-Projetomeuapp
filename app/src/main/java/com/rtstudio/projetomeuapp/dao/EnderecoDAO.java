@@ -1,11 +1,11 @@
-package com.rtstudio.projetomeuapp.DAO;
+package com.rtstudio.projetomeuapp.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.rtstudio.projetomeuapp.classes.Endereco;
+import com.rtstudio.projetomeuapp.modelo.Endereco;
 import com.rtstudio.projetomeuapp.connection.Connection;
 
 public class EnderecoDAO {
