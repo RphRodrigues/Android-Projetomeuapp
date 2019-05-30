@@ -186,7 +186,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
                     fragment.getFragmentManager().beginTransaction()
                             .addToBackStack("INICIO")
-                            .replace(R.id.activity_tela_inicial_fragment_area, editarFragment, "EDITAR")
+                            .replace(R.id.main_activity_fragment_area, editarFragment, "EDITAR")
                             .commit();
                 }
 

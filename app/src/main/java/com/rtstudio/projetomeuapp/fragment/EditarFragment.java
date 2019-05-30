@@ -47,6 +47,8 @@ public class EditarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_editar, container, false);
 
+        getActivity().setTitle(getString(R.string.editar_ordem_servico));
+
         mRepositorio = new Repositorio(getContext());
 
         ((Button) view.findViewById(R.id.cadastrar_btnCriarOSId)).setText("Salvar");

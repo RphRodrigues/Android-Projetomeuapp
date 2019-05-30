@@ -69,6 +69,8 @@ public class TelaInicialFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tela_inicial, container, false);
 
+        getActivity().setTitle(getString(R.string.app_name));
+
         mRepositorio = new Repositorio(getContext());
 
         imgBackground = view.findViewById(R.id.telaInicial_imgBg);
@@ -138,6 +140,14 @@ public class TelaInicialFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ordemServicoList.clear();
+        ordemServicoList = mRepositorio.buscar();
+        atualizaRecyclerView(ordemServicoList);
     }
 
     @Override

@@ -64,6 +64,8 @@ public class CadastrarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cadastrar, container, false);
 
+        getActivity().setTitle(getString(R.string.cadastrar_servico));
+
         mRepositorio = new Repositorio(getContext());
 
         inicilizarVariaveisDeClasse(view);

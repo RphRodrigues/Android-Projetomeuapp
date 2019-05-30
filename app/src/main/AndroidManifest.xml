@@ -53,12 +53,16 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MainActivity" />
+
         <activity
             android:name=".TelaInicialActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".EditarOrdemServicoActivity"
-            android:label="@string/ediatar_ordem_servico"
+            android:label="@string/editar_ordem_servico"
             android:screenOrientation="portrait" />
         <activity
             android:name=".CadastrarServicoActivity"

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Projeto Raphael</string>
     <string name="cadastrar_servico">Criar O.S.</string>
-    <string name="ediatar_ordem_servico">Editar O.S.</string>
+    <string name="editar_ordem_servico">Editar O.S.</string>
     <string name="assumir_os">Assumir OS</string>
     <string name="servico_aberto">Serviços em Aberto</string>
     <string name="servico_fechado">Serviços Fechados</string>
