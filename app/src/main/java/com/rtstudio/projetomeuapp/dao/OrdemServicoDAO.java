@@ -6,18 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.rtstudio.projetomeuapp.connection.Connection;
 import com.rtstudio.projetomeuapp.modelo.Cliente;
 import com.rtstudio.projetomeuapp.modelo.Endereco;
 import com.rtstudio.projetomeuapp.modelo.OrdemServico;
-import com.rtstudio.projetomeuapp.connection.Connection;
-import com.rtstudio.projetomeuapp.server.WebServiceDelete;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrdemServicoDAO {
-    private final String TABELA_ORDEM_SERVICO = "TABELA_ORDEM_SERVICO";
-    private final String CAMPOS = "ORDEM_SERVICO_ID, CLIENTE_ID, ENDERECO_ID, FOTOSERVICO, TIPOSERVICO, SYNC_STATUS";
+    private static final String TABELA_ORDEM_SERVICO = "TABELA_ORDEM_SERVICO";
+    private static final String CAMPOS = "ORDEM_SERVICO_ID, CLIENTE_ID, ENDERECO_ID, FOTOSERVICO, TIPOSERVICO, PRODUTO, SYNC_STATUS";
 
     private Context context;
 
@@ -27,13 +26,14 @@ public class OrdemServicoDAO {
 
     public static void createTable(SQLiteDatabase sqLite) {
         StringBuffer create = new StringBuffer();
-        create.append("CREATE TABLE IF NOT EXISTS TABELA_ORDEM_SERVICO");
+        create.append("CREATE TABLE IF NOT EXISTS " + TABELA_ORDEM_SERVICO);
         create.append("(");
         create.append("     ORDEM_SERVICO_ID    INTEGER NOT NULL PRIMARY KEY,");
         create.append("     CLIENTE_ID          INTEGER,");
         create.append("     ENDERECO_ID         INTEGER,");
         create.append("     FOTOSERVICO         TEXT,");
         create.append("     TIPOSERVICO         TEXT,");
+        create.append("     PRODUTO             TEXT,");
         create.append("     SYNC_STATUS         INTEGER");
         create.append(")");
         sqLite.execSQL(create.toString());
@@ -61,23 +61,18 @@ public class OrdemServicoDAO {
         values.put("CLIENTE_ID", clienteId);
         values.put("ENDERECO_ID", enderecoId);
         values.put("TIPOSERVICO", ordemServico.getTipoServico());
+        values.put("PRODUTO", ordemServico.getProduto());
         values.put("SYNC_STATUS", ordemServico.getSyncStatus());
 
         banco = Connection.getInstance(context).getWritableDatabase();
 
-        banco.beginTransaction();
+        long ordemServicoId = banco.insert(TABELA_ORDEM_SERVICO, null, values);
 
-        long ordemServicoId;
-        try {
-            ordemServicoId = banco.insert(TABELA_ORDEM_SERVICO, null, values);
-            banco.setTransactionSuccessful();
-        } finally {
-            banco.endTransaction();
-        }
         Log.v("BANCO", "Escrevendo -> Os: " + ordemServico.getOrdemServicoId() +
                 " Cliente: " + ordemServico.getCliente().getNome() +
                 " Endereco: " + ordemServico.getEndereco().getBairro() +
                 " Tipo serviço: " + ordemServico.getTipoServico() +
+                " produto: " + ordemServico.getProduto() +
                 " Sync status: " + ordemServico.getSyncStatus());
         return ordemServicoId != -1;
     }
@@ -99,12 +94,13 @@ public class OrdemServicoDAO {
                     int enderecoId = cursor.getInt(cursor.getColumnIndex("ENDERECO_ID"));
                     String fotoServico = cursor.getString(cursor.getColumnIndex("FOTOSERVICO"));
                     String tipoServico = cursor.getString(cursor.getColumnIndex("TIPOSERVICO"));
+                    String produto = cursor.getString(cursor.getColumnIndex("PRODUTO"));
                     int syncStatus = cursor.getInt(cursor.getColumnIndex("SYNC_STATUS"));
 
                     Cliente cliente = new ClienteDAO(context).getClienteById(clienteId);
                     Endereco endereco = new EnderecoDAO(context).getEnderecoById(enderecoId);
 
-                    OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, fotoServico, tipoServico);
+                    OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, fotoServico, tipoServico, produto);
                     os.setSyncStatus(syncStatus);
 
                     Log.v("BANCO", "Lendo -> Os: " + os.getOrdemServicoId() +
@@ -112,6 +108,7 @@ public class OrdemServicoDAO {
                             " Endereco: " + endereco.getBairro() +
                             " foto: " + os.getFilename() +
                             " Tipo serviço: " + os.getTipoServico() +
+                            " produto: " + os.getProduto() +
                             " Sync status: " + os.getSyncStatus());
 
                     ordens.add(os);
@@ -124,8 +121,6 @@ public class OrdemServicoDAO {
     }
 
     public boolean deleteOrdemServico(int ordemServicoId) {
-        WebServiceDelete webServiceDelete = new WebServiceDelete();
-        webServiceDelete.execute(ordemServicoId);
         SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
 
         String[] value = new String[]{String.valueOf(ordemServicoId)};
@@ -144,6 +139,7 @@ public class OrdemServicoDAO {
     }
 
     public boolean updateOS(OrdemServico ordemServico) {
+        Log.i("BANCO", "atualizando: " + ordemServico.getOrdemServicoId());
         SQLiteDatabase banco = Connection.getInstance(context).getWritableDatabase();
 
         ContentValues valuesOS = new ContentValues();
@@ -158,8 +154,9 @@ public class OrdemServicoDAO {
 
         valuesOS.put("FOTOSERVICO", ordemServico.getFilename());
         valuesOS.put("TIPOSERVICO", ordemServico.getTipoServico());
+        valuesOS.put("PRODUTO", ordemServico.getProduto());
         valuesOS.put("SYNC_STATUS", ordemServico.getSyncStatus());
-
+        Log.i("BANCO", "atualizando ok: " + ordemServico.getOrdemServicoId());
         String[] args = {String.valueOf(ordemServico.getOrdemServicoId())};
         return banco.update(TABELA_ORDEM_SERVICO, valuesOS, "ORDEM_SERVICO_ID = ?", args) == 1;
     }
@@ -193,12 +190,13 @@ public class OrdemServicoDAO {
                     int enderecoId = cursor.getInt(cursor.getColumnIndex("ENDERECO_ID"));
                     String fotoServico = cursor.getString(cursor.getColumnIndex("FOTOSERVICO"));
                     String tipoServico = cursor.getString(cursor.getColumnIndex("TIPOSERVICO"));
+                    String produto = cursor.getString(cursor.getColumnIndex("PRODUTO"));
                     int syncStatus = cursor.getInt(cursor.getColumnIndex("SYNC_STATUS"));
 
                     Cliente cliente = new ClienteDAO(context).getClienteById(clienteId);
                     Endereco endereco = new EnderecoDAO(context).getEnderecoById(enderecoId);
 
-                    OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, fotoServico, tipoServico);
+                    OrdemServico os = new OrdemServico(ordemServicoId, cliente, endereco, fotoServico, tipoServico, produto);
                     os.setSyncStatus(syncStatus);
 
                     Log.v("BANCO", "getOrdemServicoByBairro -> Os: " + os.getOrdemServicoId() +

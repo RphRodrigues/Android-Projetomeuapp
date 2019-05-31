@@ -2,18 +2,19 @@ package com.rtstudio.projetomeuapp.fragment;
 
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -21,6 +22,7 @@ import android.widget.Spinner;
 import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.classes.CepListener;
+import com.rtstudio.projetomeuapp.classes.TextListener;
 import com.rtstudio.projetomeuapp.modelo.Cliente;
 import com.rtstudio.projetomeuapp.modelo.Endereco;
 import com.rtstudio.projetomeuapp.modelo.OrdemServico;
@@ -35,12 +37,24 @@ import static android.app.Activity.RESULT_OK;
  */
 public class EditarFragment extends Fragment {
 
-    private Cliente cliente = null;
-    private Endereco endereco = null;
-    private OrdemServico ordemServico = null;
-    private Utilitaria util;
+    private Cliente mCliente = null;
+    private Endereco mEndereco = null;
+    private OrdemServico mOrdemServico = null;
+    private Utilitaria mUtil;
     private Repositorio mRepositorio;
+    private Button mBotaoSalvar;
+    private Spinner mEstados;
+    private Spinner mTipoServico;
+    private TextInputLayout mNomeCliente;
+    private TextInputLayout mRua;
+    private TextInputLayout mCep;
+    private TextInputLayout mBairro;
+    private TextInputLayout mNumero;
+    private TextInputLayout mCidade;
+    private TextInputLayout mProduto;
+    private EditText mComplemento;
     private MyViewModel mMyViewModel;
+    private View mView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,99 +62,161 @@ public class EditarFragment extends Fragment {
         setHasOptionsMenu(true);
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_editar, container, false);
+        mView = inflater.inflate(R.layout.fragment_editar, container, false);
+
+        inicializarVariaveis(mView);
 
         getActivity().setTitle(getString(R.string.editar_ordem_servico));
 
         mRepositorio = new Repositorio(getContext());
 
-        ((Button) view.findViewById(R.id.cadastrar_btnCriarOSId)).setText("Salvar");
+        mBotaoSalvar = mView.findViewById(R.id.fragment_cadastrar_btnCriarOSId);
+        mBotaoSalvar.setText(getString(R.string.salvar));
+        mBotaoSalvar.setEnabled(false);
+        mBotaoSalvar.setAlpha(.5f);
 
-        util = new Utilitaria(this, view);
+        mUtil = new Utilitaria(this, mView);
 
-        cliente = new Cliente();
-        endereco = new Endereco();
-        ordemServico = new OrdemServico();
+        mCliente = new Cliente();
+        mEndereco = new Endereco();
+        mOrdemServico = new OrdemServico();
 
-        final OrdemServico os;
+        OrdemServico os = null;
         if (getArguments() != null) {
             os = new Gson().fromJson(getArguments().getString("ORDEM_SERVICO"), OrdemServico.class);
-            cliente.setClienteId(os.getCliente().getClienteId());
-            endereco.setEnderecoId(os.getEndereco().getEnderecoId());
-            ordemServico.setOrdemServicoId(os.getOrdemServicoId());
-            ordemServico.setFilename(os.getFilename());
-            ordemServico.setSyncStatus(os.getSyncStatus());
+            mCliente.setClienteId(os.getCliente().getClienteId());
+            mEndereco.setEnderecoId(os.getEndereco().getEnderecoId());
+            mOrdemServico.setOrdemServicoId(os.getOrdemServicoId());
+            mOrdemServico.setFilename(os.getFilename());
+            mOrdemServico.setSyncStatus(os.getSyncStatus());
 
-            util.setDadosOrdemServico(os);
-
-            Bitmap img = BitmapFactory.decodeFile(os.getFilename());
-//            ((ImageView) findViewById(R.id.cadastrar_ivBitmap)).setImageBitmap(img);
+            mUtil.setDadosOrdemServico(os);
         }
 
-        ((TextInputLayout) view.findViewById(R.id.cadastrar_edtCepId)).getEditText().addTextChangedListener(new CepListener(getContext()));
+        mCep.getEditText().addTextChangedListener(new CepListener(this, os.getEndereco().getCep()));
 
-        view.findViewById(R.id.cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
+        mNomeCliente.getEditText().addTextChangedListener(new TextListener(this, mNomeCliente.getId(), os.getCliente().getNome()));
+        mRua.getEditText().addTextChangedListener(new TextListener(this, mRua.getId(), os.getEndereco().getLogradouro()));
+        mComplemento.addTextChangedListener(new TextListener(this, mComplemento.getId(), os.getEndereco().getComplemento()));
+        mBairro.getEditText().addTextChangedListener(new TextListener(this, mBairro.getId(), os.getEndereco().getBairro()));
+        mNumero.getEditText().addTextChangedListener(new TextListener(this, mNumero.getId(), os.getEndereco().getNumero()));
+        mCidade.getEditText().addTextChangedListener(new TextListener(this, mCidade.getId(), os.getEndereco().getLocalidade()));
+
+        mView.findViewById(R.id.fragment_cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!validarInputDoUsuario()) {
                     return;
                 }
 
-                String nomeCliente = ((TextInputLayout) view.findViewById(R.id.cadastrar_edtNomeClienteId)).getEditText().getText().toString();
-                String rua = ((TextInputLayout) view.findViewById(R.id.cadastrar_edtRuaId)).getEditText().getText().toString();
-                String complemento = ((EditText) view.findViewById(R.id.cadastrar_edtComplementoId)).getText().toString();
-                String bairro = ((TextInputLayout) view.findViewById(R.id.cadastrar_edtBairroId)).getEditText().getText().toString();
-                String cep = ((TextInputLayout) view.findViewById(R.id.cadastrar_edtCepId)).getEditText().getText().toString();
-                String numero = ((TextInputLayout) view.findViewById(R.id.cadastrar_edtNumeroId)).getEditText().getText().toString();
-                String cidade = ((TextInputLayout) view.findViewById(R.id.cadastrar_edtCidadeId)).getEditText().getText().toString();
-                String estado = ((Spinner) view.findViewById(R.id.cadastrar_spinnerEstados)).getSelectedItem().toString();
-                String tipoServico = ((Spinner) view.findViewById(R.id.cadastrar_spinnerTipoServico)).getSelectedItem().toString();
+                mCliente.setNome(mNomeCliente.getEditText().getText().toString());
+                mCliente.setCodigoCliente(mNomeCliente.getEditText().getText().toString().substring(0, 3));
 
-                cliente.setNome(nomeCliente);
-                cliente.setCodigoCliente(nomeCliente.substring(0, 3));
+                mEndereco.setCep(mCep.getEditText().getText().toString());
+                mEndereco.setLogradouro(mRua.getEditText().getText().toString());
+                mEndereco.setNumero(mNumero.getEditText().getText().toString());
+                mEndereco.setLocalidade(mCidade.getEditText().getText().toString());
+                mEndereco.setUf(mEstados.getSelectedItem().toString());
+                mEndereco.setBairro(mBairro.getEditText().getText().toString());
+                mEndereco.setComplemento(mComplemento.getText().toString());
 
-                endereco.setCep(cep);
-                endereco.setLogradouro(rua);
-                endereco.setNumero(numero);
-                endereco.setLocalidade(cidade);
-                endereco.setUf(estado);
-                endereco.setBairro(bairro);
-                endereco.setComplemento(complemento);
+                mOrdemServico.setCliente(mCliente);
+                mOrdemServico.setEndereco(mEndereco);
+                mOrdemServico.setTipoServico(mTipoServico.getSelectedItem().toString());
+                mOrdemServico.setProduto(mProduto.getEditText().getText().toString());
 
-                ordemServico.setCliente(cliente);
-                ordemServico.setEndereco(endereco);
-                ordemServico.setTipoServico(tipoServico);
-
-                if (mRepositorio.atualizar(ordemServico)) {
-                    getActivity().setResult(RESULT_OK, new Intent().putExtra("ORDEM_SERVICO_EDITADA", new Gson().toJson(ordemServico)));
-                    util.alertDialog("Aviso", "O.S. Editada com sucesso", false);
+                if (mRepositorio.atualizar(mOrdemServico)) {
+                    getActivity().setResult(RESULT_OK, new Intent().putExtra("ORDEM_SERVICO_EDITADA", new Gson().toJson(mOrdemServico)));
+                    mUtil.alertDialog("Aviso", "O.S. Editada com sucesso", false);
                 } else {
-                    util.alertDialog("Aviso", "Não foi possível editar O.S.", false);
+                    mUtil.alertDialog("Aviso", "Não foi possível editar O.S.", false);
                 }
             }
         });
 
-        view.findViewById(R.id.cadastrar_btnLocation).setOnClickListener(new View.OnClickListener() {
+        mView.findViewById(R.id.cadastrar_btnLocation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                util.getLocalizacao();
+                mUtil.getLocalizacao();
             }
         });
 
-        return view;
+        EditarProdutoFragment editarProdutoFragment = new EditarProdutoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("PRODUTO", os.getProduto());
+        editarProdutoFragment.setArguments(bundle);
+
+        if (getFragmentManager() != null) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .disallowAddToBackStack()
+                    .replace(R.id.cadastrar_container_fragment, editarProdutoFragment)
+                    .commit();
+        }
+
+        OrdemServico finalOs = os;
+        mEstados.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if (!parent.getItemAtPosition(position).toString().equals(finalOs.getEndereco().getUf())) {
+                    mUtil.desbloquearBotaoSalvar(true);
+                } else {
+                    mUtil.desbloquearBotaoSalvar(false);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        OrdemServico finalOs1 = os;
+        mTipoServico.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if (!parent.getItemAtPosition(position).toString().equals(finalOs1.getTipoServico())) {
+                    mUtil.desbloquearBotaoSalvar(true);
+                } else {
+                    mUtil.desbloquearBotaoSalvar(false);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        return mView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mProduto = getView().findViewById(R.id.fragment_editar_produto_TextInputLayout);
+        Log.i("FRAG", "onStart: EditarFragement");
+    }
+
+    private void inicializarVariaveis(View view) {
+        mNomeCliente = view.findViewById(R.id.cadastrar_edtNomeClienteId);
+        mRua = view.findViewById(R.id.cadastrar_edtRuaId);
+        mComplemento = view.findViewById(R.id.cadastrar_edtComplementoId);
+        mBairro = view.findViewById(R.id.cadastrar_edtBairroId);
+        mCep = view.findViewById(R.id.cadastrar_edtCepId);
+        mNumero = view.findViewById(R.id.cadastrar_edtNumeroId);
+        mCidade = view.findViewById(R.id.cadastrar_edtCidadeId);
+        mEstados = view.findViewById(R.id.cadastrar_spinnerEstados);
+        mTipoServico = view.findViewById(R.id.cadastrar_spinnerTipoServico);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mMyViewModel = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
-        if (ordemServico != null) {
-            mMyViewModel.atualizarOS(ordemServico);
+        if (mOrdemServico != null) {
+            mMyViewModel.atualizarOS(mOrdemServico);
         }
     }
 
     private boolean validarInputDoUsuario() {
-        return util.validarCampos(R.id.cadastrar_edtNomeClienteId, R.id.cadastrar_edtRuaId, R.id.cadastrar_edtBairroId,
+        return mUtil.validarCampos(R.id.cadastrar_edtNomeClienteId, R.id.cadastrar_edtRuaId, R.id.cadastrar_edtBairroId,
                 R.id.cadastrar_edtCepId, R.id.cadastrar_edtCidadeId, R.id.cadastrar_edtNumeroId, R.id.cadastrar_edtComplementoId);
     }
 
@@ -161,7 +237,7 @@ public class EditarFragment extends Fragment {
         if (id == android.R.id.home) {
             getActivity().finish();
         } else if (id == R.id.menu_itemLimpar) {
-            util.limparCampos(
+            mUtil.limparCampos(
                     R.id.cadastrar_edtNomeClienteId,
                     R.id.cadastrar_edtRuaId,
                     R.id.cadastrar_edtComplementoId,
@@ -171,7 +247,7 @@ public class EditarFragment extends Fragment {
                     R.id.cadastrar_edtCidadeId
             );
         } else if (id == R.id.menu_itemAjuda) {
-            util.menuItemAjuda();
+            mUtil.menuItemAjuda();
         }
         return super.onOptionsItemSelected(item);
     }

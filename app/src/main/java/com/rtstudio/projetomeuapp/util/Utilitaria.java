@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -83,6 +84,17 @@ public class Utilitaria {
         }
         ((Spinner) mView.findViewById(R.id.cadastrar_spinnerEstados)).setSelection(18);
         ((Spinner) mView.findViewById(R.id.cadastrar_spinnerTipoServico)).setSelection(0);
+    }
+
+    public void desbloquearBotaoSalvar(boolean isDesbloquear) {
+        Button button = fragment.getActivity().findViewById(R.id.fragment_cadastrar_btnCriarOSId);
+        if (isDesbloquear) {
+            button.setEnabled(true);
+            button.setAlpha(1);
+        } else {
+            button.setEnabled(false);
+            button.setAlpha(.5f);
+        }
     }
 
     private void setCampos(int id, String data) {

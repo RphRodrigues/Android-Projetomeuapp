@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.R;
-import com.rtstudio.projetomeuapp.classes.CepListener;
 import com.rtstudio.projetomeuapp.modelo.Cliente;
 import com.rtstudio.projetomeuapp.modelo.Endereco;
 import com.rtstudio.projetomeuapp.modelo.OrdemServico;
@@ -38,7 +37,7 @@ import static android.support.v4.content.ContextCompat.checkSelfPermission;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CadastrarFragment extends Fragment {
+public class CadastrarFragment extends Fragment implements CadastrarProdutoFragment.passagemDeDados{
 
     public static final int PERMISSION_REQUEST_GPS = 100;
     public static final int PERMISSION_REQUEST_MEMORIA = 101;
@@ -58,6 +57,7 @@ public class CadastrarFragment extends Fragment {
     private Repositorio mRepositorio;
     private Utilitaria util;
     private MyViewModel mMyViewModel;
+    private String mProduto;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,12 +73,12 @@ public class CadastrarFragment extends Fragment {
 
         inicilizarVariaveisDeClasse(view);
 
-        cep.getEditText().addTextChangedListener(new CepListener(getContext()));
+//        cep.getEditText().addTextChangedListener(new CepListener(getContext()));
 
         util = new Utilitaria(this, view);
 
 
-        view.findViewById(R.id.cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.fragment_cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!validarInputDoUsuario()) {
@@ -117,7 +117,25 @@ public class CadastrarFragment extends Fragment {
             }
         });
 
+        if (getFragmentManager() != null) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .disallowAddToBackStack()
+                    .replace(R.id.cadastrar_container_fragment, new CadastrarProdutoFragment())
+                    .commit();
+        }
+
         return view;
+    }
+
+
+    @Override
+    public void passarDados(String dados) {
+        mProduto = dados;
+    }
+
+    private boolean validarRadioButton() {
+        return mProduto != null;
     }
 
     @Override
@@ -153,7 +171,8 @@ public class CadastrarFragment extends Fragment {
         mOrdemServico = new OrdemServico(
                 mCliente,
                 mEndereco,
-                tipoServico.getSelectedItem().toString()
+                tipoServico.getSelectedItem().toString(),
+                mProduto
         );
     }
 

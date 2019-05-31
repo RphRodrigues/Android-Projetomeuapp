@@ -202,7 +202,7 @@
                 android:prompt="@string/tipo_servico" />
 
             <Button
-                android:id="@+id/cadastrar_btnCriarOSId"
+                android:id="@+id/fragment_cadastrar_btnCriarOSId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20sp"

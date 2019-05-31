@@ -13,8 +13,8 @@ public class OrdemServico implements Serializable {
     private Cliente cliente;
     private Endereco endereco;
     private String tipoServico;
-    private String descricaoServico;
     private String filename;
+    private String produto;
     private int syncStatus;
 
 
@@ -34,17 +34,18 @@ public class OrdemServico implements Serializable {
         this.tipoServico = tipoServico;
     }
 
-    public OrdemServico(int ordemServicoId, Cliente cliente, Endereco endereco, String filename, String tipoServico) {
+    public OrdemServico(int ordemServicoId, Cliente cliente, Endereco endereco, String filename, String tipoServico, String produto) {
         this.ordemServicoId = ordemServicoId;
         this.cliente = cliente;
         this.endereco = endereco;
         this.filename = filename;
         this.tipoServico = tipoServico;
+        this.produto = produto;
     }
 
-    public OrdemServico(Cliente cliente, Endereco endereco, String descricaoServico, String tipoServico) {
+    public OrdemServico(Cliente cliente, Endereco endereco, String tipoServico, String produto) {
         this.cliente = cliente;
-        this.descricaoServico = descricaoServico;
+        this.produto = produto;
         this.endereco = endereco;
         this.tipoServico = tipoServico;
     }
@@ -76,12 +77,12 @@ public class OrdemServico implements Serializable {
         this.cliente = cliente;
     }
 
-    public String getDescricaoServico() {
-        return descricaoServico;
+    public String getProduto() {
+        return produto;
     }
 
-    public void setDescricaoServico(String descricaoServico) {
-        this.descricaoServico = descricaoServico;
+    public void setProduto(String produto) {
+        this.produto = produto;
     }
 
     public Endereco getEndereco() {

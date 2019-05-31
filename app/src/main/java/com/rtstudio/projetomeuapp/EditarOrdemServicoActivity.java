@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.gson.Gson;
-import com.rtstudio.projetomeuapp.classes.CepListener;
 import com.rtstudio.projetomeuapp.modelo.Cliente;
 import com.rtstudio.projetomeuapp.modelo.Endereco;
 import com.rtstudio.projetomeuapp.modelo.OrdemServico;
@@ -45,7 +44,7 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbar.getOverflowIcon().setTint(getResources().getColor(R.color.white));
 
-        ((Button) findViewById(R.id.cadastrar_btnCriarOSId)).setText("Salvar");
+        ((Button) findViewById(R.id.fragment_cadastrar_btnCriarOSId)).setText("Salvar");
 
 //        util = new Utilitaria(this);
 
@@ -68,10 +67,10 @@ public class EditarOrdemServicoActivity extends AppCompatActivity {
 //            ((ImageView) findViewById(R.id.cadastrar_ivBitmap)).setImageBitmap(img);
         }
 
-        ((TextInputLayout) findViewById(R.id.cadastrar_edtCepId)).getEditText().addTextChangedListener(new CepListener(this));
+//        ((TextInputLayout) findViewById(R.id.cadastrar_edtCepId)).getEditText().addTextChangedListener(new CepListener(this));
 
 
-        findViewById(R.id.cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.fragment_cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!validarInputDoUsuario()) {
