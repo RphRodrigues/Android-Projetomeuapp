@@ -64,10 +64,4 @@ public class EditarProdutoFragment extends Fragment {
 
         return view;
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.i("FRAG", "onStart: EditarProdutoFragement");
-    }
 }

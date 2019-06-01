@@ -123,6 +123,7 @@ public class EditarFragment extends Fragment {
                 mOrdemServico.setCliente(mCliente);
                 mOrdemServico.setEndereco(mEndereco);
                 mOrdemServico.setTipoServico(mTipoServico.getSelectedItem().toString());
+                mProduto = getView().findViewById(R.id.fragment_editar_produto_TextInputLayout);
                 mOrdemServico.setProduto(mProduto.getEditText().getText().toString());
 
                 if (mRepositorio.atualizar(mOrdemServico)) {
@@ -187,13 +188,6 @@ public class EditarFragment extends Fragment {
         return mView;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mProduto = getView().findViewById(R.id.fragment_editar_produto_TextInputLayout);
-        Log.i("FRAG", "onStart: EditarFragement");
-    }
-
     private void inicializarVariaveis(View view) {
         mNomeCliente = view.findViewById(R.id.cadastrar_edtNomeClienteId);
         mRua = view.findViewById(R.id.cadastrar_edtRuaId);
@@ -209,10 +203,10 @@ public class EditarFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        mMyViewModel = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
-        if (mOrdemServico != null) {
-            mMyViewModel.atualizarOS(mOrdemServico);
-        }
+//        mMyViewModel = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
+//        if (mOrdemServico != null) {
+//            mMyViewModel.atualizarOS(mOrdemServico);
+//        }
     }
 
     private boolean validarInputDoUsuario() {
