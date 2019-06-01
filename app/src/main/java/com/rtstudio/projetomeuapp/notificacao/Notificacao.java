@@ -10,7 +10,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.google.gson.Gson;
-import com.rtstudio.projetomeuapp.TelaInicialActivity;
 import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 
 public class Notificacao {
@@ -60,7 +59,7 @@ public class Notificacao {
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
-        Intent intent = new Intent(context, TelaInicialActivity.class);
+        Intent intent = new Intent(context, IntentServiceNotificacao.class);
         intent.putExtra("IDNOTIFICACAO", 2);
         intent.putExtra("ORDEM_SERVICO", new Gson().toJson(ordemServico));
 

@@ -4,8 +4,6 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-import com.rtstudio.projetomeuapp.CadastrarServicoActivity;
-import com.rtstudio.projetomeuapp.EditarOrdemServicoActivity;
 import com.rtstudio.projetomeuapp.util.Utilitaria;
 
 /**

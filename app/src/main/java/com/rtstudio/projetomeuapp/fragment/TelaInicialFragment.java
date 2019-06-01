@@ -4,8 +4,6 @@ package com.rtstudio.projetomeuapp.fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,23 +26,19 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.rtstudio.projetomeuapp.MainActivity;
-import com.rtstudio.projetomeuapp.dao.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.modelo.OrdemServico;
-import com.rtstudio.projetomeuapp.util.Utilitaria;
 import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
+import com.rtstudio.projetomeuapp.util.Utilitaria;
 import com.rtstudio.projetomeuapp.viewModel.MyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static com.rtstudio.projetomeuapp.TelaInicialActivity.TEMA_NOTURNO;
-import static com.rtstudio.projetomeuapp.TelaInicialActivity.TEMA_PADRAO;
 import static com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter.REQUEST_CODE_CAMERA;
 import static com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter.REQUEST_CODE_CRIAR;
 import static com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter.REQUEST_CODE_EDITAR;
@@ -62,7 +56,6 @@ public class TelaInicialFragment extends Fragment {
     private List<OrdemServico> ordemServicoList = null;
     private Repositorio mRepositorio;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private MyViewModel mMyViewModel;
     private Utilitaria mUtil;
 
     @Override
@@ -129,9 +122,6 @@ public class TelaInicialFragment extends Fragment {
                             .replace(R.id.main_activity_fragment_area, new CadastrarFragment(), "CADASTRAR")
                             .commit();
                 }
-
-//                Intent intent = new Intent(TelaInicialActivity.this, CadastrarServicoActivity.class);
-//                startActivityForResult(intent, 1);
             }
         });
 
@@ -154,7 +144,6 @@ public class TelaInicialFragment extends Fragment {
         ordemServicoList.clear();
         ordemServicoList = mRepositorio.buscar();
         atualizaRecyclerView(ordemServicoList);
-        Log.i("FRAGMENT", "onStart: TelainicialFragment");
     }
 
     @Override
@@ -162,17 +151,16 @@ public class TelaInicialFragment extends Fragment {
 
         int id = item.getItemId();
         if (id == R.id.menu_itemAjuda) {
-//            stopService(new Intent(this, Service.class));
             new Utilitaria(this).menuItemAjuda();
         } else if (id == R.id.app_bar_checkbox) {
             boolean isChecked = !item.isChecked();
             item.setChecked(isChecked);
 
             if (item.isChecked()) {
-                PreferenciasUsuario.Companion.setPreferenciaTema(getContext(), TEMA_NOTURNO);
+                PreferenciasUsuario.Companion.setPreferenciaTema(getContext(), PreferenciasUsuario.TEMA_NOTURNO);
                 getActivity().recreate();
             } else {
-                PreferenciasUsuario.Companion.setPreferenciaTema(getContext(), TEMA_PADRAO);
+                PreferenciasUsuario.Companion.setPreferenciaTema(getContext(), PreferenciasUsuario.TEMA_PADRAO);
                 getActivity().recreate();
             }
         }
@@ -299,7 +287,7 @@ public class TelaInicialFragment extends Fragment {
         });
 
         String tema = PreferenciasUsuario.Companion.getPreferenciaTema(getContext());
-        if (tema.equals(TEMA_NOTURNO)) {
+        if (tema.equals(PreferenciasUsuario.TEMA_NOTURNO)) {
             menu.findItem(R.id.app_bar_checkbox).setChecked(true);
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -314,7 +302,7 @@ public class TelaInicialFragment extends Fragment {
                 adapter.tirarFoto();
             } else {
                 Log.v("PERMISSAO", "permissão camera negada");
-                Toast.makeText(getContext(), "O acesso à câmera é necessário para adicionar uma imagem a OS.", Toast.LENGTH_LONG).show();
+                mUtil.toast("O acesso à câmera é necessário para selecionar uma imagem", Toast.LENGTH_SHORT * 2);
             }
         } else if (requestCode == REQUEST_CODE_GALERIA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -322,7 +310,7 @@ public class TelaInicialFragment extends Fragment {
                 adapter.abrirGaleria();
             } else {
                 Log.v("PERMISSAO", "permissão galeria negada");
-                Toast.makeText(getContext(), "O acesso à galeria é necessário para adicionar uma imagem a OS.", Toast.LENGTH_LONG).show();
+                mUtil.toast("O acesso à galeria é necessário para selecionar uma imagem", Toast.LENGTH_SHORT * 2);
             }
         }
     }

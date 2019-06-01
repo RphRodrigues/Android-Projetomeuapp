@@ -2,11 +2,12 @@ package com.rtstudio.projetomeuapp.classes;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.rtstudio.projetomeuapp.CadastrarServicoActivity;
-import com.rtstudio.projetomeuapp.EditarOrdemServicoActivity;
+import com.rtstudio.projetomeuapp.fragment.CadastrarFragment;
+import com.rtstudio.projetomeuapp.fragment.EditarFragment;
 import com.rtstudio.projetomeuapp.modelo.Endereco;
 import com.rtstudio.projetomeuapp.util.Utilitaria;
 
@@ -17,27 +18,21 @@ import java.lang.ref.WeakReference;
  */
 public class RequisitarEndereco extends AsyncTask<Void, Void, Endereco> {
 
-    private WeakReference<CadastrarServicoActivity> cadastrarServicoActivityWeakReference;
-    private WeakReference<EditarOrdemServicoActivity> editarOrdemServicoActivityWeakReference;
-    private Activity activity;
+    private WeakReference<CadastrarFragment> cadastrarServicoFragmentWeakReference;
+    private WeakReference<EditarFragment> editarOrdemServicoFragmentWeakReference;
+    private Fragment fragment;
     private Utilitaria util;
 
-    public RequisitarEndereco(CadastrarServicoActivity activity) {
-        this.cadastrarServicoActivityWeakReference = new WeakReference<>(activity);
-        this.activity = activity;
+    public RequisitarEndereco(CadastrarFragment fragment) {
+        this.cadastrarServicoFragmentWeakReference = new WeakReference<>(fragment);
+        this.fragment = fragment;
 //        util = new Utilitaria(cadastrarServicoActivityWeakReference.get());
     }
 
-    public RequisitarEndereco(EditarOrdemServicoActivity activity) {
-        this.editarOrdemServicoActivityWeakReference = new WeakReference<>(activity);
-        this.activity = activity;
+    public RequisitarEndereco(EditarFragment fragment) {
+        this.editarOrdemServicoFragmentWeakReference = new WeakReference<>(fragment);
+        this.fragment = fragment;
 //        util = new Utilitaria(editarOrdemServicoActivityWeakReference.get());
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-
     }
 
     @Override
@@ -45,10 +40,10 @@ public class RequisitarEndereco extends AsyncTask<Void, Void, Endereco> {
 
         try {
             String jsonCep;
-            if (activity instanceof CadastrarServicoActivity) {
-                jsonCep = JsonRequest.requesitarJson(cadastrarServicoActivityWeakReference.get().getUriCep());
+            if (fragment instanceof CadastrarFragment) {
+                jsonCep = JsonRequest.requesitarJson(cadastrarServicoFragmentWeakReference.get().getUriCep());
             } else {
-                jsonCep = JsonRequest.requesitarJson(editarOrdemServicoActivityWeakReference.get().getUriCep());
+                jsonCep = JsonRequest.requesitarJson(editarOrdemServicoFragmentWeakReference.get().getUriCep());
             }
 
             Gson gson = new Gson();
@@ -65,22 +60,22 @@ public class RequisitarEndereco extends AsyncTask<Void, Void, Endereco> {
     protected void onPostExecute(Endereco endereco) {
         super.onPostExecute(endereco);
         if (!util.checkConnection()) {
-            Toast.makeText(activity, "Sem internet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(fragment.getContext(), "Sem internet", Toast.LENGTH_SHORT).show();
         }
         if (endereco != null) {
-            if (activity instanceof CadastrarServicoActivity) {
-                if (endereco.getCep() != null && cadastrarServicoActivityWeakReference.get() != null) {
+            if (fragment instanceof CadastrarFragment) {
+                if (endereco.getCep() != null && cadastrarServicoFragmentWeakReference.get() != null) {
                     util.bloquearCampos(false);
                     util.setDadosEndereco(endereco);
                 } else {
-                    Toast.makeText(activity, "Cep inválido", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(fragment.getContext(), "Cep inválido", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                if (endereco.getCep() != null && editarOrdemServicoActivityWeakReference.get() != null) {
+                if (endereco.getCep() != null && editarOrdemServicoFragmentWeakReference.get() != null) {
                     util.bloquearCampos(false);
                     util.setDadosEndereco(endereco);
                 } else {
-                    Toast.makeText(activity, "Cep inválido", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(fragment.getContext(), "Cep inválido", Toast.LENGTH_SHORT).show();
                 }
             }
         }

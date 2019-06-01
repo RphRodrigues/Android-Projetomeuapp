@@ -215,8 +215,8 @@ public class EditarFragment extends Fragment {
                 R.id.cadastrar_edtCepId, R.id.cadastrar_edtCidadeId, R.id.cadastrar_edtNumeroId, R.id.cadastrar_edtComplementoId);
     }
 
-    public String getUriCep(View view) {
-        return "https://viacep.com.br/ws/" + ((TextInputLayout) view.findViewById(R.id.cadastrar_edtCepId)).getEditText().getText() + "/json/";
+    public String getUriCep() {
+        return "https://viacep.com.br/ws/" + ((TextInputLayout) mView.findViewById(R.id.cadastrar_edtCepId)).getEditText().getText() + "/json/";
     }
 
     @Override

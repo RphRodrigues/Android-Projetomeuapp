@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.google.gson.Gson;
-import com.rtstudio.projetomeuapp.TelaInicialActivity;
+import com.rtstudio.projetomeuapp.fragment.EditarFragment;
 import com.rtstudio.projetomeuapp.modelo.OrdemServico;
 
 public class IntentServiceNotificacao extends IntentService {
@@ -24,7 +24,7 @@ public class IntentServiceNotificacao extends IntentService {
 
         OrdemServico ordemServico = new Gson().fromJson(intent.getStringExtra("ORDEM_SERVICO"), OrdemServico.class);
 
-        Intent i = new Intent(getBaseContext(), TelaInicialActivity.class);
+        Intent i = new Intent(getBaseContext(), EditarFragment.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplication().startActivity(i);
     }

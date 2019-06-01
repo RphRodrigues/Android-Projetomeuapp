@@ -65,20 +65,6 @@
         <activity
             android:name=".ImagemActivity" />
 
-        <activity
-            android:name=".TelaInicialActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".EditarOrdemServicoActivity"
-            android:label="@string/editar_ordem_servico"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".CadastrarServicoActivity"
-            android:label="@string/cadastrar_servico"
-            android:screenOrientation="portrait" />
-
         <!--<receiver android:exported="true" android:name=".broadcast.MonitoraRedeReceiver">-->
             <!--<intent-filter>-->
                 <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
