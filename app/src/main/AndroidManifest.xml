@@ -63,6 +63,9 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ImagemActivity" />
+
+        <activity
             android:name=".TelaInicialActivity"
             android:screenOrientation="portrait" />
 

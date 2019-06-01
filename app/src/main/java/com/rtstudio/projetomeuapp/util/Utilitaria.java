@@ -1,10 +1,12 @@
 package com.rtstudio.projetomeuapp.util;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.location.Address;
 import android.location.Geocoder;
@@ -41,6 +43,9 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static android.content.Context.LOCATION_SERVICE;
+import static android.support.v4.app.ActivityCompat.requestPermissions;
+import static android.support.v4.content.ContextCompat.checkSelfPermission;
+import static com.rtstudio.projetomeuapp.fragment.CadastrarFragment.PERMISSION_REQUEST_GPS;
 
 /**
  * Created by Raphael Rodrigues on 29/04/2019.
@@ -106,13 +111,13 @@ public class Utilitaria {
     }
 
     public void toast(String messagem, int duracao) {
-        Toast toast = Toast.makeText(mActivity, messagem, duracao);
+        Toast toast = Toast.makeText(mView.getContext(), messagem, duracao);
 
         TextView textView = toast.getView().findViewById(android.R.id.message);
 
-        textView.setTextColor(mActivity.getColor(R.color.white));
+        textView.setTextColor(mView.getContext().getColor(R.color.white));
 
-        toast.getView().getBackground().setColorFilter(mActivity.getColor(R.color.myBlue), PorterDuff.Mode.SRC_IN);
+        toast.getView().getBackground().setColorFilter(mView.getContext().getColor(R.color.myBlue), PorterDuff.Mode.SRC_IN);
 
         toast.show();
     }
@@ -221,7 +226,6 @@ public class Utilitaria {
                     return false;
                 } else {
                     ((TextInputLayout) mView.findViewById(id)).setError(null);
-                    ((TextInputLayout) mView.findViewById(id)).setErrorEnabled(false);
                     return true;
                 }
             case R.id.cadastrar_edtRuaId:
@@ -230,7 +234,6 @@ public class Utilitaria {
                     return false;
                 } else {
                     ((TextInputLayout) mView.findViewById(id)).setError(null);
-                    ((TextInputLayout) mView.findViewById(id)).setErrorEnabled(false);
                     return true;
                 }
             case R.id.cadastrar_edtBairroId:
@@ -239,7 +242,6 @@ public class Utilitaria {
                     return false;
                 } else {
                     ((TextInputLayout) mView.findViewById(id)).setError(null);
-                    ((TextInputLayout) mView.findViewById(id)).setErrorEnabled(false);
                     return true;
                 }
             case R.id.cadastrar_edtCepId:
@@ -248,7 +250,6 @@ public class Utilitaria {
                     return false;
                 } else {
                     ((TextInputLayout) mView.findViewById(id)).setError(null);
-                    ((TextInputLayout) mView.findViewById(id)).setErrorEnabled(false);
                     return true;
                 }
             case R.id.cadastrar_edtNumeroId:
@@ -257,7 +258,6 @@ public class Utilitaria {
                     return false;
                 } else {
                     ((TextInputLayout) mView.findViewById(id)).setError(null);
-                    ((TextInputLayout) mView.findViewById(id)).setErrorEnabled(false);
                     return true;
                 }
             case R.id.cadastrar_edtCidadeId:
@@ -266,7 +266,14 @@ public class Utilitaria {
                     return false;
                 } else {
                     ((TextInputLayout) mView.findViewById(id)).setError(null);
-                    ((TextInputLayout) mView.findViewById(id)).setErrorEnabled(false);
+                    return true;
+                }
+            case R.id.fragment_editar_produto:
+                if (((TextInputLayout) mView.findViewById(id)).getEditText().getText().toString().trim().isEmpty()) {
+                    ((TextInputLayout) mView.findViewById(id)).setError("Informe o produto");
+                    return false;
+                } else {
+                    ((TextInputLayout) mView.findViewById(id)).setError(null);
                     return true;
                 }
         }
@@ -373,6 +380,16 @@ public class Utilitaria {
         } catch (NullPointerException e) {
             e.printStackTrace();
             Toast.makeText(fragment.getActivity(), "Aguardando triangulação do gps", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void permissaoGPS() {
+        if (checkSelfPermission(fragment.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || (checkSelfPermission(fragment.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+
+            String[] permissoes = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+
+            fragment.requestPermissions(permissoes, PERMISSION_REQUEST_GPS);
         }
     }
 }

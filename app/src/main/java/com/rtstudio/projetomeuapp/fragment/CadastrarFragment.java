@@ -114,14 +114,15 @@ public class CadastrarFragment extends Fragment /*implements CadastrarProdutoFra
         view.findViewById(R.id.cadastrar_btnLocation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        || (checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-
-                    String[] permissoes = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
-
-                    ActivityCompat.requestPermissions(getActivity(), permissoes, PERMISSION_REQUEST_GPS);
-                    return;
-                }
+//                if (checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                        || (checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+//
+//                    String[] permissoes = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+//
+//                    ActivityCompat.requestPermissions(getActivity(), permissoes, PERMISSION_REQUEST_GPS);
+//                    return;
+//                }
+                util.permissaoGPS();
                 util.getLocalizacao();
             }
         });

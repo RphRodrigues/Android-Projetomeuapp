@@ -138,6 +138,7 @@ public class EditarFragment extends Fragment {
         mView.findViewById(R.id.cadastrar_btnLocation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mUtil.permissaoGPS();
                 mUtil.getLocalizacao();
             }
         });

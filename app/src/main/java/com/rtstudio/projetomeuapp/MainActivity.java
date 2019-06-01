@@ -2,18 +2,18 @@ package com.rtstudio.projetomeuapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.rtstudio.projetomeuapp.util.Utilitaria;
 import com.rtstudio.projetomeuapp.fragment.TelaInicialFragment;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
+import com.rtstudio.projetomeuapp.util.Utilitaria;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
             getSupportFragmentManager().popBackStack();
 
-        } else if (mDrawerLayout.isDrawerOpen(mNavigationView) ){
+        } else if (mDrawerLayout.isDrawerOpen(mNavigationView)) {
             mDrawerLayout.closeDrawer(mNavigationView);
         } else if (!mDrawerLayout.isDrawerOpen(mNavigationView)) {
             alerta();

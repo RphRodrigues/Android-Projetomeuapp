@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.rtstudio.projetomeuapp.MainActivity;
 import com.rtstudio.projetomeuapp.dao.OrdemServicoDAO;
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
@@ -62,6 +63,7 @@ public class TelaInicialFragment extends Fragment {
     private Repositorio mRepositorio;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private MyViewModel mMyViewModel;
+    private Utilitaria mUtil;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,6 +76,8 @@ public class TelaInicialFragment extends Fragment {
         getActivity().setTitle(getString(R.string.app_name));
 
         mRepositorio = new Repositorio(getContext());
+
+        mUtil = new Utilitaria(this);
 
         imgBackground = view.findViewById(R.id.telaInicial_imgBg);
 
@@ -150,6 +154,7 @@ public class TelaInicialFragment extends Fragment {
         ordemServicoList.clear();
         ordemServicoList = mRepositorio.buscar();
         atualizaRecyclerView(ordemServicoList);
+        Log.i("FRAGMENT", "onStart: TelainicialFragment");
     }
 
     @Override
@@ -197,42 +202,50 @@ public class TelaInicialFragment extends Fragment {
             }
         }
 
-        if (requestCode == REQUEST_CODE_GALERIA && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_GALERIA && resultCode == RESULT_OK && data != null) {
 
-            if (data != null) {
-                Uri imagemSeleciona = data.getData();
-                int pos = adapter.getPosicaoAtualDoClick();
-                String[] caminhoFile = {MediaStore.Images.Media.DATA};
+            Uri imagemSeleciona = data.getData();
 
-                Cursor cursor = getContext().getContentResolver().query(imagemSeleciona, caminhoFile, null, null, null);
-                cursor.moveToFirst();
+            int position = adapter.getPosicaoAtualDoClick();
 
-                int indexColuna = cursor.getColumnIndex(caminhoFile[0]);
-                String caminhoImagem = cursor.getString(indexColuna);
-                cursor.close();
+            String[] caminhoFile = {MediaStore.Images.Media.DATA};
 
-                Bitmap imagemBitmap = BitmapFactory.decodeFile(caminhoImagem);
+            Cursor cursor = getActivity().getContentResolver().query(imagemSeleciona, caminhoFile, null, null, null);
+            cursor.moveToFirst();
 
-                if (new OrdemServicoDAO(getContext()).addFotoParaUmaOS(pos, caminhoImagem)) {
-                    Log.i("BANCO", "onActivityResult: addFotoParaUmaOS");
-                    ordemServicoList = new OrdemServicoDAO(getContext()).getAll();
-                    atualizaRecyclerView(ordemServicoList);
+            int indexColuna = cursor.getColumnIndex(caminhoFile[0]);
+            String caminhoImagem = cursor.getString(indexColuna);
+            cursor.close();
+
+            ordemServicoList.get(position).setFilename(caminhoImagem);
+
+            if (mRepositorio.atualizarImagemOrdemServico(ordemServicoList.get(position))) {
+                Log.i("BANCO", "onActivityResult: galeria");
+
+                if (adapter.isImagemAltetada()) {
+                    mUtil.toast("Imagem alterada com sucesso", Toast.LENGTH_LONG);
+                } else {
+                    mUtil.toast("Foto salva com sucesso", Toast.LENGTH_LONG);
                 }
+                atualizaRecyclerView(ordemServicoList);
             }
         }
 
-        if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK) {
+        if (adapter.getFileFoto() != null) {
 
-            if (adapter.getFileFoto() != null) {
+            int position = adapter.getPosicaoAtualDoClick();
 
-                int position = adapter.getPosicaoAtualDoClick();
+            String fileFotoAbsolutePath = adapter.getFileFoto().getAbsolutePath();
 
-                String fileFotoAbsolutePath = adapter.getFileFoto().getAbsolutePath();
+            ordemServicoList.get(position).setFilename(fileFotoAbsolutePath);
 
-                ordemServicoList.get(position).setFilename(fileFotoAbsolutePath);
-
-                new OrdemServicoDAO(getContext()).addFotoParaUmaOS(ordemServicoList.get(position).getOrdemServicoId(), fileFotoAbsolutePath);
-
+            if (mRepositorio.atualizarImagemOrdemServico(ordemServicoList.get(position))) {
+                Log.i("BANCO", "onActivityResult: camera");
+                if (adapter.isImagemAltetada()) {
+                    mUtil.toast("Imagem alterada com sucesso", Toast.LENGTH_LONG);
+                } else {
+                    mUtil.toast("Foto salva com sucesso", Toast.LENGTH_LONG);
+                }
                 atualizaRecyclerView(ordemServicoList);
             }
         }
