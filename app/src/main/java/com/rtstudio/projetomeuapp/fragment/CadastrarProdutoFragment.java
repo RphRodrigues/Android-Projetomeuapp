@@ -2,11 +2,10 @@ package com.rtstudio.projetomeuapp.fragment;
 
 
 import android.app.AlertDialog;
-import android.content.Context;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.rtstudio.projetomeuapp.R;
+import com.rtstudio.projetomeuapp.viewModel.MyViewModel;
 
 
 /**
@@ -22,7 +22,7 @@ import com.rtstudio.projetomeuapp.R;
 public class CadastrarProdutoFragment extends Fragment {
 
     private String mProduto;
-    private passagemDeDados mPassagem;
+    private MyViewModel mMyViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +44,8 @@ public class CadastrarProdutoFragment extends Fragment {
                                 RadioButton radioButton = alertView.findViewById(radioGroup.getCheckedRadioButtonId());
                                 mProduto = radioButton.getText().toString();
 
-                                passarDados(mProduto);
+                                mMyViewModel = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
+                                mMyViewModel.setProduto(mProduto);
                             }
                         })
                         .create()
@@ -52,19 +53,5 @@ public class CadastrarProdutoFragment extends Fragment {
             }
         });
         return view;
-    }
-
-    public void passarDados(String dados) {
-        mPassagem.passarDados(dados);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mPassagem = (passagemDeDados) context;
-    }
-
-    public interface passagemDeDados {
-        void passarDados(String dados);
     }
 }

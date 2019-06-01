@@ -2,11 +2,13 @@ package com.rtstudio.projetomeuapp.fragment;
 
 
 import android.Manifest;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -37,7 +39,7 @@ import static android.support.v4.content.ContextCompat.checkSelfPermission;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CadastrarFragment extends Fragment implements CadastrarProdutoFragment.passagemDeDados{
+public class CadastrarFragment extends Fragment /*implements CadastrarProdutoFragment.passagemDeDados*/{
 
     public static final int PERMISSION_REQUEST_GPS = 100;
     public static final int PERMISSION_REQUEST_MEMORIA = 101;
@@ -77,6 +79,13 @@ public class CadastrarFragment extends Fragment implements CadastrarProdutoFragm
 
         util = new Utilitaria(this, view);
 
+        mMyViewModel = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
+        mMyViewModel.getProduto().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                mProduto = s;
+            }
+        });
 
         view.findViewById(R.id.fragment_cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,23 +137,8 @@ public class CadastrarFragment extends Fragment implements CadastrarProdutoFragm
         return view;
     }
 
-
-    @Override
-    public void passarDados(String dados) {
-        mProduto = dados;
-    }
-
     private boolean validarRadioButton() {
         return mProduto != null;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mMyViewModel = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
-        if (mOrdemServico != null) {
-            mMyViewModel.criarOS(mOrdemServico);
-        }
     }
 
     private boolean validarInputDoUsuario() {
