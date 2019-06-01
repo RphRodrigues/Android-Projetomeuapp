@@ -275,7 +275,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
     public void abrirGaleria() {
         Intent intentGaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        fragment.getActivity().startActivityForResult(intentGaleria, REQUEST_CODE_GALERIA);
+        fragment.startActivityForResult(intentGaleria, REQUEST_CODE_GALERIA);
     }
 
     public File getFileFoto() {
@@ -293,7 +293,7 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
 
             intentFoto.putExtra(MediaStore.EXTRA_OUTPUT, uriFile);
 
-            fragment.getActivity().startActivityForResult(intentFoto, REQUEST_CODE_CAMERA);
+            fragment.startActivityForResult(intentFoto, REQUEST_CODE_CAMERA);
         } catch (IOException e) {
             e.printStackTrace();
         }

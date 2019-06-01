@@ -33,7 +33,6 @@ import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 import com.rtstudio.projetomeuapp.util.Utilitaria;
-import com.rtstudio.projetomeuapp.viewModel.MyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,10 +167,9 @@ public class TelaInicialFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         if (data != null) {
             if (requestCode == REQUEST_CODE_CRIAR && resultCode == RESULT_OK) {
                 OrdemServico ordemServico = new Gson().fromJson(data.getStringExtra("ORDEM_SERVICO_CRIADA"), OrdemServico.class);
@@ -237,7 +235,10 @@ public class TelaInicialFragment extends Fragment {
                 atualizaRecyclerView(ordemServicoList);
             }
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
+
 
     public void checkImageBackground() {
         if (adapter != null && adapter.getItemCount() > 0) {

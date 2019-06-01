@@ -111,7 +111,7 @@ public class Utilitaria {
     }
 
     public void toast(String messagem, int duracao) {
-        Toast toast = Toast.makeText(mView.getContext(), messagem, duracao);
+        Toast toast = Toast.makeText(fragment.getContext(), messagem, duracao);
 
         TextView textView = toast.getView().findViewById(android.R.id.message);
 
