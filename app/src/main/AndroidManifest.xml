@@ -54,30 +54,23 @@
         </activity>
 
         <activity
-            android:theme="@style/TemaLogin"
+            android:name=".LoginActivity"
             android:screenOrientation="portrait"
-            android:name=".LoginActivity" />
+            android:theme="@style/TemaLogin" />
 
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ImagemActivity" />
 
-        <!--<receiver android:exported="true" android:name=".broadcast.MonitoraRedeReceiver">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
-                <!--<action android:name="android" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
+        <activity
+            android:name=".DetalhesActivity"
+            android:screenOrientation="portrait" />
 
+        <service
+            android:name=".notificacao.IntentServiceNotificacao" />
 
-        <!--<service android:name=".service.Service">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="" />-->
-            <!--</intent-filter>-->
-        <!--</service>-->
     </application>
 
 </manifest>

@@ -68,6 +68,7 @@
                 android:background="@drawable/ic_location_on_black_24dp" />
 
             <TextView
+                android:id="@+id/cadastrar_tvLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

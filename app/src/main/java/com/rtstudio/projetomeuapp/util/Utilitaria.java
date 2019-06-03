@@ -13,6 +13,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -68,17 +69,18 @@ public class Utilitaria {
         this.fragment = fragment;
     }
 
-    public void bloquearCampos(boolean isBloquear) {
-        int[] ids = {R.id.cadastrar_edtRuaId, R.id.cadastrar_edtCepId, R.id.cadastrar_edtComplementoId,
-                R.id.cadastrar_edtBairroId, R.id.cadastrar_edtCidadeId, R.id.cadastrar_edtNumeroId};
-
+    public void bloquearCampos(boolean isBloquear, int... ids) {
         for (int id : ids) {
             setBloquearCampos(id, isBloquear);
         }
     }
 
     private void setBloquearCampos(int id, boolean isBloquear) {
-        mView.findViewById(id).setEnabled(!isBloquear);
+        if (mView != null) {
+            mView.findViewById(id).setEnabled(!isBloquear);
+        } else {
+            mActivity.findViewById(id).setEnabled(!isBloquear);
+        }
     }
 
     public void limparCampos(int... ids) {
@@ -103,10 +105,18 @@ public class Utilitaria {
     }
 
     private void setCampos(int id, String data) {
-        if (id == R.id.cadastrar_edtComplementoId) {
-            ((EditText) mView.findViewById(id)).setText(data);
+        if (mView != null) {
+            if (id == R.id.cadastrar_edtComplementoId) {
+                ((EditText) mView.findViewById(id)).setText(data);
+            } else {
+                ((TextInputLayout) mView.findViewById(id)).getEditText().setText(data);
+            }
         } else {
-            ((TextInputLayout) mView.findViewById(id)).getEditText().setText(data);
+            if (id == R.id.cadastrar_edtComplementoId) {
+                ((EditText) mActivity.findViewById(id)).setText(data);
+            } else {
+                ((TextInputLayout) mActivity.findViewById(id)).getEditText().setText(data);
+            }
         }
     }
 
@@ -115,9 +125,9 @@ public class Utilitaria {
 
         TextView textView = toast.getView().findViewById(android.R.id.message);
 
-        textView.setTextColor(mView.getContext().getColor(R.color.white));
+        textView.setTextColor(fragment.getContext().getColor(R.color.white));
 
-        toast.getView().getBackground().setColorFilter(mView.getContext().getColor(R.color.myBlue), PorterDuff.Mode.SRC_IN);
+        toast.getView().getBackground().setColorFilter(fragment.getContext().getColor(R.color.myBlue), PorterDuff.Mode.SRC_IN);
 
         toast.show();
     }
@@ -137,22 +147,38 @@ public class Utilitaria {
     }
 
     private void setSpinner(int id, int arrayId, String data) {
-        String[] arraySpinner = mView.getResources().getStringArray(arrayId);
+        if (mView != null) {
+            String[] arraySpinner = mView.getResources().getStringArray(arrayId);
 
-        for (int i = 0; i < arraySpinner.length; i++) {
-            if (data.equals(arraySpinner[i])) {
-                ((Spinner) mView.findViewById(id)).setSelection(i);
-                return;
+            for (int i = 0; i < arraySpinner.length; i++) {
+                if (data.equals(arraySpinner[i])) {
+                    ((Spinner) mView.findViewById(id)).setSelection(i);
+                    return;
+                }
             }
+            ((Spinner) mView.findViewById(id)).setSelection(0);
+        } else {
+            String[] arraySpinner = mActivity.getResources().getStringArray(arrayId);
+
+            for (int i = 0; i < arraySpinner.length; i++) {
+                if (data.equals(arraySpinner[i])) {
+                    ((Spinner) mActivity.findViewById(id)).setSelection(i);
+                    return;
+                }
+            }
+            ((Spinner) mActivity.findViewById(id)).setSelection(0);
         }
-        ((Spinner) mView.findViewById(id)).setSelection(0);
     }
 
     public void setDadosOrdemServico(OrdemServico os) {
         setDadosCliente(os.getCliente());
         setDadosEndereco(os.getEndereco());
         setSpinner(R.id.cadastrar_spinnerTipoServico, R.array.lista_servico, os.getTipoServico());
-        ((TextView) mView.findViewById(R.id.editar_tvNumOs)).append(" " + os.getOrdemServicoId());
+        if (mView != null) {
+            ((TextView) mView.findViewById(R.id.editar_tvNumOs)).append(" " + os.getOrdemServicoId());
+        } else {
+            ((TextView) mActivity.findViewById(R.id.editar_tvNumOs)).append(" " + os.getOrdemServicoId());
+        }
     }
 
     public Cliente createCliente(String nomeCliente) {
@@ -166,6 +192,14 @@ public class Utilitaria {
             fragment.startActivity(intent);
         } else {
             mActivity.startActivity(intent);
+        }
+    }
+
+    public void executarSom() {
+        if (mActivity != null) {
+            MediaPlayer.create(mActivity, R.raw.window_xp_erro).start();
+        } else {
+            MediaPlayer.create(fragment.getContext(), R.raw.window_xp_erro).start();
         }
     }
 

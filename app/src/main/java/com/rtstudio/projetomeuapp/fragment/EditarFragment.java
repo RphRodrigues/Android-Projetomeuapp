@@ -53,7 +53,6 @@ public class EditarFragment extends Fragment {
     private TextInputLayout mCidade;
     private TextInputLayout mProduto;
     private EditText mComplemento;
-    private MyViewModel mMyViewModel;
     private View mView;
 
     @Override
@@ -106,6 +105,7 @@ public class EditarFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!validarInputDoUsuario()) {
+                    mUtil.executarSom();
                     return;
                 }
 

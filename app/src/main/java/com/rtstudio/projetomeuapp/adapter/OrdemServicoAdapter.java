@@ -256,8 +256,6 @@ public class OrdemServicoAdapter extends RecyclerView.Adapter<OrdemServicoAdapte
                             public void onClick(DialogInterface dialog, int which) {
                                 int ordemServicoId = ordemServicoList.get(position).getOrdemServicoId();
 
-                                new Notificacao().notificacaoBotao(fragment.getContext(), ordemServicoList.get(position));
-
                                 new Repositorio(fragment.getContext()).deletar(ordemServicoId);
 
                                 ordemServicoList.remove(position);

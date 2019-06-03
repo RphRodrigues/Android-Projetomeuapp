@@ -28,6 +28,7 @@ import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.modelo.Cliente;
 import com.rtstudio.projetomeuapp.modelo.Endereco;
 import com.rtstudio.projetomeuapp.modelo.OrdemServico;
+import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 import com.rtstudio.projetomeuapp.util.Utilitaria;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 import com.rtstudio.projetomeuapp.viewModel.MyViewModel;
@@ -90,7 +91,11 @@ public class CadastrarFragment extends Fragment /*implements CadastrarProdutoFra
         view.findViewById(R.id.fragment_cadastrar_btnCriarOSId).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validarInputDoUsuario()) {
+                if (!validarInputDoUsuario() || !validarRadioButton()) {
+                    util.executarSom();
+                    if (!validarRadioButton()) {
+                        view.findViewById(R.id.fragment_tvEscolha).setVisibility(View.VISIBLE);
+                    }
                     return;
                 }
 
@@ -103,6 +108,7 @@ public class CadastrarFragment extends Fragment /*implements CadastrarProdutoFra
                 if (mRepositorio.adicionar(mOrdemServico)) {
                     getActivity().setResult(RESULT_OK, new Intent().putExtra("ORDEM_SERVICO_CRIADA", new Gson().toJson(mOrdemServico)));
                     util.alertDialog("Aviso", getString(R.string.os_gerada_sucesso), false);
+                    new Notificacao().notificacaoBotao(getContext(), mOrdemServico);
                 } else {
                     getActivity().setResult(RESULT_CANCELED);
                     util.alertDialog("Aviso", "Não foi possível criar O.S.", false);
@@ -114,14 +120,6 @@ public class CadastrarFragment extends Fragment /*implements CadastrarProdutoFra
         view.findViewById(R.id.cadastrar_btnLocation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                        || (checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-//
-//                    String[] permissoes = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
-//
-//                    ActivityCompat.requestPermissions(getActivity(), permissoes, PERMISSION_REQUEST_GPS);
-//                    return;
-//                }
                 util.permissaoGPS();
                 util.getLocalizacao();
             }

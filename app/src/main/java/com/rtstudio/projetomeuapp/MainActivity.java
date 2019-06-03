@@ -65,11 +65,6 @@ public class MainActivity extends AppCompatActivity {
                 mDrawerLayout.closeDrawer(mNavigationView);
                 if (id == R.id.drawer_ajuda) {
                     mUtil.menuItemAjuda();
-                } else if (id == R.id.drawer_sync) {
-//                    getSupportFragmentManager().findFragmentByTag("");
-//                    if (mRepositorio.sicronizar(ordemServicoList)) {
-//                        atualizaRecyclerView(ordemServicoList);
-//                    }
                 } else if (id == R.id.drawer_sair) {
                     alerta();
                 }

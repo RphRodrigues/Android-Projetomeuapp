@@ -25,11 +25,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.rtstudio.projetomeuapp.R;
 import com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter;
 import com.rtstudio.projetomeuapp.modelo.OrdemServico;
-import com.rtstudio.projetomeuapp.notificacao.Notificacao;
 import com.rtstudio.projetomeuapp.preferencias.PreferenciasUsuario;
 import com.rtstudio.projetomeuapp.repositorio.Repositorio;
 import com.rtstudio.projetomeuapp.util.Utilitaria;
@@ -39,8 +37,6 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter.REQUEST_CODE_CAMERA;
-import static com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter.REQUEST_CODE_CRIAR;
-import static com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter.REQUEST_CODE_EDITAR;
 import static com.rtstudio.projetomeuapp.adapter.OrdemServicoAdapter.REQUEST_CODE_GALERIA;
 
 /**
@@ -162,6 +158,10 @@ public class TelaInicialFragment extends Fragment {
                 PreferenciasUsuario.Companion.setPreferenciaTema(getContext(), PreferenciasUsuario.TEMA_PADRAO);
                 getActivity().recreate();
             }
+        } else if (id == R.id.app_bar_sicronizar) {
+            if (mRepositorio.sicronizar(ordemServicoList)) {
+                atualizaRecyclerView(ordemServicoList);
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -170,23 +170,6 @@ public class TelaInicialFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (data != null) {
-            if (requestCode == REQUEST_CODE_CRIAR && resultCode == RESULT_OK) {
-                OrdemServico ordemServico = new Gson().fromJson(data.getStringExtra("ORDEM_SERVICO_CRIADA"), OrdemServico.class);
-                ordemServicoList.add(ordemServico);
-
-                new Notificacao().notificacaoSimples(getContext(), ordemServico.getEndereco().getBairro());
-
-                atualizaRecyclerView(ordemServicoList);
-
-            } else if (requestCode == REQUEST_CODE_EDITAR && resultCode == RESULT_OK) {
-                OrdemServico ordemServico = new Gson().fromJson(data.getStringExtra("ORDEM_SERVICO_EDITADA"), OrdemServico.class);
-
-                ordemServicoList.set(adapter.getPosicaoAtualDoClick(), ordemServico);
-
-                atualizaRecyclerView(ordemServicoList);
-            }
-        }
 
         if (requestCode == REQUEST_CODE_GALERIA && resultCode == RESULT_OK && data != null) {
 

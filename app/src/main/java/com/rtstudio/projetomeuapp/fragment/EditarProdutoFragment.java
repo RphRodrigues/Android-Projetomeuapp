@@ -24,7 +24,18 @@ public class EditarProdutoFragment extends Fragment {
 
     private String mProduto = "";
     private TextInputLayout mTextInputLayout;
+    private Boolean mChamada = false;
     private Utilitaria mUtil;
+
+    public EditarProdutoFragment() {
+    }
+
+    @SuppressLint("ValidFragment")
+    public EditarProdutoFragment(String mProduto) {
+        this.mProduto = mProduto;
+        mChamada = true;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +51,10 @@ public class EditarProdutoFragment extends Fragment {
         }
 
         mTextInputLayout.getEditText().setText(mProduto);
+
+        if (mChamada) {
+            mTextInputLayout.setEnabled(false);
+        }
 
         mTextInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
